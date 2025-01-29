@@ -1,8 +1,6 @@
-body {
+* {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  background-color: #f5f5f5; /* Cinza claro */
-  color: #333333; /* Texto padrão */
   padding: 0;
   box-sizing: border-box;
 }

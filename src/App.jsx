@@ -6,6 +6,7 @@ import About from "./pages/About";
 import Function from "./pages/Function";
 import LoginPage from "./pages/LoginPage"
 import MatchesPage from "./pages/MatchesPage"
+import PrivateRoute from "./routes/PrivateRoute";
 
 function App() {
   return (
@@ -17,11 +18,20 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
 
        {/* Rota privada (ainda sem proteção) */}
-        <Route path="/" element={<Home />} />
-        <Route path="/enviar" element={<Function />} />
+       <Route
+          path="/"
+          element={<PrivateRoute element={Home} />}
+        />
+        <Route
+          path="/enviar"
+          element={<PrivateRoute element={Function} />}
+        />
 
         {/* Rota só para Admin (também ainda sem proteção) */}
-        <Route path="/partida" element={<MatchesPage />} />
+        <Route
+          path="/partida"
+          element={<PrivateRoute element={MatchesPage} />}
+        />
 
         {/* Rota default (caso queira redirecionar para /login ou /home) */}
         {/* <Route path="*" element={<Navigate to="/login" />} /> */}
