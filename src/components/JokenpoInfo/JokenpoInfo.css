@@ -1,14 +1,13 @@
-.jokenpo-info {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
 .container {
-  padding: 120px 40px 40px 40px;
-
   background: linear-gradient(135deg, #99c27b, #d6a3e1, #8cc8ff);
   background-size: 400% 400%;
   animation: gradientAnimation 10s ease infinite;
+}
+
+.jokenpo-info {
+  padding: 100px 40px 40px 40px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .jokenpo-info h1 {
