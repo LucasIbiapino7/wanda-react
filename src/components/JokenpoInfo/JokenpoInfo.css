@@ -1,0 +1,32 @@
+.jokenpo-info {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.container {
+  padding: 120px 40px 40px 40px;
+
+  background: linear-gradient(135deg, #99c27b, #d6a3e1, #8cc8ff);
+  background-size: 400% 400%;
+  animation: gradientAnimation 10s ease infinite;
+}
+
+.jokenpo-info h1 {
+  text-align: center;
+  color: white;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+/* Gradiente animado */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
