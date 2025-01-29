@@ -11,7 +11,6 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true); // <-- novo estado
 
   useEffect(() => {
-    console.log("caiu aqui")
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
       setToken(storedToken);
@@ -61,12 +60,6 @@ export function AuthProvider({ children }) {
 
   // Verifica se o array de roles inclui 'ROLE_ADMIN'
   const isAdmin = roles.includes('ROLE_ADMIN');
-
-  console.log(token)
-  console.log(roles)
-  console.log(isAuthenticated)
-  console.log(isAdmin)
-
 
   return (
     <AuthContext.Provider

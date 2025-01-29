@@ -1,34 +1,81 @@
 .header {
-    height: 80px;
-    width: calc(100%);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    background-color: #9c27b0; /* Roxo claro */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    z-index: 1;
-  }
-  
-  .logo-image {
-    height: 75px; /* Ajuste a altura da logo */
-    width: auto; /* Mantém a proporção */
-  }
-  
-  .nav {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .nav-link {
-    text-decoration: none;
-    color: #ffffff; /* Branco */
-    font-size: 16px;
-    transition: color 0.3s ease;
-  }
-  
-  .nav-link:hover {
-    color: #ffeb3b; /* Amarelo brilhante */
-  }
-  
+  height: 80px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background-color: #9c27b0; /* Roxo */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  z-index: 1;
+}
+
+.logo-image {
+  height: 75px; 
+  width: auto; 
+}
+
+.nav {
+  display: flex;
+  align-items: center; 
+  gap: 20px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #ffffff; /* Branco */
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ffeb3b; 
+}
+
+
+.profile-container {
+  position: relative; 
+  cursor: pointer;
+}
+
+.profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; 
+  border: 2px solid #fff;
+  object-fit: cover;
+  display: block;
+}
+
+.profile-menu {
+  position: absolute;
+  top: 50px; 
+  right: 0; 
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 120px; 
+}
+
+
+.profile-menu button {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  transition: background-color 0.2s;
+}
+
+.profile-menu button:hover {
+  background-color: #eee;
+}

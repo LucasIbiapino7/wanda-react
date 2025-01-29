@@ -7,7 +7,6 @@ function PrivateRoute({ element: Component }) {
   const { isAuthenticated, loading } = useContext(AuthContext);
 
   if (loading) {
-    // Pode retornar um spinner ou algo do tipo
     return <div>Carregando...</div>;
   }
 

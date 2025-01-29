@@ -6,16 +6,11 @@ import { useContext } from "react";
 function AdminRoute({ element: Component }) {
   const { isAuthenticated, isAdmin, loading } = useContext(AuthContext);
 
-  console.log("AdminRoute foi chamado");
-  console.log(isAuthenticated)
-  console.log(isAdmin)
-
   if (loading) {
     return <div>Carregando...</div>;
   }
 
   if (!isAuthenticated) {
-    console.log("CAIU AQUI");
     return <Navigate to="/login" replace />;
   }
 
@@ -25,11 +20,6 @@ function AdminRoute({ element: Component }) {
     return <Navigate to="/" replace />;
   }
 
-  // Se chegou até aqui, significa que está autenticado e é admin
-
-  console.log("Chegou ao final do admin route")
-
-  console.log(Component)
   return <Component />;
 }
 
