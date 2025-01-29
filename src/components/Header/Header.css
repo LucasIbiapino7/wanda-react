@@ -1,0 +1,34 @@
+.header {
+    height: 80px;
+    width: calc(100% - 40px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background-color: #9c27b0; /* Roxo claro */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    z-index: 1;
+  }
+  
+  .logo-image {
+    height: 75px; /* Ajuste a altura da logo */
+    width: auto; /* Mantém a proporção */
+  }
+  
+  .nav {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .nav-link {
+    text-decoration: none;
+    color: #ffffff; /* Branco */
+    font-size: 16px;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    color: #ffeb3b; /* Amarelo brilhante */
+  }
+  
