@@ -1,17 +1,30 @@
-import { useState } from "react";
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AuthContext from "../../context/AuthContext.js"
 import "./LoginPage.css"
 
-function LoginPage() {
+function  LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   // Exemplo de estado para exibir mensagens
   const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("Enviando dados...");
-    // Aqui teremos a requisição ao backend
+    setMessage('Enviando dados...');
+
+    try {
+      await login(email, password);
+      setMessage('Login bem-sucedido!');
+      navigate('/home');
+    } catch (error) {
+      console.error(error);
+      setMessage('Credenciais inválidas ou erro no servidor.');
+    }
   };
 
   return (
