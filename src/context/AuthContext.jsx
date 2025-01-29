@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 import PropTypes from "prop-types"; 
 
 const AuthContext = createContext();
@@ -8,8 +8,10 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   const [roles, setRoles] = useState([]); // Agora armazenamos as roles como array
+  const [loading, setLoading] = useState(true); // <-- novo estado
 
   useEffect(() => {
+    console.log("caiu aqui")
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
       setToken(storedToken);
@@ -19,10 +21,12 @@ export function AuthProvider({ children }) {
         setRoles(decoded.roles);
       }
     }
+    setLoading(false); // Terminou de verificar localStorage
   }, []);
 
   // Função de login
   const login = async (email, password) => {
+    console.log("caiu na função de login")
     try {
       const response = await axios.post('http://localhost:8080/auth/login', {
         email,
@@ -58,11 +62,18 @@ export function AuthProvider({ children }) {
   // Verifica se o array de roles inclui 'ROLE_ADMIN'
   const isAdmin = roles.includes('ROLE_ADMIN');
 
+  console.log(token)
+  console.log(roles)
+  console.log(isAuthenticated)
+  console.log(isAdmin)
+
+
   return (
     <AuthContext.Provider
       value={{
         token,
         roles,
+        loading,
         isAuthenticated,
         isAdmin,
         login,

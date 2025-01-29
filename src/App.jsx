@@ -4,40 +4,34 @@ import Header from "./components/Header/Header";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Function from "./pages/Function";
-import MatchesPage from "./pages/MatchesPage"
-import PrivateRoute from "./routes/PrivateRoute";
-import AdminRoute from "./routes/AdminRoute";
+import MatchesPage from "./pages/MatchesPage";
+import PrivateRoute from "./routes/PrivateRoute.jsx";
+import AdminRoute from "./routes/AdminRoute.jsx";
 import Login from "./pages/Login";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
-    <Router>
-      <Header />
-      <Routes>
-        {/* Rota pública */}
-        <Route path="/sobre" element={<About />} />
-        <Route path="/login" element={<Login />} />
+    <AuthProvider>
+      <Router>
+        <Header />
+        <Routes>
+          {/* Rota pública */}
+          <Route path="/sobre" element={<About />} />
+          <Route path="/login" element={<Login />} />
 
-       {/* Rota privada */}
-       <Route
-          path="/"
-          element={<PrivateRoute element={Home} />}
-        />
-        <Route
-          path="/enviar"
-          element={<PrivateRoute element={Function} />}
-        />
+          {/* Rota privada */}
+          <Route path="/" element={<PrivateRoute element={Home} />} />
+          <Route path="/enviar" element={<PrivateRoute element={Function} />} />
 
-        {/* Rota só para Admin*/}
-        <Route
-          path="/partida"
-          element={<AdminRoute element={MatchesPage} />}
-        />
-
-        {/* Rota default (caso queira redirecionar para /login ou /home) */}
-        {/* <Route path="*" element={<Navigate to="/login" />} /> */}
-      </Routes>
-    </Router>
+          {/* Rota só para Admin*/}
+          <Route
+            path="/partida"
+            element={<AdminRoute element={MatchesPage} />}
+          />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

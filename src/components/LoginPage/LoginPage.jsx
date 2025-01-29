@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthContext from "../../context/AuthContext.js"
+import AuthContext from "../../context/AuthContext.jsx"
 import "./LoginPage.css"
 
 function  LoginPage() {
@@ -20,7 +20,7 @@ function  LoginPage() {
     try {
       await login(email, password);
       setMessage('Login bem-sucedido!');
-      navigate('/home');
+      navigate('/');
     } catch (error) {
       console.error(error);
       setMessage('Credenciais inválidas ou erro no servidor.');

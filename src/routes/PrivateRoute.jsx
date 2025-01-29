@@ -1,12 +1,15 @@
 import { Navigate } from "react-router-dom";
+import { useContext } from 'react';
+import AuthContext from '..//context/AuthContext.jsx';
 import PropTypes from "prop-types"; 
 
 function PrivateRoute({ element: Component }) {
-  const isAuthenticated = false; // Temporariamente falso
+  const { isAuthenticated, loading } = useContext(AuthContext);
 
-  // Aqui, você verificaria se existe token no localStorage ou em algum contexto
-  // e validaria se ainda está válido. Por enquanto, vamos deixar fixo como 'false'
-  // para mostrar como funciona o redirecionamento.
+  if (loading) {
+    // Pode retornar um spinner ou algo do tipo
+    return <div>Carregando...</div>;
+  }
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -16,7 +19,7 @@ function PrivateRoute({ element: Component }) {
 }
 
 PrivateRoute.propTypes = {
-    element: PropTypes.elementType.isRequired
+    element: PropTypes.elementType
   };
 
 
