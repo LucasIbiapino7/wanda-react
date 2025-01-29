@@ -4,10 +4,10 @@ import Header from "./components/Header/Header";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Function from "./pages/Function";
-import LoginPage from "./pages/LoginPage"
 import MatchesPage from "./pages/MatchesPage"
 import PrivateRoute from "./routes/PrivateRoute";
 import AdminRoute from "./routes/AdminRoute";
+import Login from "./pages/Login";
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
       <Routes>
         {/* Rota pública */}
         <Route path="/sobre" element={<About />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<Login />} />
 
        {/* Rota privada */}
        <Route
