@@ -1,0 +1,105 @@
+.heros-section {
+  /* Layout em colunas */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 40px 40px 40px;
+
+  /* Gradiente de fundo */
+  background: linear-gradient(135deg, #99c27b, #d6a3e1, #8cc8ff);
+  background-size: 400% 400%;
+  animation: gradientAnimation 10s ease infinite;
+
+  /* Para layout responsivo */
+  flex-wrap: wrap;
+}
+
+.content {
+  flex: 1; /* O conteúdo ocupa 50% do espaço */
+  max-width: 600px;
+  text-align: left;
+  z-index: 1;
+  color: white;
+}
+
+.content h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.content p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.primary-button {
+  background-color: #ffde59;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.primary-button:hover {
+  background-color: #e6c94c; /* Um tom ligeiramente mais escuro do amarelo */
+  transform: translateY(-2px); /* Eleva o botão levemente */
+}
+
+.secondary-button {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s;
+}
+
+.secondary-button:hover {
+  background-color: white; /* Fundo branco no hover */
+  color: #333; /* Texto muda para um cinza escuro */
+  transform: translateY(-2px); /* Eleva o botão levemente */
+}
+
+.image-container {
+  flex: 1; /* Continua ocupando uma parte proporcional */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image {
+  max-width: 70%; /* Ajuste este valor para reduzir o tamanho da imagem */
+  height: auto; /* Mantém a proporção da imagem */
+  opacity: 0.9; /* Um leve efeito de transparência */
+  border-radius: 40px; /* Bordas arredondadas, opcional */
+  transition: transform 0.3s ease, opacity 0.3s ease; /* Animação suave */
+}
+
+.image:hover {
+  transform: scale(1.05); /* Pequeno zoom ao passar o mouse */
+  opacity: 1; /* Transparência total ao passar o mouse */
+}
+
+/* Gradiente animado */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
