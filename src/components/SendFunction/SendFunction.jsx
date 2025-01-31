@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { dracula } from "@uiw/codemirror-theme-dracula";
 import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
 import axios from "axios";
 import "./SendFunction.css"
+import AuthContext from "../../context/AuthContext";
 
 function SendFunction() {
   const [text, setText] = useState(
     "def strategy(card1, card2, card3, opponentCard1, opponentCard2, opponentCard3):"
   ); // Função enviada
   const [feedback, setFeedback] = useState(null); // Mensagem do backend
+  const { token } = useContext(AuthContext);
 
   const handleSubmit = async () => {
     try {
@@ -22,7 +24,13 @@ function SendFunction() {
       };
 
       // Realiza a requisição POST - preciso lembrar de ajeitar opra enviar o token
-      const response = await axios.post(url, requestBody);
+      const response = await axios.post(url, requestBody, {
+        headers: {
+          // Cabeçalho Authorization com Bearer token
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        }
+      });
 
       // Caso a função seja aceita, exibe o código retornado pelo backend
       setFeedback({
