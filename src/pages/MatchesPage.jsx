@@ -18,12 +18,15 @@ const mockStudents = [
   { id: 11, name: "Aluno 11" },
 ];
 
+
 function MatchesPage() {
   const [students, setStudents] = useState([]); // Lista do alunos
   const [selected, setSelected] = useState([]); // Lista dos selecionados
   const [currentPage, setCurrentPage] = useState(1); // Ajuda na paginção
   const [matchReport, setMatchReport] = useState(null); // resultado da partida
   const { token } = useContext(AuthContext);
+
+  const [isMatchStarted, setIsMatchStarted] = useState(false);
 
   // Quantos alunos por página
   const pageSize = 5;
@@ -91,6 +94,7 @@ function MatchesPage() {
 
         // Se quiser zerar a seleção depois de iniciar:
         setSelected([]);
+        setIsMatchStarted(true); // Inicia a exibição sequencial
       } catch (error) {
         console.error("Erro ao iniciar partida:", error);
         alert("Ocorreu um erro ao iniciar a partida. Verifique o console.");
@@ -161,11 +165,11 @@ function MatchesPage() {
         </button>
       </div>
 
-      {/* Se temos um matchReport, exibir o "relatório" */}
-      {matchReport && (
+      {isMatchStarted && matchReport && (
         <div className="match-report">
           <h2>Relatório da Partida</h2>
 
+          {/* Informações dos Jogadores */}
           <div className="players-info">
             <div className="player">
               <h3>Player 1</h3>
@@ -193,24 +197,44 @@ function MatchesPage() {
             </div>
           </div>
 
+          {/* Exibição dos Turnos */}
           <div className="turns-info">
-            <h3>Turns</h3>
-            {matchReport.turns &&
-              matchReport.turns.map((turn, index) => (
-                <div key={index} className="turn-item">
-                  <p>
-                    <strong>Turno #{index + 1}</strong>
-                  </p>
-                  <p>Tie: {turn.tie}</p>
-                  <p>Player1Winners: {turn.player1Winners}</p>
-                  <p>Player2Winners: {turn.player2Winners}</p>
-                  <p>PlayerWinTurn: {turn.playerWinTurn}</p>
-                </div>
-              ))}
+            <h3>Turnos</h3>
+            {matchReport.turns.map((turn) => (
+              <div key={turn.turnNumber} className="turn-item">
+                <h4>Turno {turn.turnNumber}</h4>
+                {turn.plays.map((play) => (
+                  <div key={play.playNumber} className="play-item">
+                    <p>
+                      <strong>Jogada {play.playNumber}:</strong>
+                    </p>
+                    <p>Player 1 escolheu: {play.playerCard1}</p>
+                    <p>Player 2 escolheu: {play.playerCard2}</p>
+                    {play.tie ? (
+                      <p>
+                        <em>Empate!</em>
+                      </p>
+                    ) : (
+                      <p>Vencedor da jogada: Player {play.winnerOfPlay}</p>
+                    )}
+                  </div>
+                ))}
+                <p>
+                  <strong>Vencedor do Turno:</strong> Player{" "}
+                  {turn.playerWinTurn}
+                </p>
+                <p>
+                  <strong>Placar:</strong> Player 1:  {turn.player1Winners} |
+                  Player 2: - {turn.player2Winners}
+                </p>
+                <hr />
+              </div>
+            ))}
           </div>
 
+          {/* Vencedor Final */}
           <div className="winner-info">
-            <h3>Vencedor:</h3>
+            <h3>Vencedor da Partida:</h3>
             <p>
               <strong>ID:</strong> {matchReport.playerWinner.id}
             </p>

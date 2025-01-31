@@ -112,7 +112,7 @@
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   color: #333;
 }
 
@@ -168,3 +168,83 @@
   color: #2a7d2a;
   text-align: center;
 }
+
+/* Relatório da Partida */
+.match-report {
+  margin-top: 2rem;
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.match-report h2 {
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #333;
+}
+
+.players-info {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+}
+
+.player {
+  background-color: #f8f8f8;
+  padding: 12px;
+  border-radius: 4px;
+  min-width: 40%;
+  text-align: center;
+}
+
+.player h3 {
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.turns-info {
+  background-color: #f8f8f8;
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 1rem;
+}
+
+.turn-item {
+  border: 1px solid #ddd;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+}
+
+.turn-item h4 {
+  margin-bottom: 8px;
+  color: #9c27b0; /* Roxo para destaque */
+}
+
+.play-item {
+  margin-left: 20px;
+  margin-bottom: 8px;
+}
+
+.winner-info {
+  background-color: #e0ffe0; /* Verde claro */
+  padding: 12px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.winner-info h3 {
+  margin-bottom: 8px;
+  color: #2a7d2a;
+}
+
+.next-step-container {
+  text-align: center;
+  margin-top: 1rem;
+}
+
