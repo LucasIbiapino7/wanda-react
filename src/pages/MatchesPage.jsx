@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import "../components/MatchesPage/MatchesPage.css";
 import axios from "axios";
 import AuthContext from "../context/AuthContext.jsx";
+import GameAnimation from "../components/GameAnimation/GameAnimation.jsx";
 
 // Simular o retorno do backend
 const mockStudents = [
@@ -18,15 +19,12 @@ const mockStudents = [
   { id: 11, name: "Aluno 11" },
 ];
 
-
 function MatchesPage() {
   const [students, setStudents] = useState([]); // Lista do alunos
   const [selected, setSelected] = useState([]); // Lista dos selecionados
   const [currentPage, setCurrentPage] = useState(1); // Ajuda na paginção
   const [matchReport, setMatchReport] = useState(null); // resultado da partida
   const { token } = useContext(AuthContext);
-
-  const [isMatchStarted, setIsMatchStarted] = useState(false);
 
   // Quantos alunos por página
   const pageSize = 5;
@@ -91,10 +89,8 @@ function MatchesPage() {
         //   playerWinner: { id, name, email }
         // }
         setMatchReport(response.data);
-
         // Se quiser zerar a seleção depois de iniciar:
         setSelected([]);
-        setIsMatchStarted(true); // Inicia a exibição sequencial
       } catch (error) {
         console.error("Erro ao iniciar partida:", error);
         alert("Ocorreu um erro ao iniciar a partida. Verifique o console.");
@@ -164,89 +160,7 @@ function MatchesPage() {
           Iniciar Partida
         </button>
       </div>
-
-      {isMatchStarted && matchReport && (
-        <div className="match-report">
-          <h2>Relatório da Partida</h2>
-
-          {/* Informações dos Jogadores */}
-          <div className="players-info">
-            <div className="player">
-              <h3>Player 1</h3>
-              <p>
-                <strong>ID:</strong> {matchReport.player1.id}
-              </p>
-              <p>
-                <strong>Nome:</strong> {matchReport.player1.name}
-              </p>
-              <p>
-                <strong>Email:</strong> {matchReport.player1.email}
-              </p>
-            </div>
-            <div className="player">
-              <h3>Player 2</h3>
-              <p>
-                <strong>ID:</strong> {matchReport.player2.id}
-              </p>
-              <p>
-                <strong>Nome:</strong> {matchReport.player2.name}
-              </p>
-              <p>
-                <strong>Email:</strong> {matchReport.player2.email}
-              </p>
-            </div>
-          </div>
-
-          {/* Exibição dos Turnos */}
-          <div className="turns-info">
-            <h3>Turnos</h3>
-            {matchReport.turns.map((turn) => (
-              <div key={turn.turnNumber} className="turn-item">
-                <h4>Turno {turn.turnNumber}</h4>
-                {turn.plays.map((play) => (
-                  <div key={play.playNumber} className="play-item">
-                    <p>
-                      <strong>Jogada {play.playNumber}:</strong>
-                    </p>
-                    <p>Player 1 escolheu: {play.playerCard1}</p>
-                    <p>Player 2 escolheu: {play.playerCard2}</p>
-                    {play.tie ? (
-                      <p>
-                        <em>Empate!</em>
-                      </p>
-                    ) : (
-                      <p>Vencedor da jogada: Player {play.winnerOfPlay}</p>
-                    )}
-                  </div>
-                ))}
-                <p>
-                  <strong>Vencedor do Turno:</strong> Player{" "}
-                  {turn.playerWinTurn}
-                </p>
-                <p>
-                  <strong>Placar:</strong> Player 1:  {turn.player1Winners} |
-                  Player 2: - {turn.player2Winners}
-                </p>
-                <hr />
-              </div>
-            ))}
-          </div>
-
-          {/* Vencedor Final */}
-          <div className="winner-info">
-            <h3>Vencedor da Partida:</h3>
-            <p>
-              <strong>ID:</strong> {matchReport.playerWinner.id}
-            </p>
-            <p>
-              <strong>Nome:</strong> {matchReport.playerWinner.name}
-            </p>
-            <p>
-              <strong>Email:</strong> {matchReport.playerWinner.email}
-            </p>
-          </div>
-        </div>
-      )}
+      <GameAnimation matchReport={matchReport}/>
     </div>
   );
 }

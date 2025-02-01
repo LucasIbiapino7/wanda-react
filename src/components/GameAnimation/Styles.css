@@ -1,0 +1,80 @@
+/* =============================
+   GameAnimation Component Styles
+   ============================= */
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 40px;
+  min-height: calc(100vh - 40px);
+  border-radius: 10px;
+
+  /* Definindo a imagem de fundo */
+  background-image: url("../../assets/cenario-test1.webp"); /* Caminho relativo à imagem */
+
+  /* Faz a imagem cobrir todo o container */
+  background-size: cover;
+
+  /* Centraliza a imagem */
+  background-position: center;
+
+  color: white;
+}
+
+.score-board {
+  text-align: center; /* Centraliza o conteúdo */
+  margin-bottom: 20px; /* Espaçamento abaixo */
+  width: 100%;
+  max-width: 800px;
+}
+
+/* =============================
+   Área de Jogo (Cartas dos Jogadores)
+   ============================= */
+.play-area {
+  display: flex;
+  justify-content: space-between; /* Distribui os blocos nas extremidades */
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1200px; /* Aumente o max-width para dar mais espaço */
+  margin: 0 auto; /* Centraliza o container na tela */
+  /* Você pode remover ou ajustar o gap, se necessário */
+  gap: 50px;
+}
+/* =============================
+   Bloco de Cada Jogador
+   ============================= */
+.player-cards {
+  display: flex;
+  flex-direction: column; /* Organiza os elementos verticalmente */
+  align-items: center; /* Centraliza os itens (nome e cartas) */
+}
+
+.player-cards h4 {
+  font-size: 1.5rem;
+  margin-bottom: 10px; /* Espaçamento entre o nome e as cartas */
+}
+
+/* =============================
+   Controles (Botões)
+   ============================= */
+.controls {
+  margin-top: 20px;
+}
+
+.controls button {
+  background-color: #ffde59;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.controls button:hover {
+  background-color: #e6c94c;
+  transform: translateY(-2px);
+}
