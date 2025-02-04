@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ProfileHeader from "../components/ProfilePage/ProfileHeader";
 import "../components/ProfilePage/ProfilePage.css";
 import ProfileMatches from "../components/ProfilePage/ProfileMacthes";
+import ProfileChallenges from "../components/ProfilePage/ProfileChallenges";
 
 function ProfilePage() {
   const [profileData, setProfileData] = useState(null);
@@ -59,6 +60,7 @@ function ProfilePage() {
       />
       <div className="profile-content">
         <ProfileMatches matches={profileData.matches} />
+        <ProfileChallenges challenges={profileData.challenges} />
       </div>
     </div>
   );

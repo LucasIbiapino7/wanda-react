@@ -1,0 +1,93 @@
+/* ProfileChallenges.css */
+
+/* Container principal para os desafios recebidos */
+.profile-challenges {
+  background: rgba(0, 0, 0, 0.3); /* Fundo escuro semitransparente */
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  color: white;
+}
+
+/* Título da seção */
+.profile-challenges h3 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 10px;
+}
+
+/* Remover as marcações padrão da lista */
+.profile-challenges ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Cada item da lista de desafios */
+.profile-challenges li {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.1
+  ); /* Fundo leve translúcido para cada item */
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilização para os spans dentro dos itens */
+.profile-challenges li span {
+  display: block;
+  font-size: 1rem;
+  margin: 2px 0;
+}
+
+/* Container para os botões de ação dos desafios */
+.challenge-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+/* Estilização dos botões dentro de .challenge-actions */
+.challenge-actions button {
+  flex: 1;
+  padding: 8px 12px;
+  max-width: 100px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+/* Botão "Aceitar" – segue o padrão primary */
+.challenge-actions button:first-child {
+  background-color: #ffde59; /* Amarelo */
+  color: #333;
+}
+
+.challenge-actions button:first-child:hover {
+  background-color: #e6c94c; /* Amarelo mais escuro */
+  transform: translateY(-2px);
+}
+
+/* Botão "Recusar" – estilo secondary */
+.challenge-actions button:last-child {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+}
+
+.challenge-actions button:last-child:hover {
+  background-color: white;
+  color: #333;
+  transform: translateY(-2px);
+}
