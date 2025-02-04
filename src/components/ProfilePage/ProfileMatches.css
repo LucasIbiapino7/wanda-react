@@ -1,0 +1,60 @@
+/* ProfileMatches.css */
+
+/* Container do histórico de partidas */
+.profile-matches {
+  background: rgba(
+    0,
+    0,
+    0,
+    0.3
+  ); /* Fundo escuro semitransparente para contraste */
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  color: white;
+}
+
+/* Título da seção de partidas */
+.profile-matches h3 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 10px;
+}
+
+/* Lista de partidas */
+.profile-matches ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Cada item da lista de partidas */
+.profile-matches li {
+  padding: 10px;
+  margin-bottom: 10px;
+  background: rgba(
+    255,
+    255,
+    255,
+    0.1
+  ); /* Leve fundo translúcido para diferenciar cada item */
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilo para os spans dentro de cada item */
+.profile-matches li span {
+  display: block;
+  font-size: 1rem;
+  margin: 2px 0;
+}
+
+/* Remove margem do último item */
+.profile-matches li:last-child {
+  margin-bottom: 0;
+}

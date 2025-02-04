@@ -16,7 +16,6 @@
 
 /* Limita a largura e alinha o conteúdo interno */
 .profile-content {
-  max-width: 600px;
   width: 100%;
   text-align: left;
   margin-top: 20px;
