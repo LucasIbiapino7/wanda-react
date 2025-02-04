@@ -1,0 +1,63 @@
+/* ProfileHeader.css */
+
+/* Container do header de perfil */
+.profile-header {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3); /* Fundo semitransparente para contraste */
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Container para as informações do usuário */
+.profile-info {
+  display: flex;
+  align-items: center;
+}
+
+/* Placeholder para imagem de perfil */
+.profile-placeholder {
+  width: 60px;
+  height: 60px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  font-size: 2rem;
+  margin-right: 20px;
+}
+
+/* Informações textuais do perfil */
+.profile-text h2 {
+  font-size: 2rem;
+  margin: 0;
+  font-weight: bold;
+}
+
+.profile-text p {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+/* Botão para editar o perfil (usa o padrão de botões primários) */
+.edit-profile-button {
+  background-color: #ffde59;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.edit-profile-button:hover {
+  background-color: #e6c94c; /* Um tom ligeiramente mais escuro */
+  transform: translateY(-2px);
+}

@@ -1,0 +1,36 @@
+.profile-page {
+  min-height: 100vh;
+  /* O padding-top de 120px garante que o conteúdo fique abaixo do header fixo */
+  padding: 120px 40px 40px 40px;
+
+  /* Gradiente de fundo, conforme seu padrão */
+  background: linear-gradient(135deg, #99c27b, #d6a3e1, #8cc8ff);
+  background-size: 400% 400%;
+  animation: gradientAnimation 10s ease infinite;
+
+  /* Centraliza e organiza o conteúdo */
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+/* Limita a largura e alinha o conteúdo interno */
+.profile-content {
+  max-width: 600px;
+  width: 100%;
+  text-align: left;
+  margin-top: 20px;
+}
+
+/* Gradiente animado (mesmo do seu padrão) */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

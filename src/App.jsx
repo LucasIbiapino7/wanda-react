@@ -8,6 +8,7 @@ import MatchesPage from "./pages/MatchesPage";
 import PrivateRoute from "./routes/PrivateRoute.jsx";
 import AdminRoute from "./routes/AdminRoute.jsx";
 import Login from "./pages/Login";
+import ProfilePage from "./pages/ProfilePage.jsx";
 import { AuthProvider } from "./context/AuthContext";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           {/* Rota privada */}
           <Route path="/" element={<PrivateRoute element={Home} />} />
           <Route path="/enviar" element={<PrivateRoute element={Function} />} />
+          <Route path="/profile" element={<PrivateRoute element={ProfilePage} />} />
 
           {/* Rota só para Admin*/}
           <Route
