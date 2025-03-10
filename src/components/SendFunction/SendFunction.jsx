@@ -1,47 +1,126 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { dracula } from "@uiw/codemirror-theme-dracula";
 import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
 import axios from "axios";
-import "./SendFunction.css"
+import "./SendFunction.css";
 import AuthContext from "../../context/AuthContext";
+import cosmo from "../../assets/cosmo-avatar.png";
 
 function SendFunction() {
-  const [text, setText] = useState(
-    "def strategy(card1, card2, card3, opponentCard1, opponentCard2, opponentCard3):"
-  ); // Função enviada
-  const [feedback, setFeedback] = useState(null); // Mensagem do backend
+  // Guardando a assinatura inicial da função
+  const defaultCode =
+    "def strategy(card1, card2, card3, opponentCard1, opponentCard2, opponentCard3):";
+  const [text, setText] = useState(defaultCode);
+  // Estado para feedback: { message, valid }
+  const [feedback, setFeedback] = useState(null);
+  // Estado para o efeito de digitação
+  const [typedMessage, setTypedMessage] = useState("");
+  // Estado de loading para requisições
+  const [loading, setLoading] = useState(false);
+  // Estado para indicar se a função já está salva (exibida no editor)
+  const [functionLoaded, setFunctionLoaded] = useState(false);
+
   const { token } = useContext(AuthContext);
 
-  const handleSubmit = async () => {
+  // useEffect para carregar a função salva (se existir) quando a página abre
+  useEffect(() => {
+    async function fetchSavedFunction() {
+      try {
+        const url = "http://localhost:8080/jokenpo/function"; // Mudar a rota
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        // Se a função estiver salva, atualiza o editor com ela
+        if (response.status === 200 && response.data && response.data.code) {
+          setText(response.data.code);
+          setFunctionLoaded(true);
+        }
+      } catch (error) {
+        // Se retornar 404 (ou outro erro), mantemos o código padrão
+        if (error.response && error.response.status === 404) {
+          setText(defaultCode);
+        } else {
+          console.error("Erro ao buscar função salva:", error);
+        }
+      }
+    }
+
+    fetchSavedFunction();
+  }, [token, defaultCode]);
+
+  // useEffect para o efeito de digitação no feedback
+  useEffect(() => {
+    // Se não há feedback ou feedback.message vazio, limpa typedMessage
+    if (!feedback?.message) {
+      setTypedMessage("");
+      return;
+    }
+
+    const msg = feedback.message;
+    let i = -1;
+    setTypedMessage(""); // Começa do zero
+
+    const intervalId = setInterval(() => {
+      if (i < msg.length - 1) {
+        // Adiciona o caractere i da string
+        setTypedMessage((prev) => prev + msg[i]);
+        i++;
+      } else {
+        // Já exibimos tudo, limpamos intervalo
+        clearInterval(intervalId);
+      }
+    }, 30);
+
+    // Limpar interval caso componente desmonte ou feedback mude de repente
+    return () => clearInterval(intervalId);
+  }, [feedback]);
+
+  // Função que lida com a requisição de "Feedback"
+  const handleSubmitFeedback = async () => {
+    setLoading(true);
+    setFeedback(null);
     try {
-      // URL do backend
-      const url = "http://localhost:8080/jokenpo";
-
-      // Corpo da requisição
-      const requestBody = {
-        code: text, // Código do CodeMirror
-      };
-
-      // Realiza a requisição POST - preciso lembrar de ajeitar opra enviar o token
+      const url = "http://localhost:8080/jokenpo/feedback";
+      const requestBody = { code: text };
       const response = await axios.post(url, requestBody, {
         headers: {
-          // Cabeçalho Authorization com Bearer token
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
-        }
+        },
       });
-
-      // Caso a função seja aceita, exibe o código retornado pelo backend
-      setFeedback({
-        type: "success",
-        message: `Função aceita:\n${response.data.code}`,
-      });
+      // Supomos que a resposta tem o formato { feedback: string, valid: boolean }
+      const { feedback: feedbackMessage, valid } = response.data;
+      setFeedback({ message: feedbackMessage, valid: valid });
     } catch (error) {
-      // Verifica se o erro possui o campo "error" e exibe
       const errorMessage =
         error.response?.data?.error || "Erro desconhecido ao enviar a função.";
-      setFeedback({ type: "error", message: errorMessage });
+      setFeedback({ message: errorMessage, valid: false });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Função esboço para "Submeter" a função salva no backend
+  const handleSubmitFunction = async () => {
+    // Exemplo: Faz uma requisição POST para salvar a função do aluno
+    try {
+      const url = "http://localhost:8080/jokenpo";
+      const requestBody = { code: text };
+      const response = await axios.post(url, requestBody, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      // Aqui você pode tratar o retorno, exibir uma mensagem de sucesso, etc.
+      alert("Função submetida com sucesso!");
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.error || "Erro ao submeter a função.";
+      alert(errorMessage);
     }
   };
 
@@ -84,28 +163,42 @@ function SendFunction() {
             </ul>
             <p>
               A função deve retornar uma String que indica a carta que vai ser
-              jogada, por exemplo: &quot;pedra&quot;, &quot;papel&quot; e &quot;tesoura&quot;
+              jogada, por exemplo: &quot;pedra&quot;, &quot;papel&quot; e
+              &quot;tesoura&quot;
             </p>
           </div>
 
-          {/* Botão de Enviar */}
-          <button className="send-button" onClick={handleSubmit}>
-            Enviar Função
-          </button>
+          {/* Botões: "Feedback" sempre visível; "Submeter" só se feedback.valid === true */}
+          <div className="container-buttons">
+            <button className="send-button" onClick={handleSubmitFeedback}>
+              Feedback
+            </button>
+            {/* Exibe o botão "Submeter" somente se feedback for definido e valid === true */}
+            {feedback && feedback.valid && (
+              <button className="send-button" onClick={handleSubmitFunction}>
+                Submeter
+              </button>
+            )}
+          </div>
         </div>
       </div>
       <div className="feedback-space">
-        <h3>Área do Feedback</h3>
-        <p>Envie sua função e receba um feedback antes de salvá-la</p>
+        <div className="assistant-avatar">
+          <img src={cosmo} alt="Cosmo" />
+          <span>Cosmo, seu Assistente Virtual</span>
+        </div>
         <div className="feedback">
-          {feedback ? (
-            feedback.type === "success" ? (
-              <pre>{feedback.message}</pre> // Usa <pre> para preservar o formato do código
-            ) : (
-              <p>{feedback.message}</p> // Para erros, mantém o <p>
-            )
+          {loading ? (
+            <div className="thinking">
+              <p>
+                <em>Cosmo está pensando...</em>
+              </p>
+              <div className="typing-indicator">•••</div>
+            </div>
+          ) : feedback ? (
+            <p>{typedMessage}</p>
           ) : (
-            "O feedback do backend será exibido aqui."
+            <p>Envie sua função e receba um feedback antes de salvá-la</p>
           )}
         </div>
       </div>

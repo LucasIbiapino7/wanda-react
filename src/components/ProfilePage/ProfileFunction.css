@@ -1,0 +1,49 @@
+/* ProfileFunction.css */
+
+/* Container principal da seção de função do perfil */
+.profile-function {
+  background: rgba(
+    0,
+    0,
+    0,
+    0.3
+  ); /* Fundo escuro semitransparente para manter a consistência */
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  color: white;
+}
+
+/* Título da seção */
+.profile-function h3 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 10px;
+}
+
+/* Estilização do bloco de código */
+.profile-function pre {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.1
+  ); /* Fundo levemente contrastante para o código */
+  border-radius: 5px;
+  padding: 15px;
+  overflow-x: auto; /* Permite scroll horizontal se o código for extenso */
+  margin: 0;
+}
+
+/* Estilização interna do elemento de código */
+.profile-function code {
+  font-family: "Source Code Pro", Consolas, monospace; /* Fonte monoespaçada para código */
+  font-size: 1rem;
+  color: #fff; /* Texto branco para contraste */
+  white-space: pre-wrap; /* Faz o wrap do texto se necessário */
+  line-height: 1.5;
+}

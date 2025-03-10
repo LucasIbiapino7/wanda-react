@@ -61,3 +61,35 @@
   background-color: #e6c94c; /* Um tom ligeiramente mais escuro */
   transform: translateY(-2px);
 }
+/* Estilo para a área de badges dentro do ProfileHeader */
+.profile-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Cada badge como um card simples */
+.badge {
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.2
+  ); /* Fundo leve que combina com o padrão */
+  border-radius: 5px;
+  padding: 5px 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Estilo do ícone da badge */
+.badge-icon {
+  font-size: 1.2rem;
+}
+
+/* Nome da badge com fonte um pouco menor */
+.badge-name {
+  font-size: 0.9rem;
+}

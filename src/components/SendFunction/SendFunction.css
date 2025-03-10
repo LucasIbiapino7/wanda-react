@@ -73,6 +73,11 @@
   margin-bottom: 0.5rem;
 }
 
+.container-buttons{
+  display: flex;
+  gap: 20px;
+}
+
 /* Botão de Enviar */
 .send-button {
   padding: 0.8rem 1.5rem;
@@ -128,6 +133,28 @@
   color: #666; /* Cinza médio */
 }
 
+.assistant-avatar {
+  display: flex;           
+  align-items: center;     
+  margin-bottom: 1rem;    
+}
+
+.assistant-avatar img {
+  width: 60px;             
+  height: 60px;            
+  border-radius: 50%;    
+  object-fit: cover;      
+  margin-right: 0.75rem;  
+  cursor: pointer;
+}
+
+.assistant-avatar span {
+  font-weight: 600;        
+  font-size: 1rem;        
+  color: #333;     
+}
+
+
 .feedback {
   background-color: #ffffff; /* Fundo branco puro */
   border: 2px solid #d1ecf1; /* Azul médio como borda padrão */
@@ -138,19 +165,7 @@
   font-size: 16px;
   overflow-y: auto;
   display: flex;
+  justify-content: flex-start;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: border-color 0.3s ease; /* Animação de mudança de borda */
-}
-
-/* Estilos dinâmicos para diferentes tipos de feedback */
-.feedback.success {
-  border-color: #28a745; /* Verde para sucesso */
-}
-
-.feedback.error {
-  border-color: #dc3545; /* Vermelho para erro */
-}
-
-.feedback.info {
-  border-color: #17a2b8; /* Azul para mensagens informativas */
 }

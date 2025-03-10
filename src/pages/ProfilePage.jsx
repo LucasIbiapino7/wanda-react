@@ -1,51 +1,42 @@
 // ProfilePage.jsx
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import ProfileHeader from "../components/ProfilePage/ProfileHeader";
 import "../components/ProfilePage/ProfilePage.css";
+import axios from "axios";
+import AuthContext from "../context/AuthContext";
 import ProfileMatches from "../components/ProfilePage/ProfileMacthes";
 import ProfileChallenges from "../components/ProfilePage/ProfileChallenges";
+import ProfileFunction from "../components/ProfilePage/ProfileFunction";
 
 function ProfilePage() {
   const [profileData, setProfileData] = useState(null);
+  const { token } = useContext(AuthContext);
 
   // Simular a requisição do backend (use axios ou fetch na prática)
   useEffect(() => {
-    const data = {
-      id: 4,
-      nickname: "testuser",
-      numberOfMatches: 10,
-      numberOfWinners: 7,
-      function:
-        '\ndef strategy(card1, card2, card3, opponentCard1, opponentCard2, opponentCard3):\n    return "pedra"\n',
-      badges: [
-        { id: 1, name: "Champion", description: "Won 5 matches", icon: "🏆" },
-        {
-          id: 2,
-          name: "Rookie",
-          description: "First match played",
-          icon: "⭐",
-        },
-      ],
-      matches: [
-        { id: 1, opponent: "Opponent1", result: "Win", date: "2023-02-03" },
-        { id: 2, opponent: "Opponent2", result: "Loss", date: "2023-02-04" },
-        { id: 3, opponent: "Opponent3", result: "Win", date: "2023-02-05" },
-      ],
-      challenges: [
-        {
-          id: 1,
-          challenger: "Friend1",
-          message: "Challenge you to a match",
-          date: "2023-02-05",
-        },
-      ],
+    // Função assíncrona para buscar os dados do perfil
+    const fetchProfileData = async () => {
+      try {
+        // Faz uma requisição GET para o endpoint do perfil,
+        // enviando o token no cabeçalho para autenticação.
+        const response = await axios.get("http://localhost:8080/jokenpo/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        // Atualiza o estado com os dados retornados
+        setProfileData(response.data);
+        console.log(response.data)
+      } catch (error) {
+        console.error("Erro ao obter dados do perfil:", error);
+      }
     };
 
-    // Simula um delay de 500ms para a requisição
-    setTimeout(() => {
-      setProfileData(data);
-    }, 500);
-  }, []);
+    // Se o token estiver disponível, realiza a requisição
+    if (token) {
+      fetchProfileData();
+    }
+  }, [token]);
 
   if (!profileData) {
     return <div className="profile-page">Carregando...</div>;
@@ -57,10 +48,12 @@ function ProfilePage() {
         nickname={profileData.nickname}
         numberOfMatches={profileData.numberOfMatches}
         numberOfWinners={profileData.numberOfWinners}
+        badges={profileData.badges}
       />
       <div className="profile-content">
         <ProfileMatches matches={profileData.matches} />
         <ProfileChallenges challenges={profileData.challenges} />
+        <ProfileFunction functionCode={profileData.function} />
       </div>
     </div>
   );
