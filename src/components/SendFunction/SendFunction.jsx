@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { dracula } from "@uiw/codemirror-theme-dracula";
 import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
@@ -20,6 +20,8 @@ function SendFunction() {
   const [loading, setLoading] = useState(false);
   // Estado para indicar se a função já está salva (exibida no editor)
   const [functionLoaded, setFunctionLoaded] = useState(false);
+
+  const feedbackRef = useRef(null);
 
   const { token } = useContext(AuthContext);
 
@@ -82,6 +84,10 @@ function SendFunction() {
   const handleSubmitFeedback = async () => {
     setLoading(true);
     setFeedback(null);
+    // Rolagem suave para a seção de feedback:
+    if (feedbackRef.current) {
+      feedbackRef.current.scrollIntoView({ behavior: "smooth" });
+    }
     try {
       const url = "http://localhost:8080/jokenpo/feedback";
       const requestBody = { code: text };
@@ -91,6 +97,7 @@ function SendFunction() {
           "Content-Type": "application/json",
         },
       });
+
       // Supomos que a resposta tem o formato { feedback: string, valid: boolean }
       const { feedback: feedbackMessage, valid } = response.data;
       setFeedback({ message: feedbackMessage, valid: valid });
@@ -105,22 +112,27 @@ function SendFunction() {
 
   // Função esboço para "Submeter" a função salva no backend
   const handleSubmitFunction = async () => {
-    // Exemplo: Faz uma requisição POST para salvar a função do aluno
+    if (feedbackRef.current) {
+      feedbackRef.current.scrollIntoView({ behavior: "smooth" });
+    }
     try {
       const url = "http://localhost:8080/jokenpo";
       const requestBody = { code: text };
-      const response = await axios.post(url, requestBody, {
+      await axios.post(url, requestBody, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
-      // Aqui você pode tratar o retorno, exibir uma mensagem de sucesso, etc.
-      alert("Função submetida com sucesso!");
+      setFeedback({
+        message: "Parabéns! Sua função foi submetida com sucesso!",
+        valid: true,
+      });
     } catch (error) {
+      // Extrai a mensagem de erro do backend (campo "error")
       const errorMessage =
         error.response?.data?.error || "Erro ao submeter a função.";
-      alert(errorMessage);
+      setFeedback({ message: errorMessage, valid: false });
     }
   };
 
@@ -182,7 +194,7 @@ function SendFunction() {
           </div>
         </div>
       </div>
-      <div className="feedback-space">
+      <div className="feedback-space" ref={feedbackRef}>
         <div className="assistant-avatar">
           <img src={cosmo} alt="Cosmo" />
           <span>Cosmo, seu Assistente Virtual</span>
