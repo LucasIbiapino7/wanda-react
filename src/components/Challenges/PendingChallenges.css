@@ -1,19 +1,37 @@
+:root {
+  --primary: #ffd700;
+  --secondary: #333333;
+  --text: #ffffff;
+}
+
 .pending-challenges {
-  margin-top: 2rem;
-  padding: 1rem;
-  background-color: #f8f8f8;
-  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 25px;
+  border-radius: 15px;
+  margin-top: 40px;
+  backdrop-filter: blur(5px);
 }
 
 .pending-challenges h2 {
-  text-align: center;
-  color: #333;
-  margin-bottom: 1rem;
+  color: var(--text);
+  margin-bottom: 20px;
+  font-size: 1.8rem;
 }
 
 .pending-challenges-grid {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
+  gap: 20px;
+}
+
+.pending-challenges p {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 20px;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .pending-challenges-grid {
+    grid-template-columns: 1fr;
+  }
 }

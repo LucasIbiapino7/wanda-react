@@ -1,15 +1,21 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import "./PendingChallengeCard.css";
+import RejectedImg from "../../assets/rejected.svg"
+import AcceptedImg from "../../assets/accept.svg"
 
 const PendingChallengeCard = ({ challenge }) => {
   return (
     <div className="pending-challenge-card">
       <p className="challenge-text">
-        <strong>{challenge.challengerName}</strong> desafiou <strong>{challenge.challengedName}</strong>
+        <strong>{challenge.challengerName}</strong> desafiou você!
       </p>
       <p className="challenge-date">
         Enviado em: {new Date(challenge.createdAt).toLocaleString()}
       </p>
+      <div className="pending-challenge-item-btns">
+        <img src={AcceptedImg} alt="aceitar" />
+        <img src={RejectedImg} alt="rejeitar" />
+      </div>
     </div>
   );
 };
