@@ -11,6 +11,8 @@ const Challenge = () => {
 
   const [searchTerm, setSearchTerm] = useState(""); // novo estado para o termo de busca
 
+  const [challengeMessage, setChallengeMessage] = useState(""); // NOVO ESTADO para feedback de desafio
+
   // Pegando o token do contexto de autenticação
   const { token } = useContext(AuthContext);
 
@@ -55,6 +57,43 @@ const Challenge = () => {
     setSearchTerm(term);
   };
 
+  // Envia um desafio para um estudante (ao clicar no botão "Desafiar" no StudentCard)
+  const handleChallenge = async (challengedId) => {
+    try {
+      const url = "http://localhost:8080/jokenpo/challenge";
+      const requestBody = { challengedId };
+      const response = await axios.post(url, requestBody, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      // Se o backend retornar 204 (No Content), o desafio foi enviado com sucesso
+      if (response.status === 204) {
+        setChallengeMessage("Desafio enviado com sucesso!");
+      }
+    } catch (error) {
+      // Se o adversário não existir (404)
+      if (error.response?.status === 404) {
+        setChallengeMessage("Adversário não encontrado!");
+      }
+      // Se já existir um desafio pendente (400 com mensagem específica)
+      else if (
+        error.response?.status === 400 &&
+        error.response.data?.error === "Já existe um desafio pendente!"
+      ) {
+        setChallengeMessage("Já existe um desafio pendente!");
+      } else {
+        setChallengeMessage("Erro ao enviar o desafio.");
+      }
+    }
+  };
+
+  // Função para fechar o modal (após exibir o feedback)
+  const closeModal = () => {
+    setChallengeMessage("");
+  };
+
   return (
     <div className="container-challenge">
       <h1>Desafios e Partidas</h1>
@@ -62,9 +101,24 @@ const Challenge = () => {
       <h2 className="section-title">Desafie Seus Amigos</h2>
       <div className="students-grid">
         {students.content.map((student) => (
-          <StudentCard key={student.id} student={student} />
+          <StudentCard
+            key={student.id}
+            student={student}
+            onChallenge={handleChallenge}
+          />
         ))}
       </div>
+      {/* Modal Popup para exibir o feedback do desafio */}
+      {challengeMessage && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <p>{challengeMessage}</p>
+            <button className="modal-button" onClick={closeModal}>
+              Fechar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

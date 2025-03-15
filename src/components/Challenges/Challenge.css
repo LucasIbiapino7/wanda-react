@@ -30,3 +30,50 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Alta prioridade para aparecer sobre outros elementos */
+}
+
+/* Modal Container */
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 90%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Estilo para o texto no modal */
+.modal p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+/* Botão do modal */
+.modal-button {
+  padding: 10px 20px;
+  background-color: #ffde59;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.modal-button:hover {
+  background-color: #e6c94c;
+  transform: translateY(-2px);
+}

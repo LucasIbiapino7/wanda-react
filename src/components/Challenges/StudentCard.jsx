@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import "./StudentCard.css";
-import CodeImg from "../../assets/code.svg"
+import CodeImg from "../../assets/code.svg";
 
-const StudentCard = ({ student }) => {
+const StudentCard = ({ student, onChallenge }) => {
   return (
     <div className="student-card">
       <div className="avatar"></div>
@@ -25,7 +25,12 @@ const StudentCard = ({ student }) => {
             <img src={CodeImg} alt="Código" />
           </div>
         )}
-        <button className="btn btn-primary">Desafiar</button>
+        <button
+          className="btn btn-primary"
+          onClick={() => onChallenge(student.id)}
+        >
+          Desafiar
+        </button>
       </div>
     </div>
   );
@@ -33,10 +38,12 @@ const StudentCard = ({ student }) => {
 
 StudentCard.propTypes = {
   student: PropTypes.shape({
+    id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     badges: PropTypes.arrayOf(PropTypes.string).isRequired,
-    code: PropTypes.string, // code pode ser string ou undefined
+    code: PropTypes.string, // pode ser string ou undefined
   }).isRequired,
+  onChallenge: PropTypes.func.isRequired, // Função para enviar o desafio
 };
 
 export default StudentCard;
