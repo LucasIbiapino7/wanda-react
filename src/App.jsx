@@ -9,6 +9,7 @@ import PrivateRoute from "./routes/PrivateRoute.jsx";
 import AdminRoute from "./routes/AdminRoute.jsx";
 import Login from "./pages/Login";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import Challenge from "./pages/Challenge.jsx";
 import { AuthProvider } from "./context/AuthContext";
 
 function App() {
@@ -24,7 +25,14 @@ function App() {
           {/* Rota privada */}
           <Route path="/" element={<PrivateRoute element={Home} />} />
           <Route path="/enviar" element={<PrivateRoute element={Function} />} />
-          <Route path="/profile" element={<PrivateRoute element={ProfilePage} />} />
+          <Route
+            path="/profile"
+            element={<PrivateRoute element={ProfilePage} />}
+          />
+          <Route
+            path="/challenges"
+            element={<PrivateRoute element={Challenge} />}
+          />
 
           {/* Rota só para Admin*/}
           <Route

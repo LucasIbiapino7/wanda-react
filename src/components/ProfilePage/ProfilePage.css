@@ -1,6 +1,5 @@
 .profile-page {
   min-height: 100vh;
-  /* O padding-top de 120px garante que o conteúdo fique abaixo do header fixo */
   padding: 120px 40px 40px 40px;
 
   /* Gradiente de fundo, conforme seu padrão */

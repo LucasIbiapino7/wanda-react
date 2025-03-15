@@ -63,7 +63,7 @@ function SendFunction() {
 
     const msg = feedback.message;
     let i = -1;
-    setTypedMessage(""); // Começa do zero
+    setTypedMessage("   "); // Começa do zero
 
     const intervalId = setInterval(() => {
       if (i < msg.length - 1) {
@@ -208,7 +208,7 @@ function SendFunction() {
               <div className="typing-indicator">•••</div>
             </div>
           ) : feedback ? (
-            <p>{typedMessage}</p>
+            <pre>{typedMessage}</pre>
           ) : (
             <p>Envie sua função e receba um feedback antes de salvá-la</p>
           )}

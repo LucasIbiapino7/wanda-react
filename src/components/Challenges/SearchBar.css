@@ -1,0 +1,69 @@
+:root {
+    --primary: #ffd700;
+    --text: #ffffff;
+  }
+
+.search-container {
+  position: sticky;
+  display: flex;
+  align-items: center;
+  top: 20px;
+  margin-bottom: 40px;
+  z-index: 100;
+  width: 500px;
+  max-width: 90%; /* Garante responsividade */
+  position: relative; /* Para posicionar absoluto o ícone */
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 45px 10px 15px; /* Espaço para o ícone */
+  border-radius: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  font-size: 0.9rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  margin-right: 0; /* Removido o margin-right anterior */
+}
+
+.search-input::placeholder {
+  color: var(--text);
+}
+
+.search-container img {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.search-container img:hover {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
+  padding-right: 40px; /* Mantém o texto longe do ícone */
+}
+
+/* Efeito de hover suave no container inteiro */
+.search-container:hover .search-input {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 768px) {
+  .search-container {
+    width: 100%;
+    max-width: 100%;
+  }
+}

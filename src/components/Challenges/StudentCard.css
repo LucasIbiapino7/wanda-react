@@ -1,0 +1,96 @@
+.student-card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
+  border: 1px solid;
+  transition: transform 0.3s ease;
+  color: var(--text);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.student-card:hover {
+  transform: translateY(-5px);
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #fff;
+  margin: 0 auto 10px;
+}
+
+/* Badges */
+.badges-container {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.badge {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: transform 0.2s ease;
+}
+
+/* Efeito hover nas badges */
+.badge:hover {
+  transform: scale(1.1);
+  border-color: var(--primary); /* Nova propriedade */
+  cursor: pointer;
+}
+
+/* Container dos botões */
+.buttons-container {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.btn {
+  padding: 10px 25px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--secondary);
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent; /* Adiciona borda para o efeito hover */
+}
+
+.btn-primary:hover {
+  background: #ffdf33; /* Amarelo mais claro */
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Ajuste no ícone de função */
+.function-icon img {
+  cursor: pointer;
+  color: var(--text);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.function-icon img:hover {
+  background: rgba(255, 215, 0, 0.1);
+  transform: scale(1.1);
+}

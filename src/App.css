@@ -1,6 +1,29 @@
 * {
   margin: 0;
-  font-family: "Poppins", sans-serif;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(
+    -45deg,
+    #00c98d,
+    /* Verde */ #c370f0,
+    /* Rosa/lavanda */ #70c2f0 /* Azul claro */
+  );
+  background-size: 300% 300%;
+  animation: gradient 15s ease infinite;
+  min-height: 100vh;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
