@@ -1,0 +1,19 @@
+.pending-challenges {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+}
+
+.pending-challenges h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.pending-challenges-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}

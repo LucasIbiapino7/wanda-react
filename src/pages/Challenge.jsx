@@ -4,6 +4,7 @@ import { useState, useEffect, useContext, useCallback } from "react";
 import axios from "axios";
 import "../components/Challenges/Challenge.css";
 import AuthContext from "../context/AuthContext";
+import PendingChallenges from "../components/Challenges/PendingChallenges";
 
 const Challenge = () => {
   // Estado para armazenar os dados paginados dos alunos
@@ -108,6 +109,8 @@ const Challenge = () => {
           />
         ))}
       </div>
+      <PendingChallenges />
+      
       {/* Modal Popup para exibir o feedback do desafio */}
       {challengeMessage && (
         <div className="modal-overlay">
