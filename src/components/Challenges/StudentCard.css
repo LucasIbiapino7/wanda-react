@@ -1,3 +1,9 @@
+:root {
+  --primary: #ffd700;
+  --secondary: #333333;
+  --text: #ffffff;
+}
+
 .student-card {
   background: rgba(255, 255, 255, 0.1);
   padding: 20px;
