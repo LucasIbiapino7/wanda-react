@@ -5,6 +5,7 @@ import axios from "axios";
 import "../components/Challenges/Challenge.css";
 import AuthContext from "../context/AuthContext";
 import PendingChallenges from "../components/Challenges/PendingChallenges";
+import FunctionModal from "../components/Challenges/FunctionModal";
 
 const Challenge = () => {
   // Estado para armazenar os dados paginados dos alunos
@@ -13,6 +14,10 @@ const Challenge = () => {
   const [searchTerm, setSearchTerm] = useState(""); // novo estado para o termo de busca
 
   const [challengeMessage, setChallengeMessage] = useState(""); // NOVO ESTADO para feedback de desafio
+
+  // Estado para controlar a abertura do modal e o código a ser exibido
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalCode, setModalCode] = useState("");
 
   // Pegando o token do contexto de autenticação
   const { token } = useContext(AuthContext);
@@ -95,6 +100,17 @@ const Challenge = () => {
     setChallengeMessage("");
   };
 
+  const handleOpenModal = (code) => {
+    setModalCode(code);
+    setIsModalOpen(true);
+  };
+
+  // Função para fechar o modal
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setModalCode("");
+  };
+
   return (
     <div className="container-challenge">
       <h1>Desafios e Partidas</h1>
@@ -106,11 +122,17 @@ const Challenge = () => {
             key={student.id}
             student={student}
             onChallenge={handleChallenge}
+            handleOpenModal={handleOpenModal}
           />
         ))}
       </div>
       <PendingChallenges />
-      
+
+      <FunctionModal
+        code={modalCode}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
       {/* Modal Popup para exibir o feedback do desafio */}
       {challengeMessage && (
         <div className="modal-overlay">

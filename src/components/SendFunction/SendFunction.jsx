@@ -137,81 +137,56 @@ function SendFunction() {
   };
 
   return (
-    <div className="container">
+    <div className="container-sendfunction">
       <div className="top-section">
-        {/* Editor de Código (Esquerda) */}
-        <div className="editor-section">
-          <h1 className="title">Editor de Código</h1>
-          <CodeMirror
-            value={text}
-            onChange={(newValue) => setText(newValue)}
-            theme={dracula}
-            extensions={[python()]}
-            basicSetup={{ autocompletion: true, indentUnit: "    " }}
-            minWidth={"100%"}
-            minHeight={"500px"}
-          />
+        <div className="informations-section">
+          <h1>Escreva seu código</h1>
+          <button>Instruções</button>
         </div>
-
-        {/* Instruções e Feedback (Direita) */}
-        <div className="info-section">
-          <div className="instructions">
-            <h2>Instruções para criar sua função</h2>
-            <p>
-              Sua função deve se chamar <b>Strategy</b> e vai receber os
-              seguintes parâmetros:
-            </p>
-            <ul>
-              <li>
-                <b>card1, card2, card3:</b> suas cartas disponíveis, podendo
-                ser: pedra, papel, tesoura ou None (Caso a carta já tenha sido
-                usada).
-              </li>
-              <li>
-                <b>opponentCard1, opponentCard2, opponentCard3:</b> Cartas do
-                oponente disponíveis podendo ser: pedra, papel, tesoura ou None
-                (Caso a carta já tenha sido usada).
-              </li>
-            </ul>
-            <p>
-              A função deve retornar uma String que indica a carta que vai ser
-              jogada, por exemplo: &quot;pedra&quot;, &quot;papel&quot; e
-              &quot;tesoura&quot;
-            </p>
+        <div className="editor-feedback-container">
+          {/* Editor de Código (Esquerda) */}
+          <div className="editor-section">
+            <CodeMirror
+              value={text}
+              onChange={(newValue) => setText(newValue)}
+              theme={dracula}
+              extensions={[python()]}
+              basicSetup={{ autocompletion: true, indentUnit: "    " }}
+              minWidth={"100%"}
+              minHeight={"550px"}
+            />
           </div>
-
-          {/* Botões: "Feedback" sempre visível; "Submeter" só se feedback.valid === true */}
-          <div className="container-buttons">
-            <button className="send-button" onClick={handleSubmitFeedback}>
-              Feedback
-            </button>
-            {/* Exibe o botão "Submeter" somente se feedback for definido e valid === true */}
-            {feedback && feedback.valid && (
-              <button className="send-button" onClick={handleSubmitFunction}>
-                Submeter
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-      <div className="feedback-space" ref={feedbackRef}>
-        <div className="assistant-avatar">
-          <img src={cosmo} alt="Cosmo" />
-          <span>Cosmo, seu Assistente Virtual</span>
-        </div>
-        <div className="feedback">
-          {loading ? (
-            <div className="thinking">
-              <p>
-                <em>Cosmo está pensando...</em>
-              </p>
-              <div className="typing-indicator">•••</div>
+          {/* Área de Feedback (Direita) */}
+          <div className="feedback-space" ref={feedbackRef}>
+            <div className="assistant-avatar">
+              <img src={cosmo} alt="Cosmo" />
+              <span>Cosmo, seu Assistente Virtual</span>
             </div>
-          ) : feedback ? (
-            <pre>{typedMessage}</pre>
-          ) : (
-            <p>Envie sua função e receba um feedback antes de salvá-la</p>
-          )}
+            <div className="feedback">
+              {loading ? (
+                <div className="thinking">
+                  <p>
+                    <em>Cosmo está pensando...</em>
+                  </p>
+                  <div className="typing-indicator">•••</div>
+                </div>
+              ) : feedback ? (
+                <pre>{typedMessage}</pre>
+              ) : (
+                <p>Envie sua função e receba um feedback antes de salvá-la</p>
+              )}
+            </div>
+            <div className="container-buttons">
+              <button className="send-button" onClick={handleSubmitFeedback}>
+                Feedback
+              </button>
+              {feedback && feedback.valid && (
+                <button className="send-button" onClick={handleSubmitFunction}>
+                  Submeter
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

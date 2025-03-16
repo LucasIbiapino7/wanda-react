@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import "./StudentCard.css";
 import CodeImg from "../../assets/code.svg";
 
-const StudentCard = ({ student, onChallenge }) => {
+const StudentCard = ({ student, onChallenge, handleOpenModal }) => {
   return (
     <div className="student-card">
       <div className="avatar"></div>
@@ -21,7 +21,11 @@ const StudentCard = ({ student, onChallenge }) => {
 
       <div className="buttons-container">
         {student.code && (
-          <div className="function-icon" data-tooltip="Ver função">
+          <div
+            className="function-icon"
+            data-tooltip="Ver função"
+            onClick={() => handleOpenModal(student.code)}
+          >
             <img src={CodeImg} alt="Código" />
           </div>
         )}
@@ -44,6 +48,7 @@ StudentCard.propTypes = {
     code: PropTypes.string, // pode ser string ou undefined
   }).isRequired,
   onChallenge: PropTypes.func.isRequired, // Função para enviar o desafio
+  handleOpenModal: PropTypes.func.isRequired, // Função para abrir o modal
 };
 
 export default StudentCard;

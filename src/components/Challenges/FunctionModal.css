@@ -1,0 +1,114 @@
+/* Modal Overlay */
+.function-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal Container */
+.function-modal {
+  background: rgba(25, 25, 25, 0.95);
+  padding: 25px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 800px;
+  max-height: 80vh;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: modalOpen 0.3s ease-out;
+}
+
+/* Animação de abertura do modal */
+@keyframes modalOpen {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Cabeçalho do Modal */
+.function-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.function-modal-header h3 {
+  color: #fff; /* ou use var(--text) se definido globalmente */
+}
+
+.function-close-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.function-close-btn:hover {
+  transform: rotate(90deg);
+}
+
+/* Estilização do conteúdo do modal que exibe o código */
+.function-modal-content pre {
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 8px;
+  tab-size: 4;
+  overflow-x: auto;
+  white-space: pre-wrap; /* Preserva a indentação e permite quebras de linha */
+  font-family: "Fira Code", monospace;
+  font-size: 0.9rem;
+  color: #d4d4d4;
+  text-align: left; /* Garante alinhamento à esquerda */
+  margin: 0; /* Remove margens extras */
+}
+
+/* Se preferir, pode aplicar estilos diretamente no code também */
+.function-modal-content code.python {
+  display: block;
+  text-align: left;
+}
+
+/* Opcional: Estilização para Syntax Highlighting */
+.keyword {
+  color: #569cd6;
+}
+
+.function {
+  color: #dcdcaa;
+}
+
+.comment {
+  color: #6a9955;
+}
+
+.string {
+  color: #ce9178;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  .function-modal {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .function-modal-content pre {
+    font-size: 0.8rem;
+  }
+}
