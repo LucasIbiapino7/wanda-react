@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import "./PendingChallengeCard.css";
-import RejectedImg from "../../assets/rejected.svg"
-import AcceptedImg from "../../assets/accept.svg"
+import RejectedImg from "../../assets/rejected.svg";
+import AcceptedImg from "../../assets/accept.svg";
 
-const PendingChallengeCard = ({ challenge }) => {
+const PendingChallengeCard = ({ challenge, onAcceptOrReject }) => {
   return (
     <div className="pending-challenge-card">
       <p className="challenge-text">
@@ -13,8 +13,8 @@ const PendingChallengeCard = ({ challenge }) => {
         Enviado em: {new Date(challenge.createdAt).toLocaleString()}
       </p>
       <div className="pending-challenge-item-btns">
-        <img src={AcceptedImg} alt="aceitar" />
-        <img src={RejectedImg} alt="rejeitar" />
+        <img src={AcceptedImg} alt="aceitar" onClick={() => onAcceptOrReject(challenge.id, true)}/>
+        <img src={RejectedImg} alt="rejeitar" onClick={() => onAcceptOrReject(challenge.id, false)}/>
       </div>
     </div>
   );
@@ -28,6 +28,7 @@ PendingChallengeCard.propTypes = {
     challengerName: PropTypes.string.isRequired,
     createdAt: PropTypes.string.isRequired,
   }).isRequired,
+  onAcceptOrReject: PropTypes.func.isRequired,
 };
 
 export default PendingChallengeCard;

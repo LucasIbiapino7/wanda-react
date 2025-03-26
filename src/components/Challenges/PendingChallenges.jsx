@@ -29,13 +29,45 @@ const PendingChallenges = () => {
     fetchPendingChallenges();
   }, [fetchPendingChallenges]);
 
+  // Função para aceitar ou rejeitar um desafio
+  const handleAcceptOrReject = async (challengeId, isAccepted) => {
+    try {
+      const url = "http://localhost:8080/jokenpo/challenge/isAccepted";
+      const requestBody = {
+        challengeId: challengeId,
+        accepted: isAccepted,
+      };
+      const response = await axios.post(url, requestBody, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      // Se o desafio foi aceito e tudo deu certo,
+      // o backend retorna um MatchResponseDTO, por ex.:
+      // { player1, player2, rounds, playerWinner }
+      if (response.data) {
+        console.log("Desafio aceito! Informações da partida:", response.data);
+        // Aqui você poderia redirecionar para a tela da partida, por exemplo:
+        // window.open(`/match/${response.data.matchId}`, "_blank");
+      } else {
+        // Se for null, significa que foi rejeitado ou algo do tipo
+        console.log("Desafio rejeitado (ou retornou null).");
+      }
+      setChallenges((prev) => prev.filter((ch) => ch.id !== challengeId));
+    } catch (error) {
+      console.error("Erro ao aceitar/rejeitar desafio:", error);
+    }
+  };
+
   return (
     <div className="pending-challenges">
       <h2>Desafios Pendentes</h2>
       <div className="pending-challenges-grid">
         {challenges.length > 0 ? (
           challenges.map((challenge) => (
-            <PendingChallengeCard key={challenge.id} challenge={challenge} />
+            <PendingChallengeCard key={challenge.id} challenge={challenge} onAcceptOrReject={handleAcceptOrReject} />
           ))
         ) : (
           <p>Você não tem desafios pendentes no momento.</p>
