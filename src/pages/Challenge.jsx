@@ -6,10 +6,15 @@ import "../components/Challenges/Challenge.css";
 import AuthContext from "../context/AuthContext";
 import PendingChallenges from "../components/Challenges/PendingChallenges";
 import FunctionModal from "../components/Challenges/FunctionModal";
+import Pagination from "../components/Challenges/Pagination";
 
 const Challenge = () => {
   // Estado para armazenar os dados paginados dos alunos
   const [students, setStudents] = useState({ content: [], totalPages: 0 });
+
+  // Estados para controle de paginação
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
   const [searchTerm, setSearchTerm] = useState(""); // novo estado para o termo de busca
 
@@ -24,17 +29,18 @@ const Challenge = () => {
 
   // Função de busca, memorizada com useCallback
   const fetchStudents = useCallback(
-    async (term = "") => {
+    async (term = "", page = 0) => {
       try {
         const url = "http://localhost:8080/jokenpo/findByName";
         const response = await axios.get(url, {
-          params: { name: term, size: 20 },
+          params: { name: term, size: 4, page: page },
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
         setStudents(response.data);
+        setTotalPages(response.data.totalPages);
       } catch (error) {
         console.error("Erro ao buscar estudantes:", error);
       }
@@ -42,19 +48,23 @@ const Challenge = () => {
     [token]
   );
 
+  // Função para mudar página
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
   // useEffect para chamar fetchStudents com debounce
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      fetchStudents(searchTerm);
-    }, 500); // 500ms de espera
+      fetchStudents(searchTerm, currentPage);
+    }, 500);
 
-    // Limpa o timeout se searchTerm mudar antes de 500ms
     return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm, fetchStudents]);
+  }, [searchTerm, currentPage, fetchStudents]);
 
   // useEffect para carregar a lista inicial ao abrir a página
   useEffect(() => {
-    fetchStudents("");
+    fetchStudents("", 0);
   }, [fetchStudents]);
 
   // Função para lidar com a busca, agora só atualiza o estado searchTerm
@@ -126,6 +136,12 @@ const Challenge = () => {
           />
         ))}
       </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
       <PendingChallenges />
 
       <FunctionModal

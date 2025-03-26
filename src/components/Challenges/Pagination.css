@@ -1,0 +1,37 @@
+.pagination-container {
+  display: flex;
+  justify-content: center; /* Centraliza a paginação */
+  align-items: center;
+  margin-top: 1rem;
+  gap: 1rem; /* Espaçamento entre elementos */
+  font-family: "Comic Neue", cursive; /* Exemplo, se estiver usando no resto do projeto */
+}
+
+.pagination-button {
+  background-color: #ffb84d; /* Laranja similar ao que você usa nos botões */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.pagination-button:hover:not(:disabled) {
+  background-color: #ff9933; /* Um tom mais escuro */
+  transform: translateY(-2px);
+}
+
+.pagination-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.pagination-info {
+  color: #333; /* Cor de texto escuro, destacando-se do fundo claro */
+  font-size: 1rem;
+  font-weight: 500;
+}

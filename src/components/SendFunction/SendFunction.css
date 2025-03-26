@@ -143,6 +143,22 @@
   color: #333;
 }
 
+.assistant-avatar select {
+  padding: 0.3rem 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+  margin-left: 210px;
+}
+
+.assistant-avatar select:focus {
+  outline: none;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
 /* Botões dentro da área de feedback */
 .container-buttons {
   display: flex;

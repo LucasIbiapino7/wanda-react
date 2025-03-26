@@ -1,0 +1,86 @@
+@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap");
+
+/* Modal Overlay */
+.modal-instructions-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal Container */
+.modal-instructions {
+  background: rgba(25, 25, 25, 0.95);
+  padding: 25px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 80vh;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: modalOpen 0.3s ease-out;
+}
+
+@keyframes modalOpen {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modal Header */
+.modal-instructions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-instructions-header h3 {
+  color: #fff;
+}
+
+/* Botão de fechar */
+.instructions-close-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.instructions-close-btn:hover {
+  transform: rotate(90deg);
+}
+
+/* Conteúdo do Modal */
+.modal-instructions-content {
+  color: #fff;
+  font-family: "Comic Neue", cursive;
+}
+
+.modal-instructions-content .instructions p,
+.modal-instructions-content .instructions ul {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.modal-instructions-content .instructions ul {
+  padding-left: 1.5rem;
+}
+
+.modal-instructions-content .instructions li {
+  margin-bottom: 0.5rem;
+}

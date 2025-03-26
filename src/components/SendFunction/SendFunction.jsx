@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useRef } from "react";
+import { useState, useContext, useEffect } from "react";
 import { dracula } from "@uiw/codemirror-theme-dracula";
 import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
@@ -6,6 +6,7 @@ import axios from "axios";
 import "./SendFunction.css";
 import AuthContext from "../../context/AuthContext";
 import cosmo from "../../assets/cosmo-avatar.png";
+import InstructionsModal from "./InstructionsModal";
 
 function SendFunction() {
   // Guardando a assinatura inicial da função
@@ -21,9 +22,28 @@ function SendFunction() {
   // Estado para indicar se a função já está salva (exibida no editor)
   const [functionLoaded, setFunctionLoaded] = useState(false);
 
-  const feedbackRef = useRef(null);
-
   const { token } = useContext(AuthContext);
+
+  const [assistantStyle, setAssistantStyle] = useState("VERBOSE");
+
+  const handleStyleChange = (e) => {
+    setAssistantStyle(e.target.value);
+  };
+
+  let assistantName;
+  switch (assistantStyle) {
+    case "VERBOSE":
+      assistantName = "Cosmo Verboso";
+      break;
+    case "SUCCINCT":
+      assistantName = "Cosmo Direto";
+      break;
+    case "INTERMEDIATE":
+      assistantName = "Cosmo Equilibrado";
+      break;
+    default:
+      assistantName = "Cosmo Desconhecido";
+  }
 
   // useEffect para carregar a função salva (se existir) quando a página abre
   useEffect(() => {
@@ -84,13 +104,9 @@ function SendFunction() {
   const handleSubmitFeedback = async () => {
     setLoading(true);
     setFeedback(null);
-    // Rolagem suave para a seção de feedback:
-    if (feedbackRef.current) {
-      feedbackRef.current.scrollIntoView({ behavior: "smooth" });
-    }
     try {
       const url = "http://localhost:8080/jokenpo/feedback";
-      const requestBody = { code: text };
+      const requestBody = { code: text, assistantStyle: assistantStyle };
       const response = await axios.post(url, requestBody, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -112,9 +128,6 @@ function SendFunction() {
 
   // Função esboço para "Submeter" a função salva no backend
   const handleSubmitFunction = async () => {
-    if (feedbackRef.current) {
-      feedbackRef.current.scrollIntoView({ behavior: "smooth" });
-    }
     try {
       const url = "http://localhost:8080/jokenpo";
       const requestBody = { code: text };
@@ -136,12 +149,25 @@ function SendFunction() {
     }
   };
 
+  // Novo estado para controlar o modal de instruções
+  const [instructionsModalOpen, setInstructionsModalOpen] = useState(false);
+
+  // Função para abrir o modal de instruções
+  const handleOpenInstructions = () => {
+    setInstructionsModalOpen(true);
+  };
+
+  // Função para fechar o modal de instruções
+  const handleCloseInstructions = () => {
+    setInstructionsModalOpen(false);
+  };
+
   return (
     <div className="container-sendfunction">
       <div className="top-section">
         <div className="informations-section">
           <h1>Escreva seu código</h1>
-          <button>Instruções</button>
+          <button onClick={handleOpenInstructions}>Instruções</button>
         </div>
         <div className="editor-feedback-container">
           {/* Editor de Código (Esquerda) */}
@@ -157,10 +183,19 @@ function SendFunction() {
             />
           </div>
           {/* Área de Feedback (Direita) */}
-          <div className="feedback-space" ref={feedbackRef}>
+          <div className="feedback-space">
             <div className="assistant-avatar">
-              <img src={cosmo} alt="Cosmo" />
-              <span>Cosmo, seu Assistente Virtual</span>
+              <img src={cosmo} alt={assistantName} />
+              <span>{assistantName}</span>
+              <select
+                id="assistantStyle"
+                value={assistantStyle}
+                onChange={handleStyleChange}
+              >
+                <option value="VERBOSE">Cosmo Verboso</option>
+                <option value="SUCCINCT">Cosmo Direto</option>
+                <option value="INTERMEDIATE">Cosmo Equilibrado</option>
+              </select>
             </div>
             <div className="feedback">
               {loading ? (
@@ -189,6 +224,10 @@ function SendFunction() {
           </div>
         </div>
       </div>
+      <InstructionsModal
+        isOpen={instructionsModalOpen}
+        onClose={handleCloseInstructions}
+      />
     </div>
   );
 }
