@@ -114,7 +114,6 @@ function SendFunction() {
         },
       });
 
-      // Supomos que a resposta tem o formato { feedback: string, valid: boolean }
       const { feedback: feedbackMessage, valid } = response.data;
       setFeedback({ message: feedbackMessage, valid: valid });
     } catch (error) {
@@ -126,11 +125,12 @@ function SendFunction() {
     }
   };
 
-  // Função esboço para "Submeter" a função salva no backend
   const handleSubmitFunction = async () => {
     try {
+      setLoading(true);
+      setFeedback(null);
       const url = "http://localhost:8080/jokenpo";
-      const requestBody = { code: text };
+      const requestBody = { code: text, assistantStyle: assistantStyle };
       await axios.post(url, requestBody, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -146,6 +146,8 @@ function SendFunction() {
       const errorMessage =
         error.response?.data?.error || "Erro ao submeter a função.";
       setFeedback({ message: errorMessage, valid: false });
+    } finally{
+      setLoading(false);
     }
   };
 
@@ -201,7 +203,7 @@ function SendFunction() {
               {loading ? (
                 <div className="thinking">
                   <p>
-                    <em>Cosmo está pensando...</em>
+                    <em>Aguarde enquanto analiso sua função...</em>
                   </p>
                   <div className="typing-indicator">•••</div>
                 </div>

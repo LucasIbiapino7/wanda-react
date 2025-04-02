@@ -42,38 +42,48 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Alta prioridade para aparecer sobre outros elementos */
+  z-index: 1000; /* Para ficar acima de outros elementos */
 }
 
-/* Modal Container */
+/* Container do Modal */
 .modal {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 90%;
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px; /* largura máxima */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
+  animation: modalOpen 0.3s ease-out;
 }
 
-/* Estilo para o texto no modal */
-.modal p {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
+/* Animação de abertura (opcional) */
+@keyframes modalOpen {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Botão do modal */
+/* Botão dentro do modal */
 .modal-button {
-  padding: 10px 20px;
-  background-color: #ffde59;
-  color: #333;
+  background-color: #ffb84d; /* Laranja que você usa */
+  color: #fff;
   border: none;
   border-radius: 5px;
-  font-size: 1rem;
+  padding: 0.6rem 1rem;
+  margin-top: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 .modal-button:hover {
-  background-color: #e6c94c;
+  background-color: #ff9933;
   transform: translateY(-2px);
 }

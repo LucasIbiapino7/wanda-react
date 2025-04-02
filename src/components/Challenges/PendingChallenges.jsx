@@ -8,6 +8,9 @@ const PendingChallenges = () => {
   const [challenges, setChallenges] = useState([]);
   const { token } = useContext(AuthContext);
 
+  // Estado para exibir mensagem de erro em um modal
+  const [errorMessage, setErrorMessage] = useState("");
+
   // Função de busca dos desafios pendentes (paginado, size=4)
   const fetchPendingChallenges = useCallback(async () => {
     try {
@@ -58,7 +61,18 @@ const PendingChallenges = () => {
       setChallenges((prev) => prev.filter((ch) => ch.id !== challengeId));
     } catch (error) {
       console.error("Erro ao aceitar/rejeitar desafio:", error);
+
+      if (error.response?.status === 404) {
+        setErrorMessage(error.response.data.error);
+      } else {
+        setErrorMessage("Ocorreu um erro ao processar o desafio.");
+      }
     }
+  };
+
+  // Função para fechar o modal de erro
+  const closeErrorModal = () => {
+    setErrorMessage("");
   };
 
   return (
@@ -67,12 +81,26 @@ const PendingChallenges = () => {
       <div className="pending-challenges-grid">
         {challenges.length > 0 ? (
           challenges.map((challenge) => (
-            <PendingChallengeCard key={challenge.id} challenge={challenge} onAcceptOrReject={handleAcceptOrReject} />
+            <PendingChallengeCard
+              key={challenge.id}
+              challenge={challenge}
+              onAcceptOrReject={handleAcceptOrReject}
+            />
           ))
         ) : (
           <p>Você não tem desafios pendentes no momento.</p>
         )}
       </div>
+      {errorMessage && (
+        <div className="modal-overlay-peding-challenges">
+          <div className="modal-peding-challenges">
+            <p>{errorMessage}</p>
+            <button className="modal-button-peding-challenges" onClick={closeErrorModal}>
+              Fechar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
