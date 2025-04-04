@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import Challenge from "./pages/Challenge.jsx";
 import { AuthProvider } from "./context/AuthContext";
+import Matches from "./pages/Matches.jsx";
 
 function App() {
   return (
@@ -32,6 +33,11 @@ function App() {
           <Route
             path="/challenges"
             element={<PrivateRoute element={Challenge} />}
+          />
+
+          <Route
+            path="/matches/:id"
+            element={<PrivateRoute element={Matches} />}
           />
 
           {/* Rota só para Admin*/}

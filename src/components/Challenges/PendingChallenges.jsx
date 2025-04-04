@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import PendingChallengeCard from "./PendingChallengeCard";
 import AuthContext from "../../context/AuthContext";
@@ -7,6 +8,7 @@ import "./PendingChallenges.css";
 const PendingChallenges = () => {
   const [challenges, setChallenges] = useState([]);
   const { token } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   // Estado para exibir mensagem de erro em um modal
   const [errorMessage, setErrorMessage] = useState("");
@@ -47,16 +49,13 @@ const PendingChallenges = () => {
         },
       });
 
-      // Se o desafio foi aceito e tudo deu certo,
-      // o backend retorna um MatchResponseDTO, por ex.:
-      // { player1, player2, rounds, playerWinner }
-      if (response.data) {
-        console.log("Desafio aceito! Informações da partida:", response.data);
-        // Aqui você poderia redirecionar para a tela da partida, por exemplo:
-        // window.open(`/match/${response.data.matchId}`, "_blank");
+      const matchId = response.data;
+      if (matchId) {
+        console.log("Desafio aceito! ID da partida:", matchId);
+        navigate(`/matches/${matchId}`);
       } else {
-        // Se for null, significa que foi rejeitado ou algo do tipo
-        console.log("Desafio rejeitado (ou retornou null).");
+        // Se for null ou 0, significa que foi rejeitado ou algo do tipo
+        console.log("Desafio rejeitado (ou retornou null/0).");
       }
       setChallenges((prev) => prev.filter((ch) => ch.id !== challengeId));
     } catch (error) {
@@ -95,7 +94,10 @@ const PendingChallenges = () => {
         <div className="modal-overlay-peding-challenges">
           <div className="modal-peding-challenges">
             <p>{errorMessage}</p>
-            <button className="modal-button-peding-challenges" onClick={closeErrorModal}>
+            <button
+              className="modal-button-peding-challenges"
+              onClick={closeErrorModal}
+            >
               Fechar
             </button>
           </div>
