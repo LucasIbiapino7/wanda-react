@@ -6,7 +6,7 @@
   flex-direction: column;
   gap: 2rem;
   min-height: 100vh;
-  padding: 2rem;
+  padding: 32px 16px;
   color: #fff;
 }
 
@@ -163,29 +163,99 @@
 .container-buttons {
   display: flex;
   gap: 20px;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 1rem;
 }
 
-/* Botão de Enviar */
-.send-button {
-  padding: 0.8rem 1.5rem;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #fff;
-  background-color: #ffb84d;
-  border: none;
-  border-radius: 5px;
+/* Seção dos botões de reação (like/dislike) */
+.feedback-reactions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Botões de reação com cores fixas */
+/* Estilo base dos botões de reação */
+.reaction-button {
+  background: transparent;
+  border: 2px solid #ffb84d; /* ou outra cor neutra que você esteja usando */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Efeito de hover para o botão Like (verde) */
+.reaction-button.like:hover {
+  background-color: #4dac4a; /* verde */
+  border-color: #4dac4a;
+}
+
+/* Efeito de hover para o botão Dislike (vermelho) */
+.reaction-button.dislike:hover {
+  background-color: #d14545; /* vermelho */
+  border-color: #d14545;
+}
+
+/* Estilo para as imagens dentro dos botões */
+.reaction-button img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+}
+
+/* Container para os botões Run, Feedback e Submeter */
+.container-buttons-send {
+  display: flex;
+  gap: 10px;
+}
+
+.run-button,
+.send-button,
+.submit-button {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.run-button {
+  background-color: #ffcc00;
+  color: #fff;
+}
+.run-button:hover {
+  background-color: #ffbd00;
+  transform: translateY(-2px);
+}
+
+.send-button {
+  background-color: #ffcc00;
+  color: #fff;
+}
 .send-button:hover {
-  background-color: #ff9933;
+  background-color: #ffbd00;
+  transform: translateY(-2px);
 }
 
-/* Efeito de fade-in */
+.submit-button {
+  background-color: #4dac4a;
+  color: #fff;
+}
+.submit-button:hover {
+  background-color: #409640;
+  transform: translateY(-2px);
+}
+
+/* Animação de fade-in (já existente) */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -227,4 +297,41 @@
   .info-section {
     padding-top: 10px;
   }
+}
+
+/* Estilos para as abas de seleção dos agentes */
+.agent-tabs {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.agent-tab {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  border: 1px solid #9c27b0;
+  color: #333;
+  border-radius: 8px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.agent-tab.active {
+  border-color: #ff9933;
+  background-color: #ffb84d;
+  color: #fff;
+}
+
+.agent-tab:hover {
+  transform: translateY(-2px);
+}
+
+.agent-img {
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+  border-radius: 50%;
+  object-fit: cover;
 }

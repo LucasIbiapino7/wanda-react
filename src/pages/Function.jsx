@@ -1,7 +1,7 @@
-import SendFunction from "../components/SendFunction/SendFunction";
+import SendFunction1 from "../components/SendFunction/SendFunction1";
 
 function Function() {
-  return <SendFunction />;
+  return <SendFunction1 />;
 }
 
 export default Function;
