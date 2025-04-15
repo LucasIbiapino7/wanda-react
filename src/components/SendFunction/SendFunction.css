@@ -335,3 +335,11 @@
   border-radius: 50%;
   object-fit: cover;
 }
+
+.feedback-indicator {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #4dac4a; /* Verde discreto para indicar sucesso */
+  margin-top: 10px;
+  font-style: italic;
+}
