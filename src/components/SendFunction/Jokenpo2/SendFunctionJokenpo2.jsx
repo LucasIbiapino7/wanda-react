@@ -1,24 +1,21 @@
 import { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { dracula } from "@uiw/codemirror-theme-dracula";
 import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
 import axios from "axios";
-import "./SendFunction.css";
-import AuthContext from "../../context/AuthContext";
+import "./SendFunctionJokenpo2.css";
+import AuthContext from "../../../context/AuthContext";
 import cosmo from "../../assets/cosmo-avatar.png";
 import timmy from "../../assets/timmy.png";
 import wanda from "../../assets/wanda.png";
 import like from "../../assets/like.svg";
 import dislike from "../../assets/dislike.svg";
-import InstructionsModal from "./InstructionsModal";
-import SuccessModal from "./SuccessModal";
+import InstructionsModal from "../Jokenpo1/InstructionsModal";
+import SuccessModal from "../SuccessModal";
 
-function SendFunctionJokenpo1() {
-
-  const navigate = useNavigate();
-
-  const defaultCode = "def strategy(card1, card2, card3):";
+function SendFunctionJokenpo2() {
+  const defaultCode =
+    "def strategy(card1, card2, opponentCard1, opponentCard2):";
   const [text, setText] = useState(defaultCode);
   const [feedback, setFeedback] = useState(null);
   const [typedMessage, setTypedMessage] = useState("");
@@ -43,7 +40,7 @@ function SendFunctionJokenpo1() {
   useEffect(() => {
     async function fetchSavedFunction() {
       try {
-        const url = "http://localhost:8080/jokenpo/jokenpo1";
+        const url = "http://localhost:8080/jokenpo/jokenpo2";
         const response = await axios.get(url, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -91,7 +88,7 @@ function SendFunctionJokenpo1() {
       const requestBody = {
         code: text,
         assistantStyle: assistantStyle,
-        functionName: "jokenpo1",
+        functionName: "jokenpo2",
       };
       const response = await axios.post(url, requestBody, {
         headers: {
@@ -119,7 +116,7 @@ function SendFunctionJokenpo1() {
       const requestBody = {
         code: text,
         assistantStyle: assistantStyle,
-        functionName: "jokenpo1",
+        functionName: "jokenpo2",
       };
       const response = await axios.put(url, requestBody, {
         headers: {
@@ -152,7 +149,7 @@ function SendFunctionJokenpo1() {
       const requestBody = {
         code: text,
         assistantStyle: assistantStyle,
-        functionName: "jokenpo1",
+        functionName: "jokenpo2",
       };
       const response = await axios.post(url, requestBody, {
         headers: {
@@ -216,7 +213,7 @@ function SendFunctionJokenpo1() {
 
   // Modal de sucesso
   const handleProceedToFunction2 = () => {
-    navigate("/function2");
+    console.log("Navegando para a função 2");
   };
 
   // Controle do modal de instruções
@@ -232,7 +229,10 @@ function SendFunctionJokenpo1() {
     <div className="container-sendfunction">
       <div className="top-section">
         <div className="informations-section">
-          <h1>Escreva seu código da função 1!</h1>
+          <h1>Escreva seu código da função 2!</h1>
+          <div className="progress-indicator">
+            <span>Passo 2 de 2</span>
+          </div>
           <div className="informations-section-buttons">
             <button onClick={handleOpenInstructions}>Instruções</button>
             {hasSavedFunction && (
@@ -372,4 +372,4 @@ function SendFunctionJokenpo1() {
   );
 }
 
-export default SendFunctionJokenpo1;
+export default SendFunctionJokenpo2;
