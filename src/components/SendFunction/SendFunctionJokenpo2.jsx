@@ -13,8 +13,8 @@ import dislike from "../../assets/dislike.svg";
 import InstructionsModal from "./InstructionsModal";
 import SuccessModal from "./SuccessModal";
 
-function SendFunction1() {
-  const defaultCode = "def strategy(card1, card2, card3):";
+function SendFunctionJokenpo2() {
+  const defaultCode = "def strategy(card1, card2, opponentCard1, opponenteCard2):";
   const [text, setText] = useState(defaultCode);
   const [feedback, setFeedback] = useState(null);
   const [typedMessage, setTypedMessage] = useState("");
@@ -39,7 +39,7 @@ function SendFunction1() {
   useEffect(() => {
     async function fetchSavedFunction() {
       try {
-        const url = "http://localhost:8080/jokenpo/function";
+        const url = "http://localhost:8080/jokenpo/jokenpo2";
         const response = await axios.get(url, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -87,7 +87,7 @@ function SendFunction1() {
       const requestBody = {
         code: text,
         assistantStyle: assistantStyle,
-        functionName: "jokenpo1",
+        functionName: "jokenpo2",
       };
       const response = await axios.post(url, requestBody, {
         headers: {
@@ -115,7 +115,7 @@ function SendFunction1() {
       const requestBody = {
         code: text,
         assistantStyle: assistantStyle,
-        functionName: "jokenpo1",
+        functionName: "jokenpo2",
       };
       const response = await axios.put(url, requestBody, {
         headers: {
@@ -148,7 +148,7 @@ function SendFunction1() {
       const requestBody = {
         code: text,
         assistantStyle: assistantStyle,
-        functionName: "jokenpo1",
+        functionName: "jokenpo2",
       };
       const response = await axios.post(url, requestBody, {
         headers: {
@@ -228,7 +228,7 @@ function SendFunction1() {
     <div className="container-sendfunction">
       <div className="top-section">
         <div className="informations-section">
-          <h1>Escreva seu código da função 1!</h1>
+          <h1>Escreva seu código da função 2!</h1>
           <div className="informations-section-buttons">
             <button onClick={handleOpenInstructions}>Instruções</button>
             {hasSavedFunction && (
@@ -368,4 +368,4 @@ function SendFunction1() {
   );
 }
 
-export default SendFunction1;
+export default SendFunctionJokenpo2;

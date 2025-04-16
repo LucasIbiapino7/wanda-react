@@ -41,7 +41,7 @@ function Header() {
             Partida
           </Link>
         )}
-        <Link className="nav-link" to="/enviar">
+        <Link className="nav-link" to="/jokenpo1">
           Enviar Função
         </Link>
         <Link className="nav-link" to="/sobre">

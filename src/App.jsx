@@ -3,7 +3,8 @@ import "./App.css";
 import Header from "./components/Header/Header";
 import Home from "./pages/Home";
 import About from "./pages/About";
-import Function from "./pages/Function";
+import FunctionJokenpo1 from "./pages/FunctionJokenpo1.jsx";
+import FunctionJokenpo2 from "./pages/FunctionJokenpo2.jsx";
 import MatchesPage from "./pages/MatchesPage";
 import PrivateRoute from "./routes/PrivateRoute.jsx";
 import AdminRoute from "./routes/AdminRoute.jsx";
@@ -25,7 +26,8 @@ function App() {
 
           {/* Rota privada */}
           <Route path="/" element={<PrivateRoute element={Home} />} />
-          <Route path="/enviar" element={<PrivateRoute element={Function} />} />
+          <Route path="/jokenpo1" element={<PrivateRoute element={FunctionJokenpo1} />} />
+          <Route path="/jokenpo2" element={<PrivateRoute element={FunctionJokenpo2} />} />
           <Route
             path="/profile"
             element={<PrivateRoute element={ProfilePage} />}
