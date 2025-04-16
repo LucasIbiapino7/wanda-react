@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+/* Overlay do Modal de Sucesso (mais escuro para contraste) */
+.modal-sucess-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* um pouco mais escuro que antes */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  font-family: 'Fredoka One', cursive;
+}
+
+/* Container do Modal de Sucesso */
+.modal-sucess-container {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 16px; /* Bordas mais arredondadas */
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* sombra mais marcante */
+  text-align: center;
+  animation: modalOpen 0.4s ease-out;
+  position: relative; /* para posicionar elementos absolutos se quiser */
+}
+
+/* Título destacado e divertido */
+.modal-sucess-container h2 {
+  color: #ffb84d; /* destaque no título */
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+/* Parágrafo com fonte preta para boa legibilidade */
+.modal-sucess-container p {
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+/* Animação de abertura */
+@keyframes modalOpen {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Container para os botões do modal */
+.modal-sucess-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* Botão "Avançar" (ou "Proceed") */
+.proceed-button {
+  background-color: #4dac4a; /* Verde, mas pode trocar p/ laranja etc. */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.proceed-button:hover {
+  background-color: #409640;
+  transform: translateY(-2px);
+}
+
+/* Botão "Fechar" */
+.close-button-sucess {
+  background-color: #ffb84d; /* Usando sua cor laranja p/ ficar divertido */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.close-button-sucess:hover {
+  background-color: #ff9933;
+  transform: translateY(-2px);
+}

@@ -30,6 +30,11 @@
   color: #fff;
 }
 
+.informations-section-buttons{
+  display: flex;
+  gap: 15px;
+}
+
 .informations-section button {
   padding: 0.6rem 1.2rem;
   font-size: 1rem;
@@ -343,3 +348,4 @@
   margin-top: 10px;
   font-style: italic;
 }
+

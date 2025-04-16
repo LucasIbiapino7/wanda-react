@@ -40,7 +40,7 @@ function App() {
             element={<PrivateRoute element={Matches} />}
           />
 
-          {/* Rota só para Admin*/}
+          {/* Rota só para Admin - remover*/}
           <Route
             path="/partida"
             element={<AdminRoute element={MatchesPage} />}
