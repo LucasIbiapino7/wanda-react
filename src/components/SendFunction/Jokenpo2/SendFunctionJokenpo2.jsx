@@ -1,19 +1,21 @@
 import { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { dracula } from "@uiw/codemirror-theme-dracula";
 import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
 import axios from "axios";
-import "./SendFunctionJokenpo2.css";
+import './SendFunctionJokenpo2.css'
 import AuthContext from "../../../context/AuthContext";
-import cosmo from "../../assets/cosmo-avatar.png";
-import timmy from "../../assets/timmy.png";
-import wanda from "../../assets/wanda.png";
-import like from "../../assets/like.svg";
-import dislike from "../../assets/dislike.svg";
-import InstructionsModal from "../Jokenpo1/InstructionsModal";
+import cosmo from "../../../assets/cosmo-avatar.png";
+import timmy from "../../../assets/timmy.png";
+import wanda from "../../../assets/wanda.png";
+import like from "../../../assets/like.svg";
+import dislike from "../../../assets/dislike.svg";
+import InstructionsModal from "../InstructionsModal";
 import SuccessModal from "../SuccessModal";
 
 function SendFunctionJokenpo2() {
+  const navigate = useNavigate();
   const defaultCode =
     "def strategy(card1, card2, opponentCard1, opponentCard2):";
   const [text, setText] = useState(defaultCode);
@@ -211,11 +213,6 @@ function SendFunctionJokenpo2() {
     }
   };
 
-  // Modal de sucesso
-  const handleProceedToFunction2 = () => {
-    console.log("Navegando para a função 2");
-  };
-
   // Controle do modal de instruções
   const [instructionsModalOpen, setInstructionsModalOpen] = useState(false);
   const handleOpenInstructions = () => {
@@ -225,23 +222,39 @@ function SendFunctionJokenpo2() {
     setInstructionsModalOpen(false);
   };
 
+  // Controle do modal de agentes
+  const [agentsModalOpen, setAgentsModalOpen] = useState(false);
+  const handleOpenAgents = () => {
+    setAgentsModalOpen(true);
+  };
+  const handleCloseAgents = () => {
+    setAgentsModalOpen(false);
+  };
+
   return (
     <div className="container-sendfunction">
       <div className="top-section">
         <div className="informations-section">
-          <h1>Escreva seu código da função 2!</h1>
+          <h1>Função 2 – Sua Estratégia no Round 2</h1>
           <div className="progress-indicator">
             <span>Passo 2 de 2</span>
           </div>
           <div className="informations-section-buttons">
-            <button onClick={handleOpenInstructions}>Instruções</button>
+            <button className="primary-button" onClick={handleOpenInstructions}>
+              Instruções
+            </button>
+
+            <button className="primary-button" onClick={handleOpenAgents}>
+              Agentes
+            </button>
+
             {hasSavedFunction && (
               <button
                 className="next-function-button"
                 onClick={() => setSuccessModalOpen(true)}
-                title="Clique para ir para a função 2"
+                title="Desafie seus amigos!"
               >
-                Próxima Função
+                Desafie seus amigos!
               </button>
             )}
           </div>
@@ -354,20 +367,59 @@ function SendFunctionJokenpo2() {
                 </button>
               </div>
             </div>
-            {successModalOpen && (
-              <SuccessModal
-                isOpen={successModalOpen}
-                onClose={() => setSuccessModalOpen(false)}
-                onProceed={handleProceedToFunction2}
-              />
-            )}
+            <SuccessModal
+              isOpen={successModalOpen}
+              onClose={() => setSuccessModalOpen(false)}
+              title="Função 2 aprovada!"
+              message="Parabéns! Agora você pode participar de torneios com seu Jokenpo."
+              onProceed={() => navigate("/torneios")}
+            />
           </div>
         </div>
       </div>
       <InstructionsModal
         isOpen={instructionsModalOpen}
         onClose={handleCloseInstructions}
-      />
+        title="Instruções para Função 2"
+      >
+        <div className="instructions">
+          <p>
+            Aqui você vai criar a sua lógica para a <b>função 2</b>, que é
+            responsável por escolher sua carta no segundo round de uma partida!
+            Siga as seguintes instruções:
+          </p>
+          <ul>
+            <li>
+              Sua função deve se chamar <b>strategy</b>
+            </li>
+            <li>
+              <b>card1, card2:</b> São os parâmetros que representam suas cartas
+              nesse round.
+            </li>
+            <li>
+              <b>opponentCard1, opponentCard2:</b> São os parâmetros que
+              representam as cartas do seu oponente nesse round.
+            </li>
+            <li>
+              Suas cartas podem ser: &quot;pedra&quot;, &quot;papel&quot; ou
+              &quot;tesoura&quot;.
+            </li>
+          </ul>
+          <p>
+            A função deve retornar uma string que indica a carta a ser jogada
+            dentre: &quot;pedra&quot;, &quot;pedra&quot; ou &quot;tesoura&quot;
+          </p>
+        </div>
+      </InstructionsModal>
+      <InstructionsModal
+        isOpen={agentsModalOpen}
+        onClose={handleCloseAgents}
+        title="Instruções sobre os agentes"
+      >
+        <div className="instructions">
+          <p>Aqui vão as informações sobre os agentes!</p>
+        </div>
+      </InstructionsModal>
     </div>
   );
 }

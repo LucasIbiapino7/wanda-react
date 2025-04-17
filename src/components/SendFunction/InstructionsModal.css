@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap");
 
-/* Modal Overlay */
+/* Overlay do Modal */
 .modal-instructions-overlay {
   position: fixed;
   top: 0;
@@ -15,16 +15,17 @@
   z-index: 1000;
 }
 
-/* Modal Container */
+/* Container do Modal */
 .modal-instructions {
-  background: rgba(25, 25, 25, 0.95);
-  padding: 25px;
-  border-radius: 15px;
+  background: #1e1e1e; /* Fundo sólido e contrastante */
+  padding: 30px;
+  border-radius: 16px;
   width: 90%;
   max-width: 700px;
   max-height: 80vh;
   overflow-y: auto;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
   animation: modalOpen 0.3s ease-out;
 }
 
@@ -39,48 +40,60 @@
   }
 }
 
-/* Modal Header */
+/* Cabeçalho do Modal */
 .modal-instructions-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
 }
 
 .modal-instructions-header h3 {
-  color: #fff;
+  color: #ffcc00; /* Tom vibrante para destacar o título */
+  font-size: 1.5rem;
+  margin: 0;
 }
 
-/* Botão de fechar */
+/* Botão de Fechar */
 .instructions-close-btn {
-  background: none;
+  background: transparent;
   border: none;
-  color: #fff;
-  font-size: 1.5rem;
+  color: #ffcc00;
+  font-size: 1.8rem;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .instructions-close-btn:hover {
   transform: rotate(90deg);
+  color: #ffd633; /* Leve variação para o hover */
 }
 
 /* Conteúdo do Modal */
 .modal-instructions-content {
-  color: #fff;
+  color: #fff; /* Texto em cinza claro para melhor legibilidade */
   font-family: "Comic Neue", cursive;
+  font-size: 1rem;
 }
 
-.modal-instructions-content .instructions p,
-.modal-instructions-content .instructions ul {
+.modal-instructions-content p,
+.modal-instructions-content ul {
   margin-bottom: 1rem;
   line-height: 1.5;
 }
 
-.modal-instructions-content .instructions ul {
+.modal-instructions-content ul {
   padding-left: 1.5rem;
 }
 
-.modal-instructions-content .instructions li {
+.modal-instructions-content li {
+  margin-bottom: 0.5rem;
+}
+
+/* Caso queira utilizar subtítulos ou cabeçalhos internos */
+.modal-instructions-content h4 {
+  color: #ffcc00;
   margin-bottom: 0.5rem;
 }

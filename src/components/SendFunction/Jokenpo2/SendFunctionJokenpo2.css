@@ -48,20 +48,36 @@
   gap: 15px;
 }
 
-.informations-section button {
+.primary-button {
   padding: 0.6rem 1.2rem;
   font-size: 1rem;
   font-weight: bold;
   color: #fff;
-  background-color: #ffb84d;
+  background-color: #ffb84d; /* laranja */
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s;
 }
-
-.informations-section button:hover {
+.primary-button:hover {
   background-color: #ff9933;
+  transform: translateY(-2px);
+}
+
+
+.next-function-button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #4dac4a !important;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+.next-function-button:hover {
+  background-color: #409640; /* verde escuro no hover */
   transform: translateY(-2px);
 }
 
