@@ -1,0 +1,217 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen&display=swap");
+
+.arena-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 90px;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.arena {
+  width: 1100px;
+  height: 600px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 2px solid #333;
+  position: relative;
+}
+
+.character {
+  position: absolute;
+  top: 50%;
+  transform: translateY(30%);
+  width: 175px;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  animation: float 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+}
+
+.character.left {
+  left: 80px;
+}
+
+.character.right {
+  right: 80px;
+}
+
+/* Css dos cards */
+
+.cards {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-35%);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.left-cards {
+  left: 250px; /* Distância da borda esquerda */
+}
+
+.right-cards {
+  right: 250px; /* Distância da borda direita */
+}
+
+.card {
+  width: 75px;
+  height: 75px;
+  border-radius: 8px;
+  border: 2px solid #fff;
+  transition: transform 0.3s ease;
+  object-fit: cover;
+}
+
+/* informações dos players */
+.player-info {
+  position: absolute;
+  top: 15px;
+  z-index: 3;
+  padding: 8px 15px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 3px solid #ffd700;
+  border-image: linear-gradient(45deg, #ffd700, #ff8c00) 1;
+}
+
+.player-info.left {
+  left: 20px;
+}
+
+.player-info.right {
+  right: 20px;
+}
+
+.player-name {
+  margin: 0;
+  font-size: 1.8em; /* Aumentei o tamanho */
+  letter-spacing: 3px; /* Aumentei o espaçamento */
+  font-family: "Silkscreen", "Press Start 2P", cursive;
+  text-transform: uppercase;
+  color: #ffd700;
+  text-shadow: 3px 3px 0 #8b0000, -3px -3px 0 #8b0000, 3px -3px 0 #8b0000,
+    -3px 3px 0 #8b0000;
+  -webkit-font-smoothing: none;
+  image-rendering: pixelated;
+  animation: neon-glitch 1.2s ease-in-out infinite; /* Nova animação */
+}
+
+.turns-won {
+  display: block;
+  font-size: 0.9em; /* Aumentei um pouco */
+  font-family: "Press Start 2P", cursive;
+  color: #00ff00;
+  margin-top: 8px; /* Aumentei o espaçamento */
+  text-shadow: 2px 2px 0 #004400, /* Sombra mais forte */ -2px -2px 0 #004400,
+    2px -2px 0 #004400, -2px 2px 0 #004400;
+  letter-spacing: 1px;
+  position: relative;
+  top: -3px; /* Ajuste fino de posição */
+}
+
+/* ==== Novas Animacoes ==== */
+@keyframes neon-glitch {
+  0%,
+  100% {
+    opacity: 0.9;
+    text-shadow: 3px 3px 0 #8b0000, -3px -3px 0 #8b0000;
+  }
+  50% {
+    opacity: 1;
+    text-shadow: 4px 4px 0 #8b0000, -4px -4px 0 #8b0000, 0 0 8px #ffd700;
+  }
+}
+
+/* ==== Ajustes de Renderizacao ==== */
+@supports (-moz-osx-font-smoothing: grayscale) {
+  .player-name,
+  .turns-won {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: none;
+  }
+}
+
+/* Turnos restantes estilo */
+
+.remaining-turns {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "Press Start 2P", cursive;
+  color: #808080;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0 #333, -2px -2px 0 #333, 2px -2px 0 #333,
+    -2px 2px 0 #333;
+  z-index: 3;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+.counter {
+  display: block;
+  font-size: 1.2em;
+  color: #cccccc;
+  margin-top: 5px;
+  text-shadow: 2px 2px 0 #404040, -2px -2px 0 #404040;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* DADOS DA ANIMAÇÃO*/
+.match-announcement {
+  position: absolute;
+  top: 22%;
+  left: 58%;
+  transform: translateX(-50%);
+  font-family: "Press Start 2P", cursive;
+  color: #ffd700;
+  opacity: 0;
+  font-size: 1.5em;
+  text-shadow: 2px 2px 0 #8b0000;
+  z-index: 100;
+}
+
+.test-controls {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 100;
+}
+
+.test-controls button {
+  padding: 8px 16px;
+  font-family: "Press Start 2P", cursive;
+  background: #444;
+  color: white;
+  border: 2px solid #fff;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.test-controls button:hover {
+  background: #666;
+}
+
+.tie-indicator {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "Press Start 2P", cursive;
+  color: #808080; /* cinza */
+  text-shadow: 2px 2px 0 #333;
+}
