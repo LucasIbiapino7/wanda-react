@@ -372,7 +372,7 @@ function SendFunctionJokenpo2() {
               onClose={() => setSuccessModalOpen(false)}
               title="Função 2 aprovada!"
               message="Parabéns! Agora você pode participar de torneios com seu Jokenpo."
-              onProceed={() => navigate("/torneios")}
+              onProceed={() => navigate("/challenges")}
             />
           </div>
         </div>

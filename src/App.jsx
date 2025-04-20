@@ -11,6 +11,7 @@ import AdminRoute from "./routes/AdminRoute.jsx";
 import Login from "./pages/Login";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import Challenge from "./pages/Challenge.jsx";
+import Tournament from "./pages/Tournament.jsx";
 import { AuthProvider } from "./context/AuthContext";
 import Matches from "./pages/Matches.jsx";
 
@@ -35,6 +36,10 @@ function App() {
           <Route
             path="/challenges"
             element={<PrivateRoute element={Challenge} />}
+          />
+          <Route
+            path="/tournament"
+            element={<PrivateRoute element={Tournament} />}
           />
 
           <Route
