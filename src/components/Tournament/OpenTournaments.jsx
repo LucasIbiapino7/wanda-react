@@ -4,6 +4,7 @@ import axios from "axios";
 import AuthContext from "../../context/AuthContext";
 import Pagination from "../Challenges/Pagination";
 import "./OpenTournaments.css";
+import SubscribeResultModal from "./SubscribeResultModal";
 
 export default function OpenTournaments() {
   const { token } = useContext(AuthContext);
@@ -12,6 +13,11 @@ export default function OpenTournaments() {
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // estados para o modal de resultado
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const fetchTournaments = async (pageNum = 0) => {
     setLoading(true);
@@ -36,6 +42,29 @@ export default function OpenTournaments() {
     fetchTournaments(0);
   }, []);
 
+  const handleSubscribe = async (tournamentId) => {
+    try {
+      const payload = { tournamentId, password: "" };
+      const response = await axios.post(
+        "http://localhost:8080/tournament/subscribe",
+        payload,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setModalSuccess(true);
+      setModalMessage("Você entrou no torneio com sucesso!");
+      // opcional: re‑carregar lista para atualizar número de inscritos
+      fetchTournaments(page);
+    } catch (err) {
+      const msg =
+        err.response?.data?.error ||
+        "Ocorreu um erro ao tentar se inscrever no torneio.";
+      setModalMessage(msg);
+      setModalSuccess(false);
+    } finally {
+      setModalOpen(true);
+    }
+  };
+
   return (
     <div className="open-tournaments">
       <h2 className="section-title">Torneios Abertos</h2>
@@ -55,7 +84,12 @@ export default function OpenTournaments() {
               </span>
             </div>
             <div className="card-actions">
-              <button className="card-button">Entrar</button>
+              <button
+                className="card-button"
+                onClick={() => handleSubscribe(t.id)}
+              >
+                Entrar
+              </button>
             </div>
           </div>
         ))}
@@ -69,6 +103,13 @@ export default function OpenTournaments() {
         currentPage={page}
         totalPages={totalPages}
         onPageChange={fetchTournaments}
+      />
+
+      <SubscribeResultModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        success={modalSuccess}
+        message={modalMessage}
       />
     </div>
   );
