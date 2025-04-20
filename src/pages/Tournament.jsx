@@ -3,6 +3,7 @@ import axios from "axios";
 import AuthContext from "../context/AuthContext";
 import CreateTournamentModal from "../components/Tournament/CreateTournamentModal";
 import "../components/Tournament/Tournament.css";
+import OpenTournaments from "../components/Tournament/OpenTournaments";
 
 export default function Tournament() {
   const { token, isAdmin } = useContext(AuthContext);
@@ -57,6 +58,8 @@ export default function Tournament() {
         onClose={handleCloseModal}
         onCreate={handleCreateTournament}
       />
+
+      <OpenTournaments />
 
       {/* TODO: aqui depois entraremos com a lista de torneios */}
     </div>
