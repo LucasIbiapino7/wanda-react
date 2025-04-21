@@ -14,6 +14,7 @@ import Challenge from "./pages/Challenge.jsx";
 import Tournament from "./pages/Tournament.jsx";
 import { AuthProvider } from "./context/AuthContext";
 import Matches from "./pages/Matches.jsx";
+import TournamentBracket from "./pages/TournamentBracket.jsx";
 
 function App() {
   return (
@@ -27,8 +28,14 @@ function App() {
 
           {/* Rota privada */}
           <Route path="/" element={<PrivateRoute element={Home} />} />
-          <Route path="/jokenpo1" element={<PrivateRoute element={FunctionJokenpo1} />} />
-          <Route path="/jokenpo2" element={<PrivateRoute element={FunctionJokenpo2} />} />
+          <Route
+            path="/jokenpo1"
+            element={<PrivateRoute element={FunctionJokenpo1} />}
+          />
+          <Route
+            path="/jokenpo2"
+            element={<PrivateRoute element={FunctionJokenpo2} />}
+          />
           <Route
             path="/profile"
             element={<PrivateRoute element={ProfilePage} />}
@@ -45,6 +52,11 @@ function App() {
           <Route
             path="/matches/:id"
             element={<PrivateRoute element={Matches} />}
+          />
+
+          <Route 
+            path="/tournament/:id"
+            element={<PrivateRoute element={TournamentBracket}/>}
           />
 
           {/* Rota só para Admin - remover*/}

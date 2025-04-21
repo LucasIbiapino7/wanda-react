@@ -1,0 +1,66 @@
+.participating-section {
+  margin-top: 2rem;
+}
+
+.tournaments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.tournament-card {
+  background: #1f1f2e;
+  padding: 1.2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  width: 100%;
+}
+
+.tournament-card h4 {
+  margin: 0 0 0.5rem;
+}
+
+.tournament-meta {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-bottom: 1rem;
+}
+
+.tournament-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-button {
+  background-color: #ffb84d;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.card-button:hover {
+  background-color: #ff9933;
+}
+
+.play-button {
+  background-color: #4dac4a;
+}
+.play-button:hover {
+  background-color: #409640;
+}
+
+.status-tag {
+  background: #444;
+  padding: 0.3rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.error {
+  color: #f66;
+}

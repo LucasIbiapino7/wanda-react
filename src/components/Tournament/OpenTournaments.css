@@ -1,6 +1,5 @@
-/* src/components/Tournament/OpenTournaments.css */
 .open-tournaments {
-  padding: 40px 20px;
+  padding: 5px 20px;
   font-family: "Segoe UI", sans-serif;
 }
 
@@ -18,7 +17,6 @@
   margin: 20px 0;
 }
 
-/* Empilha os cards verticalmente e dá gap */
 .tournaments-grid {
   display: flex;
   flex-direction: column;
@@ -26,7 +24,6 @@
   margin-bottom: 30px;
 }
 
-/* Cada card ocupa 100% da largura disponível */
 .tournament-card {
   background: #2a2a3b;
   border-radius: 8px;
@@ -39,7 +36,6 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Barrinha colorida à esquerda para destaque */
 .tournament-card::before {
   content: "";
   position: absolute;
@@ -47,10 +43,9 @@
   top: 0;
   bottom: 0;
   width: 6px;
-  background: #ffb84d; /* cor laranja do projeto */
+  background: #ffb84d;
 }
 
-/* Efeito de hover: leve zoom + sombra mais intensa */
 .tournament-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);

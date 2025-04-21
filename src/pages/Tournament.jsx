@@ -4,6 +4,7 @@ import AuthContext from "../context/AuthContext";
 import CreateTournamentModal from "../components/Tournament/CreateTournamentModal";
 import "../components/Tournament/Tournament.css";
 import OpenTournaments from "../components/Tournament/OpenTournaments";
+import ParticipatingTournaments from "../components/Tournament/ParticipatingTournaments";
 
 export default function Tournament() {
   const { token, isAdmin } = useContext(AuthContext);
@@ -46,7 +47,6 @@ export default function Tournament() {
   return (
     <div className="container-tournament">
       <h1>Torneios</h1>
-
       {isAdmin && (
         <button className="primary-button" onClick={handleOpenModal}>
           + Novo Torneio
@@ -61,7 +61,7 @@ export default function Tournament() {
 
       <OpenTournaments />
 
-      {/* TODO: aqui depois entraremos com a lista de torneios */}
+      <ParticipatingTournaments />
     </div>
   );
 }
