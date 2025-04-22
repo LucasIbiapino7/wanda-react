@@ -7,6 +7,7 @@ import AuthContext from "../context/AuthContext";
 import PendingChallenges from "../components/Challenges/PendingChallenges";
 import FunctionModal from "../components/Challenges/FunctionModal";
 import Pagination from "../components/Challenges/Pagination";
+import BadgePreviewModal from "../components/Challenges/BadgePreviewModal";
 
 const Challenge = () => {
   const [students, setStudents] = useState({ content: [], totalPages: 0 });
@@ -16,6 +17,7 @@ const Challenge = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [challengeMessage, setChallengeMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedBadge, setSelectedBadge] = useState(null);
 
   const { token } = useContext(AuthContext);
 
@@ -25,7 +27,7 @@ const Challenge = () => {
         const url = "http://localhost:8080/jokenpo/findByName";
         const response = await axios.get(url, {
           params: { name: term, size: 4, page },
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         });
         setStudents(response.data);
         setTotalPages(response.data.totalPages);
@@ -41,16 +43,22 @@ const Challenge = () => {
     return () => clearTimeout(id);
   }, [searchTerm, currentPage, fetchStudents]);
 
-  useEffect(() => { fetchStudents("", 0); }, [fetchStudents]);
+  useEffect(() => {
+    fetchStudents("", 0);
+  }, [fetchStudents]);
 
   const handleSearch = (term) => setSearchTerm(term);
 
   const handleChallenge = async (challengedId) => {
     try {
       const url = "http://localhost:8080/jokenpo/challenge";
-      await axios.post(url, { challengedId }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await axios.post(
+        url,
+        { challengedId },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setChallengeMessage("Desafio enviado com sucesso!");
     } catch (error) {
       if (error.response?.status === 404) {
@@ -96,6 +104,7 @@ const Challenge = () => {
             onChallenge={handleChallenge}
             // **Mudança aqui**: passamos o student inteiro
             onViewFunctions={() => handleOpenModal(student)}
+            onBadgeClick={(badge) => setSelectedBadge(badge)}
           />
         ))}
       </div>
@@ -111,6 +120,11 @@ const Challenge = () => {
         functions={modalFunctions}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
+      />
+
+      <BadgePreviewModal
+        badge={selectedBadge}
+        onClose={() => setSelectedBadge(null)}
       />
 
       {challengeMessage && (

@@ -22,12 +22,17 @@
   transform: translateY(-5px);
 }
 
-.avatar {
+.student-card .avatar {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: #fff;
+  background-color: #fff;                    
+  background-image: url('/src/assets/profile.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   margin: 0 auto 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 /* Badges */

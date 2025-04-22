@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import "./StudentCard.css";
 import CodeImg from "../../assets/code.svg";
 
-const StudentCard = ({ student, onChallenge, onViewFunctions }) => {
+const StudentCard = ({ student, onChallenge, onViewFunctions, onBadgeClick }) => {
   return (
     <div className="student-card">
       <div className="avatar"></div>
@@ -15,6 +15,7 @@ const StudentCard = ({ student, onChallenge, onViewFunctions }) => {
             alt={badge.name}
             title={badge.name}
             className="badge"
+            onClick={() => onBadgeClick(badge)}
           />
         ))}
       </div>
@@ -53,6 +54,7 @@ StudentCard.propTypes = {
   }).isRequired,
   onChallenge: PropTypes.func.isRequired,
   onViewFunctions: PropTypes.func.isRequired,  
+  onBadgeClick: PropTypes.func.isRequired
 };
 
 export default StudentCard;
