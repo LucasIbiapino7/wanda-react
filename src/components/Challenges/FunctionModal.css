@@ -1,5 +1,7 @@
-/* Modal Overlay */
-.function-modal-overlay {
+@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap");
+
+/* Overlay do Modal */
+.pfm-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -13,21 +15,23 @@
   z-index: 1000;
 }
 
-/* Modal Container */
-.function-modal {
-  background: rgba(25, 25, 25, 0.95);
-  padding: 25px;
-  border-radius: 15px;
+/* Container do Modal */
+.pfm-container {
+  background: #1e1e1e;
+  padding: 2rem;
+  border-radius: 16px;
   width: 90%;
-  max-width: 800px;
+  max-width: 700px;
   max-height: 80vh;
   overflow-y: auto;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  animation: modalOpen 0.3s ease-out;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  animation: pfm-open 0.3s ease-out;
+  font-family: "Comic Neue", cursive;
 }
 
-/* Animação de abertura do modal */
-@keyframes modalOpen {
+/* Animação de abertura */
+@keyframes pfm-open {
   from {
     opacity: 0;
     transform: translateY(-20px);
@@ -39,76 +43,86 @@
 }
 
 /* Cabeçalho do Modal */
-.function-modal-header {
+.pfm-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.5rem;
 }
 
-.function-modal-header h3 {
-  color: #fff; /* ou use var(--text) se definido globalmente */
-}
-
-.function-close-btn {
-  background: none;
-  border: none;
-  color: #fff;
+.pfm-title {
+  color: #ffcc00;
   font-size: 1.5rem;
+  margin: 0;
+}
+
+/* Botão de Fechar */
+.pfm-close-btn {
+  background: transparent;
+  border: none;
+  color: #ffcc00;
+  font-size: 1.8rem;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
-
-.function-close-btn:hover {
+.pfm-close-btn:hover {
   transform: rotate(90deg);
+  color: #ffd633;
 }
 
-/* Estilização do conteúdo do modal que exibe o código */
-.function-modal-content pre {
-  background: #1e1e1e;
-  padding: 20px;
+/* Abas */
+.pfm-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.pfm-tab {
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
   border-radius: 8px;
-  tab-size: 4;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s ease;
+  font-family: "Comic Neue", cursive;
+}
+
+.pfm-tab:hover {
+  background: #444;
+}
+
+.pfm-tab--active {
+  background: #ffb84d;
+  color: #1e1e1e;
+}
+
+/* Corpo (código) */
+.pfm-body {
+  background: #2b2b44;
+  padding: 1rem;
+  border-radius: 8px;
   overflow-x: auto;
-  white-space: pre-wrap; /* Preserva a indentação e permite quebras de linha */
-  font-family: "Fira Code", monospace;
+}
+
+.pfm-code {
+  margin: 0;
+  color: #e0e0e0;
   font-size: 0.9rem;
-  color: #d4d4d4;
-  text-align: left; /* Garante alinhamento à esquerda */
-  margin: 0; /* Remove margens extras */
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: "Comic Neue", cursive;
 }
 
-/* Se preferir, pode aplicar estilos diretamente no code também */
-.function-modal-content code.python {
-  display: block;
-  text-align: left;
-}
-
-/* Opcional: Estilização para Syntax Highlighting */
-.keyword {
-  color: #569cd6;
-}
-
-.function {
-  color: #dcdcaa;
-}
-
-.comment {
-  color: #6a9955;
-}
-
-.string {
-  color: #ce9178;
-}
-
-/* Ajustes responsivos */
-@media (max-width: 768px) {
-  .function-modal {
-    width: 95%;
-    padding: 15px;
-  }
-
-  .function-modal-content pre {
-    font-size: 0.8rem;
-  }
+/* Empty State */
+.pfm-empty {
+  color: #ccc;
+  text-align: center;
+  padding: 2rem 0;
+  font-style: italic;
 }

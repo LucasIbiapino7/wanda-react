@@ -9,35 +9,23 @@ import FunctionModal from "../components/Challenges/FunctionModal";
 import Pagination from "../components/Challenges/Pagination";
 
 const Challenge = () => {
-  // Estado para armazenar os dados paginados dos alunos
   const [students, setStudents] = useState({ content: [], totalPages: 0 });
-
-  // Estados para controle de paginação
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-
-  const [searchTerm, setSearchTerm] = useState(""); // novo estado para o termo de busca
-
-  const [challengeMessage, setChallengeMessage] = useState(""); // NOVO ESTADO para feedback de desafio
-
-  // Estado para controlar a abertura do modal e o código a ser exibido
+  const [modalFunctions, setModalFunctions] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [challengeMessage, setChallengeMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalCode, setModalCode] = useState("");
 
-  // Pegando o token do contexto de autenticação
   const { token } = useContext(AuthContext);
 
-  // Função de busca, memorizada com useCallback
   const fetchStudents = useCallback(
     async (term = "", page = 0) => {
       try {
         const url = "http://localhost:8080/jokenpo/findByName";
         const response = await axios.get(url, {
-          params: { name: term, size: 4, page: page },
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+          params: { name: term, size: 4, page },
+          headers: { Authorization: `Bearer ${token}` }
         });
         setStudents(response.data);
         setTotalPages(response.data.totalPages);
@@ -48,53 +36,26 @@ const Challenge = () => {
     [token]
   );
 
-  // Função para mudar página
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
-
-  // useEffect para chamar fetchStudents com debounce
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      fetchStudents(searchTerm, currentPage);
-    }, 500);
-
-    return () => clearTimeout(delayDebounceFn);
+    const id = setTimeout(() => fetchStudents(searchTerm, currentPage), 500);
+    return () => clearTimeout(id);
   }, [searchTerm, currentPage, fetchStudents]);
 
-  // useEffect para carregar a lista inicial ao abrir a página
-  useEffect(() => {
-    fetchStudents("", 0);
-  }, [fetchStudents]);
+  useEffect(() => { fetchStudents("", 0); }, [fetchStudents]);
 
-  // Função para lidar com a busca, agora só atualiza o estado searchTerm
-  const handleSearch = (term) => {
-    console.log("Buscar por:", term);
-    setSearchTerm(term);
-  };
+  const handleSearch = (term) => setSearchTerm(term);
 
-  // Envia um desafio para um estudante (ao clicar no botão "Desafiar" no StudentCard)
   const handleChallenge = async (challengedId) => {
     try {
       const url = "http://localhost:8080/jokenpo/challenge";
-      const requestBody = { challengedId };
-      const response = await axios.post(url, requestBody, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+      await axios.post(url, { challengedId }, {
+        headers: { Authorization: `Bearer ${token}` }
       });
-      // Se o backend retornar 204 (No Content), o desafio foi enviado com sucesso
-      if (response.status === 204) {
-        setChallengeMessage("Desafio enviado com sucesso!");
-      }
+      setChallengeMessage("Desafio enviado com sucesso!");
     } catch (error) {
-      // Se o adversário não existir (404)
       if (error.response?.status === 404) {
         setChallengeMessage("Adversário não encontrado!");
-      }
-      // Se já existir um desafio pendente (400 com mensagem específica)
-      else if (
+      } else if (
         error.response?.status === 400 &&
         error.response.data?.error === "Já existe um desafio pendente!"
       ) {
@@ -105,26 +66,27 @@ const Challenge = () => {
     }
   };
 
-  // Função para fechar o modal (após exibir o feedback)
-  const closeModal = () => {
-    setChallengeMessage("");
-  };
+  const closeModal = () => setChallengeMessage("");
 
-  const handleOpenModal = (code) => {
-    setModalCode(code);
+  // **Mudança aqui**: agora recebe o objeto `student` inteiro
+  const handleOpenModal = (student) => {
+    setModalFunctions([
+      { name: "Função 1", code: student.code },
+      { name: "Função 2", code: student.code2 },
+    ]);
     setIsModalOpen(true);
   };
 
-  // Função para fechar o modal
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setModalCode("");
+    setModalFunctions([]);
   };
 
   return (
     <div className="container-challenge">
       <h1>Desafios e Partidas</h1>
       <SearchBar onSearch={handleSearch} />
+
       <h2 className="section-title">Desafie Seus Amigos</h2>
       <div className="students-grid">
         {students.content.map((student) => (
@@ -132,7 +94,8 @@ const Challenge = () => {
             key={student.id}
             student={student}
             onChallenge={handleChallenge}
-            handleOpenModal={handleOpenModal}
+            // **Mudança aqui**: passamos o student inteiro
+            onViewFunctions={() => handleOpenModal(student)}
           />
         ))}
       </div>
@@ -140,16 +103,16 @@ const Challenge = () => {
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
-        onPageChange={handlePageChange}
+        onPageChange={setCurrentPage}
       />
       <PendingChallenges />
 
       <FunctionModal
-        code={modalCode}
+        functions={modalFunctions}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
       />
-      {/* Modal Popup para exibir o feedback do desafio */}
+
       {challengeMessage && (
         <div className="modal-overlay">
           <div className="modal">
