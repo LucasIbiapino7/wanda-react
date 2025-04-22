@@ -1,0 +1,142 @@
+.rk-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 90px 18px 60px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.rk-title {
+  text-align: center;
+  color: #fff;
+  font-size: 2.4rem;
+  margin-bottom: 38px;
+  letter-spacing: 0.5px;
+}
+
+.rk-msg {
+  text-align: center;
+  color: #fff;
+  margin: 40px 0;
+  font-size: 1.05rem;
+}
+.rk-error {
+  color: #ff6b6b;
+}
+
+.rk-table {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rk-header {
+  background: linear-gradient(135deg, #ffb84d, #ff9933);
+  color: #2b2b44;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 14px 22px;
+  display: grid;
+  grid-template-columns: 70px 1fr 110px 130px 160px;
+  align-items: center;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.rk-row {
+  display: grid;
+  grid-template-columns: 70px 1fr 110px 130px 160px;
+  align-items: center;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #3a3a5a, #2b2b44);
+  padding: 14px 22px;
+  color: #f1f1f1;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.rk-row:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+}
+
+.rk-row {
+  position: relative;
+}
+
+.rk-row > span,
+.rk-header > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rk-rank {
+  font-size: 1.25rem;
+  font-weight: 700;
+  justify-content: center;
+}
+
+.rk-player {
+  gap: 14px;
+}
+.rk-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid #ffb84d55;
+}
+.rk-name {
+  font-weight: 600;
+}
+
+.rk-row span:nth-child(3),
+.rk-row span:nth-child(4) {
+  justify-content: center;
+}
+
+/* Badges */
+.rk-badge-col {
+  justify-content: flex-start;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.rk-badge {
+  width: 26px;
+  height: 26px;
+  transition: transform 0.17s ease;
+}
+.rk-badge:hover {
+  transform: scale(1.25);
+}
+
+@media (max-width: 740px) {
+  .rk-header,
+  .rk-row {
+    grid-template-columns: 60px 1fr 90px;
+    grid-template-areas:
+      "rank player player"
+      "stats stats stats"
+      "badges badges badges";
+    row-gap: 6px;
+    padding: 12px 16px;
+  }
+  .rk-header > span:nth-child(3),
+  .rk-row span:nth-child(3) {
+    grid-area: stats;
+  }
+  .rk-header > span:nth-child(4),
+  .rk-row span:nth-child(4) {
+    display: none;
+  }
+  .rk-badge-col {
+    grid-area: badges;
+  }
+
+  .rk-row .rk-player {
+    gap: 10px;
+  }
+  .rk-avatar {
+    width: 40px;
+    height: 40px;
+  }
+}

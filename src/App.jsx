@@ -2,10 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header/Header";
 import Home from "./pages/Home";
-import About from "./pages/About";
 import FunctionJokenpo1 from "./pages/FunctionJokenpo1.jsx";
 import FunctionJokenpo2 from "./pages/FunctionJokenpo2.jsx";
-import MatchesPage from "./pages/MatchesPage";
 import PrivateRoute from "./routes/PrivateRoute.jsx";
 import AdminRoute from "./routes/AdminRoute.jsx";
 import Login from "./pages/Login";
@@ -15,6 +13,7 @@ import Tournament from "./pages/Tournament.jsx";
 import { AuthProvider } from "./context/AuthContext";
 import Matches from "./pages/Matches.jsx";
 import TournamentBracket from "./pages/TournamentBracket.jsx";
+import Ranking from "./pages/Ranking.jsx";
 
 function App() {
   return (
@@ -23,7 +22,6 @@ function App() {
         <Header />
         <Routes>
           {/* Rota pública */}
-          <Route path="/sobre" element={<About />} />
           <Route path="/login" element={<Login />} />
 
           {/* Rota privada */}
@@ -49,21 +47,19 @@ function App() {
             element={<PrivateRoute element={Tournament} />}
           />
 
+          <Route path="/ranking" element={<PrivateRoute element={Ranking} />} />
+
           <Route
             path="/matches/:id"
             element={<PrivateRoute element={Matches} />}
           />
 
-          <Route 
+          <Route
             path="/tournament/:id"
-            element={<PrivateRoute element={TournamentBracket}/>}
+            element={<PrivateRoute element={TournamentBracket} />}
           />
 
           {/* Rota só para Admin - remover*/}
-          <Route
-            path="/partida"
-            element={<AdminRoute element={MatchesPage} />}
-          />
         </Routes>
       </Router>
     </AuthProvider>
