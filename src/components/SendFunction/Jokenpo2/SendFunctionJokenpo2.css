@@ -31,13 +31,13 @@
   padding-top: 60px;
 }
 
-.informations-section {
+.informations-section-jokenpo2 {
   display: flex;
   justify-content: space-between; /* Espaço entre o título e o botão */
   align-items: center;
 }
 
-.informations-section h1 {
+.informations-section-jokenpo2 h1 {
   font-size: 1.8rem;
   margin: 0;
   color: #fff;
@@ -48,36 +48,20 @@
   gap: 15px;
 }
 
-.primary-button {
+.informations-section button {
   padding: 0.6rem 1.2rem;
   font-size: 1rem;
   font-weight: bold;
   color: #fff;
-  background-color: #ffb84d; /* laranja */
+  background-color: #ffb84d;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s;
 }
-.primary-button:hover {
+
+.informations-section button:hover {
   background-color: #ff9933;
-  transform: translateY(-2px);
-}
-
-
-.next-function-button {
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #fff;
-  background-color: #4dac4a !important;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s;
-}
-.next-function-button:hover {
-  background-color: #409640; /* verde escuro no hover */
   transform: translateY(-2px);
 }
 

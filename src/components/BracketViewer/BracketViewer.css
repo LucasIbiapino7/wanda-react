@@ -1,27 +1,25 @@
-.bracket-container {
+.bv-container {
   max-width: 800px;
   margin: 0 auto;
-  padding-top: 100px;
+  padding: 100px 0px;
   font-family: "Segoe UI", sans-serif;
 }
 
-/* Título da fase */
-.bracket-title {
+.bv-title {
   color: #fff;
   text-align: center;
   margin-bottom: 1rem;
   font-size: 1.8rem;
 }
 
-/* Navegação de fases */
-.bracket-nav {
+.bv-nav {
   display: flex;
   justify-content: center;
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
 
-.bracket-nav-button {
+.bv-nav-button {
   background-color: #ffb84d;
   color: #fff;
   border: none;
@@ -32,23 +30,22 @@
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.bracket-nav-button:hover:not(:disabled) {
+.bv-nav-button:hover:not(:disabled) {
   background-color: #ff9933;
   transform: translateY(-2px);
 }
 
-.bracket-nav-button:disabled {
+.bv-nav-button:disabled {
   opacity: 0.4;
   cursor: default;
 }
 
-/* Grid de colunas (aqui, cada round é uma coluna única) */
-.round-column-container {
+.bv-rounds-wrapper {
   display: flex;
   justify-content: center;
 }
 
-.round-column {
+.bv-round {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -56,8 +53,7 @@
   max-width: 600px;
 }
 
-/* Estilização dos cards de partida */
-.match-card {
+.bv-match-card {
   background: linear-gradient(135deg, #3a3a5a, #2b2b44);
   border-radius: 10px;
   padding: 1.5rem;
@@ -69,20 +65,19 @@
   align-items: center;
 }
 
-.match-card:hover {
+.bv-match-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 }
 
-/* Nomes dos jogadores */
-.match-players {
+.bv-match-players {
   display: flex;
   justify-content: space-between;
   width: 100%;
   margin-bottom: 1rem;
 }
 
-.player-name {
+.bv-player-name {
   flex: 1;
   text-align: center;
   font-size: 1.1rem;
@@ -90,8 +85,8 @@
   position: relative;
 }
 
-/* Barrinha embaixo do nome para dar destaque */
-.player-name::after {
+/* Barrinha embaixo do nome */
+.bv-player-name::after {
   content: "";
   position: absolute;
   bottom: -0.3rem;
@@ -103,8 +98,7 @@
   border-radius: 2px;
 }
 
-/* “vs” central */
-.vs-text {
+.bv-vs {
   flex: 0;
   margin: 0 0.5rem;
   font-size: 1rem;
@@ -112,8 +106,7 @@
   align-self: center;
 }
 
-/* Botão de replay */
-.replay-button {
+.bv-replay-button {
   background-color: #ffb84d;
   color: #2b2b44;
   font-size: 1rem;
@@ -126,15 +119,19 @@
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.replay-button:hover {
+.bv-replay-button:hover {
   background-color: #ff9933;
   transform: translateY(-2px);
 }
 
-/* Mensagens de loading / erro */
-.bracket-loading,
-.bracket-error {
+.bv-loading,
+.bv-error {
   text-align: center;
   color: #fff;
   margin-top: 2rem;
+}
+
+.bv-winner {
+  color: #4dac4a;
+  font-weight: bold;
 }

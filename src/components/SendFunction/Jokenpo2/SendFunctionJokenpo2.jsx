@@ -240,19 +240,17 @@ function SendFunctionJokenpo2() {
             <span>Passo 2 de 2</span>
           </div>
           <div className="informations-section-buttons">
-            <button className="primary-button" onClick={handleOpenInstructions}>
+            <button onClick={handleOpenInstructions}>
               Instruções
             </button>
 
-            <button className="primary-button" onClick={handleOpenAgents}>
+            <button onClick={handleOpenAgents}>
               Agentes
             </button>
 
             {hasSavedFunction && (
               <button
-                className="next-function-button"
                 onClick={() => setSuccessModalOpen(true)}
-                title="Desafie seus amigos!"
               >
                 Desafie seus amigos!
               </button>

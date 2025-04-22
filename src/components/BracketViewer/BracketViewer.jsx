@@ -1,3 +1,4 @@
+// src/components/BracketViewer/BracketViewer.jsx
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import AuthContext from "../../context/AuthContext";
@@ -34,29 +35,28 @@ export default function BracketViewer({ tournamentId }) {
     fetchBracket();
   }, [tournamentId, token]);
 
-  if (error) return <div className="bracket-error">{error}</div>;
-  if (!bracket)
-    return <div className="bracket-loading">Carregando bracket...</div>;
+  if (error) return <div className="bv-error">{error}</div>;
+  if (!bracket) return <div className="bv-loading">Carregando bracket...</div>;
 
   const { rounds } = bracket;
   const round = rounds[currentRound];
 
   return (
-    <div className="bracket-container">
-      <h2 className="bracket-title">
+    <div className="bv-container">
+      <h2 className="bv-title">
         {round.name} ({currentRound + 1} de {rounds.length})
       </h2>
 
-      <div className="bracket-nav">
+      <div className="bv-nav">
         <button
-          className="bracket-nav-button"
+          className="bv-nav-button"
           onClick={() => setCurrentRound((i) => i - 1)}
           disabled={currentRound === 0}
         >
           ← Anterior
         </button>
         <button
-          className="bracket-nav-button"
+          className="bv-nav-button"
           onClick={() => setCurrentRound((i) => i + 1)}
           disabled={currentRound === rounds.length - 1}
         >
@@ -64,25 +64,40 @@ export default function BracketViewer({ tournamentId }) {
         </button>
       </div>
 
-      <div className="round-column-container">
-        <div className="round-column">
-          {round.matches.map((match) => (
-            <div key={match.matchId} className="match-card">
-              <div className="match-players">
-                <span className="player-name">{match.player1Name}</span>
-                <span className="vs-text">vs</span>
-                <span className="player-name">{match.player2Name}</span>
+      <div className="bv-rounds-wrapper">
+        <div className="bv-round">
+          {round.matches.map((match) => {
+            const winnerIsP1 = match.winnerId === match.player1Id;
+            return (
+              <div key={match.matchId} className="bv-match-card">
+                <div className="bv-match-players">
+                  <span
+                    className={
+                      "bv-player-name" + (winnerIsP1 ? " bv-winner" : "")
+                    }
+                  >
+                    {match.player1Name}
+                  </span>
+                  <span className="bv-vs">vs</span>
+                  <span
+                    className={
+                      "bv-player-name" + (!winnerIsP1 ? " bv-winner" : "")
+                    }
+                  >
+                    {match.player2Name}
+                  </span>
+                </div>
+                <button
+                  className="bv-replay-button"
+                  onClick={() =>
+                    window.open(`/matches/${match.matchId}`, "_blank")
+                  }
+                >
+                  ▶ Rever partida
+                </button>
               </div>
-              <button
-                className="replay-button"
-                onClick={() =>
-                  window.open(`/matches/${match.matchId}`, "_blank")
-                }
-              >
-                ▶ Rever partida
-              </button>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
