@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import FunctionJokenpo1 from "./pages/FunctionJokenpo1.jsx";
 import FunctionJokenpo2 from "./pages/FunctionJokenpo2.jsx";
 import PrivateRoute from "./routes/PrivateRoute.jsx";
-import AdminRoute from "./routes/AdminRoute.jsx";
+// import AdminRoute from "./routes/AdminRoute.jsx";
 import Login from "./pages/Login";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import Challenge from "./pages/Challenge.jsx";

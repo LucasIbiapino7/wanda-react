@@ -102,7 +102,6 @@ const Challenge = () => {
             key={student.id}
             student={student}
             onChallenge={handleChallenge}
-            // **Mudança aqui**: passamos o student inteiro
             onViewFunctions={() => handleOpenModal(student)}
             onBadgeClick={(badge) => setSelectedBadge(badge)}
           />

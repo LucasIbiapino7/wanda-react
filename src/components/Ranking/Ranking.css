@@ -103,6 +103,7 @@
 .rk-badge {
   width: 26px;
   height: 26px;
+  cursor: pointer;
   transition: transform 0.17s ease;
 }
 .rk-badge:hover {

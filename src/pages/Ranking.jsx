@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext, useCallback } from "react";
 import axios from "axios";
 import AuthContext from "../context/AuthContext";
-import Pagination from "../components/Challenges/Pagination"
+import Pagination from "../components/Challenges/Pagination";
 import "../components/Ranking/Ranking.css";
+import BadgePreviewModal from "../components/Challenges/BadgePreviewModal";
 
 export default function Ranking() {
   const { token } = useContext(AuthContext);
@@ -12,6 +13,9 @@ export default function Ranking() {
   const [totalPages, setTotal] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const [previewBadge, setPreviewBadge] = useState(null);
+  const closePreview = () => setPreviewBadge(null);
 
   const fetchRanking = useCallback(
     async (pageNum = 0) => {
@@ -69,8 +73,7 @@ export default function Ranking() {
                 <div
                   className="rk-avatar"
                   style={{
-                    backgroundImage: `url(/assets/personagens/${
-                      p.characterUrl})`,
+                    backgroundImage: `url(/assets/personagens/${p.characterUrl})`,
                   }}
                 />
                 <span className="rk-name">{p.name}</span>
@@ -87,6 +90,7 @@ export default function Ranking() {
                     alt={b.name}
                     title={b.name}
                     className="rk-badge"
+                    onClick={() => setPreviewBadge(b)}
                   />
                 ))}
                 {p.badges.length === 0 && "-"}
@@ -101,6 +105,7 @@ export default function Ranking() {
         totalPages={totalPages}
         onPageChange={(p) => fetchRanking(p)}
       />
+      <BadgePreviewModal badge={previewBadge} onClose={closePreview} />
     </div>
   );
 }

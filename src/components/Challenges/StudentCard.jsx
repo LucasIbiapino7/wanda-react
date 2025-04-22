@@ -21,7 +21,6 @@ const StudentCard = ({ student, onChallenge, onViewFunctions, onBadgeClick }) =>
       </div>
 
       <div className="buttons-container">
-        {/* **Mudança aqui**: chamamos onViewFunctions, não passamos student.code */}
         {student.code && (
           <div className="function-icon" data-tooltip="Ver funções" onClick={onViewFunctions}>
             <img src={CodeImg} alt="Código" />

@@ -44,8 +44,14 @@ function Header() {
         <Link className="nav-link" to="/jokenpo1">
           Enviar Função
         </Link>
-        <Link className="nav-link" to="/sobre">
-          Jokenpo
+        <Link className="nav-link" to="/challenges">
+          Desafios
+        </Link>
+        <Link className="nav-link" to="/tournament">
+          Torneios
+        </Link>
+        <Link className="nav-link" to="/ranking">
+          Ranking
         </Link>
 
         {isAuthenticated && (
