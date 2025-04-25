@@ -11,6 +11,7 @@ export default function ParticipatingTournaments() {
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [startLoadingId, setStartLoadingId] = useState(null);
 
   const fetchParticipating = async (pageNum = 0) => {
     setLoading(true);
@@ -38,6 +39,22 @@ export default function ParticipatingTournaments() {
     fetchParticipating(0);
   }, []);
 
+  const handleStartTournament = async (id) => {
+    setStartLoadingId(id);
+    try {
+      await axios.put(
+        `http://localhost:8080/tournament/${id}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      fetchParticipating(page);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setStartLoadingId(null);
+    }
+  };
+
   return (
     <section className="participating-section">
       <h2 className="section-title">Meus Torneios</h2>
@@ -51,19 +68,26 @@ export default function ParticipatingTournaments() {
             <h4>{t.name}</h4>
             <p>{t.description}</p>
             <div className="tournament-meta">
-              Início: {new Date(t.startTime).toLocaleString()}
               <br />
               Participantes: {t.currentParticipants}/{t.maxParticipants}
             </div>
             <div className="tournament-actions">
-              {t.status === "FINISHED" ? (
+              {t.canReady ? (
+                <button
+                  className="card-button start-button"
+                  disabled={startLoadingId === t.id}
+                  onClick={() => handleStartTournament(t.id)}
+                >
+                  {startLoadingId === t.id
+                    ? "Aguarde enquanto o torneio acontece…"
+                    : "Iniciar Torneio"}
+                </button>
+              ) : t.status === "FINISHED" ? (
                 <button
                   className="card-button play-button"
-                  onClick={() =>
-                    window.open(`/tournament/${t.id}`, "_blank")
-                  }
+                  onClick={() => window.open(`/tournament/${t.id}`, "_blank")}
                 >
-                  ▶ Ver Bracket
+                  ▶ Ver Resultado
                 </button>
               ) : (
                 <span className="status-tag">{t.status}</span>

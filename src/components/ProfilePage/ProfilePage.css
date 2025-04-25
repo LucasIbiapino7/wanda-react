@@ -91,43 +91,81 @@
 }
 
 .pp-functions {
-  padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 2rem 0;
+  font-family: "Segoe UI", sans-serif;
 }
+
+.pp-functions h2 {
+  color: #ffb84d;
+  margin-bottom: 0.5rem;
+}
+
 .pp-func-tabs {
   display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
+  background: #2d2d2d;
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
 }
+
 .pp-func-tab {
   flex: 1;
-  padding: 10px;
-  background: #1e1e1e;
-  color: #ccc;
-  border: 1px solid #444;
-  border-radius: 6px;
+  padding: 0.75rem 1.25rem;
+  background: #2d2d2d;
+  color: #bbb;
+  border: none;
   cursor: pointer;
-  transition: background 0.2s ease;
+  font-size: 0.95rem;
+  text-align: center;
+  transition: background 0.2s ease, color 0.2s ease;
 }
+
 .pp-func-tab--active {
-  background: #ffb84d;
-  color: #2b2b44;
-  border-color: #ffb84d;
+  background: #1e1e1e;
+  color: #fff;
+  font-weight: bold;
 }
-.pp-func-content pre {
-  background: #2b2b44;
-  border-radius: 4px;
-  padding: 12px;
+
+.pp-func-tab:not(.pp-func-tab--active):hover {
+  background: #3a3a3a;
+  color: #ddd;
+}
+
+.pp-func-content {
+  background: #1e1e1e;
+  border-radius: 0 0 6px 6px;
+  padding: 1rem;
+  margin-top: -2px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
   overflow-x: auto;
-  font-family: "Comic Neue", cursive;
-  font-size: 0.9rem;
+}
+
+.pp-func-content pre {
+  margin: 0;
+  font-family: "Segoe UI Mono", Consolas, "Liberation Mono", monospace;
+  font-size: 0.95rem;
   line-height: 1.4;
+  color: #e0e0e0;
+}
+
+/* Scrollbar customizado (apenas Webkit) */
+.pp-func-content::-webkit-scrollbar {
+  height: 6px;
+}
+.pp-func-content::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+.pp-func-content::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 3px;
+}
+.pp-func-content::-webkit-scrollbar-thumb:hover {
+  background: #777;
 }
 
 .pp-loading,
 .pp-error {
   text-align: center;
-  margin-top: 80px;
+  padding-top: 80px;
   font-size: 1.2rem;
   color: #ff6666;
 }
@@ -190,4 +228,94 @@
 }
 .pp-char-confirm-btn:not(:disabled):hover {
   background-color: #ff9933;
+}
+
+.pp-history {
+  margin-top: 3rem;
+  color: #fff;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.pp-history-title {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.pp-matches-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.pp-match-card {
+  background: linear-gradient(135deg, #3a3a5a, #2b2b44);
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pp-match-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.pp-match-players {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pp-match-player {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pp-match-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+}
+
+.pp-match-vs {
+  font-weight: bold;
+  color: #ffb84d;
+}
+
+.pp-winner {
+  color: #4dac4a;
+  font-weight: bold;
+}
+
+.pp-match-button {
+  background-color: #ffb84d;
+  color: #2b2b44;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.pp-match-button:hover {
+  background-color: #ff9933;
+  transform: translateY(-2px);
+}
+
+/* Mensagens de loading / erro / vazio */
+.pp-loading,
+.pp-error,
+.pp-empty {
+  text-align: center;
+  margin: 1rem 0;
+  color: #fff;
 }

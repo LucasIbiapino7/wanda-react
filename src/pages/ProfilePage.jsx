@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import AuthContext from "../context/AuthContext";
 import "../components/ProfilePage/ProfilePage.css";
+import Pagination from "../components/Challenges/Pagination";
 
 export default function ProfilePage() {
   const { token } = useContext(AuthContext);
@@ -9,6 +10,12 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeFunc, setActiveFunc] = useState(1);
+
+  const [matches, setMatches] = useState([]);
+  const [matchPage, setMatchPage] = useState(0);
+  const [matchTotalPages, setMatchTotalPages] = useState(0);
+  const [matchLoading, setMatchLoading] = useState(false);
+  const [matchError, setMatchError] = useState(null);
 
   const characters = [
     "p1.png",
@@ -41,6 +48,36 @@ export default function ProfilePage() {
     }
     if (token) fetchProfile();
   }, [token]);
+
+  const fetchMatches = async (page = 0) => {
+    setMatchLoading(true);
+    setMatchError(null);
+    try {
+      const { data } = await axios.get("http://localhost:8080/jokenpo/match", {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { size: 5, page },
+      });
+      setMatches(data.content);
+      setMatchPage(data.number);
+      setMatchTotalPages(data.totalPages);
+    } catch (err) {
+      console.error(err);
+      setMatchError("Não foi possível carregar suas partidas.");
+    } finally {
+      setMatchLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (token) {
+      fetchMatches(0);
+    }
+  }, [token]);
+
+  // handler de paginação
+  const handleMatchPageChange = (newPage) => {
+    fetchMatches(newPage);
+  };
 
   const handleCharSelect = (url) => {
     setSelectedChar(url);
@@ -183,6 +220,65 @@ export default function ProfilePage() {
             </code>
           </pre>
         </div>
+      </section>
+
+      <section className="pp-history">
+        <h2 className="pp-history-title">Últimas Partidas</h2>
+
+        {matchLoading && <p className="pp-loading">Carregando partidas...</p>}
+        {matchError && <p className="pp-error">{matchError}</p>}
+
+        {!matchLoading && matches.length === 0 && (
+          <p className="pp-empty">
+            Você ainda não participou de nenhuma partida.
+          </p>
+        )}
+
+        <div className="pp-matches-grid">
+          {matches.map((m) => (
+            <div key={m.id} className="pp-match-card">
+              <div className="pp-match-players">
+                <div className="pp-match-player">
+                  <img
+                    src={`/assets/personagens/${m.player1.character_url}`}
+                    alt={m.player1.name}
+                    className="pp-match-avatar"
+                  />
+                  <span
+                    className={m.winner.id === m.player1.id ? "pp-winner" : ""}
+                  >
+                    {m.player1.name}
+                  </span>
+                </div>
+                <span className="pp-match-vs">vs</span>
+                <div className="pp-match-player">
+                  <img
+                    src={`/assets/personagens/${m.player2.character_url}`}
+                    alt={m.player2.name}
+                    className="pp-match-avatar"
+                  />
+                  <span
+                    className={m.winner.id === m.player2.id ? "pp-winner" : ""}
+                  >
+                    {m.player2.name}
+                  </span>
+                </div>
+              </div>
+              <button
+                className="pp-match-button"
+                onClick={() => window.open(`/matches/${m.id}`, "_blank")}
+              >
+                Assistir
+              </button>
+            </div>
+          ))}
+        </div>
+
+        <Pagination
+          currentPage={matchPage}
+          totalPages={matchTotalPages}
+          onPageChange={handleMatchPageChange}
+        />
       </section>
     </div>
   );

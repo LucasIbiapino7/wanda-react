@@ -182,6 +182,19 @@
   z-index: 100;
 }
 
+.victory-announcement {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "Press Start 2P", cursive;
+  color: #ffd700;
+  opacity: 0;
+  font-size: 1.5em;
+  text-shadow: 2px 2px 0 #8b0000;
+  z-index: 100;
+}
+
 .test-controls {
   position: absolute;
   bottom: 20px;

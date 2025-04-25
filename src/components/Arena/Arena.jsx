@@ -1,9 +1,9 @@
-import { useRef, useLayoutEffect, useEffect } from "react";
+import { useRef, useLayoutEffect, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { TextPlugin } from "gsap/TextPlugin";
 gsap.registerPlugin(TextPlugin);
-import ArenaBackground from "../../assets/arena-background-pixel-art.png"
-import './Arena.css'
+import ArenaBackground from "../../assets/arena-background-pixel-art.png";
+import "./Arena.css";
 import PropTypes from "prop-types";
 
 const Arena = ({ duelData }) => {
@@ -12,6 +12,7 @@ const Arena = ({ duelData }) => {
   const player1CardsRef = useRef([]);
   const player2CardsRef = useRef([]);
   const matchAnnouncementRef = useRef();
+  const victoryAnnouncementRef = useRef();
   const scoreRefs = useRef({
     player1: useRef(),
     player2: useRef(),
@@ -31,6 +32,10 @@ const Arena = ({ duelData }) => {
 
   // Timeline principal
   const timelineMain = useRef();
+
+  const [paused, setPaused] = useState(false);
+  const [speed, setSpeed] = useState(4.5);
+  const [isPlaying, setIsPlaying] = useState(false); // controla o áudio
 
   const createMatchTimeline = (match) => {
     const tlMatch = gsap.timeline();
@@ -141,7 +146,7 @@ const Arena = ({ duelData }) => {
       }
     });
 
-    // 4. Agora removemos todas as bordas ao final do match (fora do loop de rounds)
+    // 4. removemos todas as bordas ao final do match (fora do loop de rounds)
     tlMatch.call(() => {
       player1CardsRef.current.forEach((card) => {
         card.style.border = "none";
@@ -153,33 +158,69 @@ const Arena = ({ duelData }) => {
 
     // 5. Atualiza os placares com os dados do match.
     tlMatch.call(() => {
-      if (scoreRefs.current.player1 && scoreRefs.current.player1.current) {
-        const el1 = scoreRefs.current.player1.current;
-        el1.innerText = `VITORIAS: ${match.currentScore.player1}`;
-        gsap.fromTo(
-          el1,
-          { scale: 1.2 },
-          { duration: 0.5, scale: 1, ease: "elastic.out(1, 0.3)" }
-        );
-      }
-      if (scoreRefs.current.player2 && scoreRefs.current.player2.current) {
-        const el2 = scoreRefs.current.player2.current;
-        el2.innerText = `VITORIAS: ${match.currentScore.player2}`;
-        gsap.fromTo(
-          el2,
-          { scale: 1.2 },
-          { duration: 0.5, scale: 1, ease: "elastic.out(1, 0.3)" }
-        );
-      }
-      if (scoreRefs.current.remaining && scoreRefs.current.remaining.current) {
-        const elTie = scoreRefs.current.remaining.current;
-        elTie.innerText = `EMPATES: ${match.currentScore.tie}`;
-        gsap.fromTo(
-          elTie,
-          { scale: 1.2 },
-          { duration: 0.5, scale: 1, ease: "elastic.out(1, 0.3)" }
-        );
-      }
+      const { player1, player2, tie } = match.currentScore;
+
+      const p1El = scoreRefs.current.player1?.current;
+      const p2El = scoreRefs.current.player2?.current;
+      const tieEl = scoreRefs.current.remaining?.current;
+
+      // helper local recebe também o ref do personagem
+      const bumpIfChanged = (el, newText, charRef) => {
+        if (!el) return;
+        if (el.innerText !== newText) {
+          el.innerText = newText;
+
+          // 1) flash curto em amarelo no próprio elemento de texto
+          gsap.fromTo(
+            el,
+            { backgroundColor: "#ffb84d", color: "#2b2b44" },
+            { backgroundColor: "transparent", color: "#00ff00", duration: 0.4 }
+          );
+
+          // 2) efeito elástico de escala
+          gsap.fromTo(
+            el,
+            { scale: 1.25 },
+            { duration: 0.5, scale: 1, ease: "elastic.out(1,0.35)" }
+          );
+
+          // 3) shake bem chamativo no personagem (se a ref existir)
+          if (charRef?.current) {
+            const tlChar = gsap.timeline();
+            tlChar
+              // shake horizontal maior
+              .to(charRef.current, {
+                x: -20,
+                duration: 0.08,
+                ease: "power1.inOut",
+                yoyo: true,
+                repeat: 8,
+              })
+              // pulso de brilho dourado
+              .to(
+                charRef.current,
+                {
+                  scale: 1.3,
+                  filter: "drop-shadow(0 0 30px gold)",
+                  duration: 0.3,
+                  yoyo: true,
+                  repeat: 1,
+                },
+                "<" // inicia junto com o último repeat do shake
+              )
+              // volta ao estado normal
+              .to(charRef.current, {
+                scale: 1,
+                filter: "none",
+                duration: 0.2,
+              });
+          }
+        }
+      };
+
+      bumpIfChanged(p1El, `VITORIAS: ${player1}`, characterLeftRef);
+      bumpIfChanged(p2El, `VITORIAS: ${player2}`, characterRightRef);
+      bumpIfChanged(tieEl, `EMPATES: ${tie}`, null);
     });
 
     // Uma pequena pausa antes do próximo match
@@ -212,7 +253,7 @@ const Arena = ({ duelData }) => {
       masterTL.call(() => {
         if (duelData.playerWinner) {
           // Exibe o anúncio do vencedor
-          gsap.to(matchAnnouncementRef.current, {
+          gsap.to(victoryAnnouncementRef.current, {
             duration: 1,
             opacity: 1,
             text: `${duelData.playerWinner.name} Venceu!`,
@@ -316,6 +357,7 @@ const Arena = ({ duelData }) => {
 
       // Salva a timeline principal para controles se necessário
       timelineMain.current = masterTL;
+      masterTL.timeScale(4.5);
       masterTL.play();
     }, arenaRef);
 
@@ -323,24 +365,47 @@ const Arena = ({ duelData }) => {
   }, [duelData]); // Caso os dados mudem, a timeline se atualiza
 
   useEffect(() => {
-    const handleUnmute = () => {
-      if (audioRef.current && audioRef.current.muted) {
-        audioRef.current.muted = false;
-        audioRef.current.play();
-        document.removeEventListener("click", handleUnmute);
-      }
-    };
-    document.addEventListener("click", handleUnmute);
     if (audioRef.current) {
       audioRef.current.volume = 0.1;
     }
-    return () => document.removeEventListener("click", handleUnmute);
   }, []);
+
+  // Pausar / retomar timeline
+  const togglePlayPause = () => {
+    const tl = timelineMain.current;
+    if (tl.paused()) {
+      tl.play();
+      setPaused(false);
+    } else {
+      tl.pause();
+      setPaused(true);
+    }
+  };
+
+  const toggleSpeed = () => {
+    const tl = timelineMain.current;
+    const next = speed === 4.5 ? 2 : 4.5;
+    tl.timeScale(next);
+    setSpeed(next);
+  };
+
+  // Tocar / pausar música
+  const toggleMusic = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (!isPlaying) {
+      audio.play();
+      setIsPlaying(true);
+    } else {
+      audio.pause();
+      setIsPlaying(false);
+    }
+  };
 
   return (
     <div className="arena-container" ref={arenaRef}>
       {/* NOVA: Elemento de áudio para a música de fundo */}
-      <audio id="background-music" ref={audioRef} autoPlay loop muted>
+      <audio id="background-music" ref={audioRef} loop>
         <source src="/assets/music/battle-sound.mp3" type="audio/mpeg" />
       </audio>
       <div
@@ -349,6 +414,11 @@ const Arena = ({ duelData }) => {
       >
         {/* Anúncio de partida */}
         <div className="match-announcement" ref={matchAnnouncementRef}></div>
+
+        <div
+          className="victory-announcement"
+          ref={victoryAnnouncementRef}
+        ></div>
 
         {/* Informações dos players */}
         <div className="player-info left">
@@ -415,39 +485,20 @@ const Arena = ({ duelData }) => {
 
         {/* Controles temporários para testes */}
         <div className="test-controls">
-          {/* Botão para pausar/retomar */}
-          <button
-            onClick={() => {
-              if (timelineMain.current.paused()) {
-                timelineMain.current.play();
-              } else {
-                timelineMain.current.pause();
-              }
-            }}
-          >
-            {timelineMain.current && timelineMain.current.paused()
-              ? "Retomar"
-              : "Pausar"}
+          <button className="control-btn" onClick={togglePlayPause}>
+            {paused ? "Retomar" : "Pausar"}
           </button>
-
-          {/* Botão para acelerar a velocidade */}
-          <button
-            onClick={() => {
-              const currentScale = timelineMain.current.timeScale();
-              timelineMain.current.timeScale(currentScale === 1 ? 3.5 : 1);
-            }}
-          >
-            Acelerar
+          <button className="control-btn" onClick={toggleSpeed}>
+            {speed === 4.5 ? "Normal" : "Acelerar"}
           </button>
-
-          {/* Botão para ir direto pro final da partida */}
           <button
-            onClick={() => {
-              // Define a progressão da timeline principal para 1 (fim)
-              timelineMain.current.progress(1);
-            }}
+            className="control-btn"
+            onClick={() => timelineMain.current.progress(1)}
           >
             Finalizar
+          </button>
+          <button className="control-btn" onClick={toggleMusic}>
+            {isPlaying ? "🔇" : "🔊"}
           </button>
         </div>
       </div>

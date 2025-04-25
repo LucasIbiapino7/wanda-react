@@ -93,7 +93,7 @@ export default function BracketViewer({ tournamentId }) {
                     window.open(`/matches/${match.matchId}`, "_blank")
                   }
                 >
-                  ▶ Rever partida
+                  ▶ Assista a partida
                 </button>
               </div>
             );
