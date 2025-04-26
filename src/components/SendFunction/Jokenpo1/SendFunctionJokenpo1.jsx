@@ -13,6 +13,7 @@ import like from "../../../assets/like.svg";
 import dislike from "../../../assets/dislike.svg";
 import InstructionsModal from "../InstructionsModal";
 import SuccessModal from "../SuccessModal";
+import WelcomeModal from "../../WelcomeModal/WelcomeModal";
 
 function SendFunctionJokenpo1() {
   const navigate = useNavigate();
@@ -25,6 +26,8 @@ function SendFunctionJokenpo1() {
   const [feedbackAgentId, setFeedbackAgentId] = useState(null);
   const [feedbackSent, setFeedbackSent] = useState(false);
 
+  const [showWelcome, setShowWelcome] = useState(false);
+
   const [hasSavedFunction, setHasSavedFunction] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
 
@@ -36,6 +39,21 @@ function SendFunctionJokenpo1() {
   const handleAgentTabClick = (agent) => {
     setAssistantStyle(agent);
     console.log("Mudando agente para:", agent);
+  };
+
+  // Exibe o modal ao abrir o componente
+  useEffect(() => {
+    setShowWelcome(true);
+  }, []);
+
+  const handleStartTour = () => {
+    setShowWelcome(false);
+    // aqui você pode disparar o tutorial (Joyride ou seu passo a passo)
+    // setRunTour(true);
+  };
+
+  const handleSkipTour = () => {
+    setShowWelcome(false);
   };
 
   // Carregar função salva ao montar o componente
@@ -238,6 +256,9 @@ function SendFunctionJokenpo1() {
 
   return (
     <div className="container-sendfunction">
+      {showWelcome && (
+        <WelcomeModal onStart={handleStartTour} onSkip={handleSkipTour} />
+      )}
       <div className="top-section">
         <div className="informations-section">
           <h1>Função 1 – Sua Estratégia no Round 1</h1>
