@@ -47,16 +47,21 @@ function SendFunctionJokenpo1() {
 
   // Exibe o modal ao abrir o componente
   useEffect(() => {
-    setShowWelcome(true);
+    const seen = localStorage.getItem('wandaTourSeen');
+    if(!seen) {
+      setShowWelcome(true);
+    }
   }, []);
 
   const handleStartTour = () => {
     setShowWelcome(false);
     setRunTour(true);
+    localStorage.setItem('wandaTourSeen', 'true');
   };
 
   const handleSkipTour = () => {
     setShowWelcome(false);
+    localStorage.setItem('wandaTourSeen', 'true');
   };
 
   // Carregar função salva ao montar o componente
