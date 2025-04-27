@@ -14,6 +14,8 @@ import dislike from "../../../assets/dislike.svg";
 import InstructionsModal from "../InstructionsModal";
 import SuccessModal from "../SuccessModal";
 import WelcomeModal from "../../WelcomeModal/WelcomeModal";
+import Joyride from "react-joyride";
+import { tourSteps } from "../../../constants/tourSteps.jsx";
 
 function SendFunctionJokenpo1() {
   const navigate = useNavigate();
@@ -27,6 +29,8 @@ function SendFunctionJokenpo1() {
   const [feedbackSent, setFeedbackSent] = useState(false);
 
   const [showWelcome, setShowWelcome] = useState(false);
+
+  const [runTour, setRunTour] = useState(false); // Estado para controlar a tour
 
   const [hasSavedFunction, setHasSavedFunction] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
@@ -48,8 +52,7 @@ function SendFunctionJokenpo1() {
 
   const handleStartTour = () => {
     setShowWelcome(false);
-    // aqui você pode disparar o tutorial (Joyride ou seu passo a passo)
-    // setRunTour(true);
+    setRunTour(true);
   };
 
   const handleSkipTour = () => {
@@ -256,6 +259,42 @@ function SendFunctionJokenpo1() {
 
   return (
     <div className="container-sendfunction">
+      {runTour && (
+        <Joyride
+          steps={tourSteps}
+          run={true}
+          disableBeacon
+          continuous
+          showProgress
+          showSkipButton
+          locale={{
+            back: "Voltar",
+            close: "Fechar",
+            last: "Fim",
+            next: "Próximo",
+            skip: "Pular",
+          }}
+          styles={{
+            options: {
+              arrowColor: "#ffcc00",
+              backgroundColor: "#1e1e1e",
+              textColor: "#fff",
+              primaryColor: "#ffcc00",
+              spotlightPadding: 8,
+            },
+            tooltipContainer: {
+              borderRadius: "8px",
+              padding: "1rem",
+            },
+          }}
+          callback={({ status }) => {
+            if (["finished", "skipped"].includes(status)) {
+              setRunTour(false);
+            }
+          }}
+        />
+      )}
+
       {showWelcome && (
         <WelcomeModal onStart={handleStartTour} onSkip={handleSkipTour} />
       )}
