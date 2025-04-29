@@ -43,12 +43,11 @@ function Matches() {
     return <div>Erro ao carregar duelo: {error.message || "Tente novamente."}</div>;
   }
   if (!match) {
-    return null; // ou placeholder vazio
+    return null;
   }
 
   return (
     <>
-      {/* Passa duelData para o componente Arena */}
       <Arena duelData={match} />
     </>
   );

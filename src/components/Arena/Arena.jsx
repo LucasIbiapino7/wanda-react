@@ -35,7 +35,7 @@ const Arena = ({ duelData }) => {
 
   const [paused, setPaused] = useState(false);
   const [speed, setSpeed] = useState(4.5);
-  const [isPlaying, setIsPlaying] = useState(false); // controla o áudio
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const createMatchTimeline = (match) => {
     const tlMatch = gsap.timeline();
@@ -56,8 +56,6 @@ const Arena = ({ duelData }) => {
     });
 
     // 2. Atualiza os src das cartas usando a ordem correta do JSON.
-    //    Aqui, atualizamos as imagens e (se necessário) podemos limpar as bordas antigas,
-    //    embora agora a remoção das bordas seja feita no fim do match.
     tlMatch.call(() => {
       // Atualizando as cartas do Player 1
       player1CardsRef.current.forEach((cardElement, index) => {
@@ -73,8 +71,7 @@ const Arena = ({ duelData }) => {
       });
     });
 
-    // 3. Para cada round (play) dentro do match, anima as cartas jogadas simultaneamente.
-    //    Usamos os índices para selecionar a carta, pois agora a ordem reflete a ordem de jogada.
+    // 3. Para cada round dentro do match, anima as cartas jogadas simultaneamente.
     match.plays.forEach((play, index) => {
       // Seleciona a carta pela posição (já que a ordem do array corresponde à ordem de jogada)
       const cardPlayer1 = player1CardsRef.current[index];
@@ -82,8 +79,7 @@ const Arena = ({ duelData }) => {
 
       if (cardPlayer1 && cardPlayer2) {
         // Movimenta ambas as cartas para o centro simultaneamente.
-        // Valores atualizados para 120 e -120
-        const movePosition = ">0.2"; // mesmo início para ambos
+        const movePosition = ">0.2";
         tlMatch.to(
           cardPlayer1,
           {
@@ -103,7 +99,6 @@ const Arena = ({ duelData }) => {
           movePosition
         );
 
-        // Após atingirem o centro, aplica o efeito de borda para indicar o resultado.
         tlMatch.call(() => {
           if (play.tie || play.winnerOfPlay === 0) {
             // Empate: borda amarela em ambas
@@ -120,10 +115,8 @@ const Arena = ({ duelData }) => {
           }
         });
 
-        // Uma pequena pausa para que o usuário veja as bordas
         tlMatch.to({}, { duration: 0.3 });
 
-        // Em seguida, retorna ambas as cartas à posição original simultaneamente.
         const returnPosition = ">0.1";
         tlMatch.to(
           cardPlayer1,
@@ -146,7 +139,7 @@ const Arena = ({ duelData }) => {
       }
     });
 
-    // 4. removemos todas as bordas ao final do match (fora do loop de rounds)
+    // 4. removemos todas as bordas ao final do match
     tlMatch.call(() => {
       player1CardsRef.current.forEach((card) => {
         card.style.border = "none";
@@ -163,32 +156,26 @@ const Arena = ({ duelData }) => {
       const p1El = scoreRefs.current.player1?.current;
       const p2El = scoreRefs.current.player2?.current;
       const tieEl = scoreRefs.current.remaining?.current;
-
-      // helper local recebe também o ref do personagem
       const bumpIfChanged = (el, newText, charRef) => {
         if (!el) return;
         if (el.innerText !== newText) {
           el.innerText = newText;
 
-          // 1) flash curto em amarelo no próprio elemento de texto
           gsap.fromTo(
             el,
             { backgroundColor: "#ffb84d", color: "#2b2b44" },
             { backgroundColor: "transparent", color: "#00ff00", duration: 0.4 }
           );
 
-          // 2) efeito elástico de escala
           gsap.fromTo(
             el,
             { scale: 1.25 },
             { duration: 0.5, scale: 1, ease: "elastic.out(1,0.35)" }
           );
 
-          // 3) shake bem chamativo no personagem (se a ref existir)
           if (charRef?.current) {
             const tlChar = gsap.timeline();
             tlChar
-              // shake horizontal maior
               .to(charRef.current, {
                 x: -20,
                 duration: 0.08,
@@ -196,7 +183,6 @@ const Arena = ({ duelData }) => {
                 yoyo: true,
                 repeat: 8,
               })
-              // pulso de brilho dourado
               .to(
                 charRef.current,
                 {
@@ -206,9 +192,8 @@ const Arena = ({ duelData }) => {
                   yoyo: true,
                   repeat: 1,
                 },
-                "<" // inicia junto com o último repeat do shake
+                "<"
               )
-              // volta ao estado normal
               .to(charRef.current, {
                 scale: 1,
                 filter: "none",
@@ -223,19 +208,18 @@ const Arena = ({ duelData }) => {
       bumpIfChanged(tieEl, `EMPATES: ${tie}`, null);
     });
 
-    // Uma pequena pausa antes do próximo match
     tlMatch.to({}, { duration: 1 });
 
     return tlMatch;
   };
 
-  // Configuração das animações (timeline principal)
+  // Configuração das animações
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       // Cria uma timeline principal
       const masterTL = gsap.timeline({ paused: true });
 
-      // Animação inicial para a arena (ex.: fade in)
+      // Animação inicial para a arena
       masterTL.from(arenaRef.current, {
         opacity: 0,
         y: 100,
@@ -249,7 +233,6 @@ const Arena = ({ duelData }) => {
       });
 
       // Após todas as partidas, exibe uma animação final para o vencedor e destaca o personagem vencedor
-      // Após todas as partidas, exibe uma animação final para o vencedor e aplica efeitos de destaque e dano.
       masterTL.call(() => {
         if (duelData.playerWinner) {
           // Exibe o anúncio do vencedor
@@ -273,12 +256,12 @@ const Arena = ({ duelData }) => {
                 ease: "power2.out",
               })
               .to(characterLeftRef.current, {
-                duration: 3, // Mantém o destaque por 3 segundos
+                duration: 3,
                 scale: 1.5,
                 ease: "none",
               });
 
-            // Aplica efeito de dano (shake + flash) no perdedor (Player 2)
+            // Aplica efeito de dano
             gsap.set(characterRightRef.current, { clearProps: "animation" });
             gsap.killTweensOf(characterRightRef.current);
             gsap
@@ -300,7 +283,6 @@ const Arena = ({ duelData }) => {
                 x: 0,
                 ease: "power1.inOut",
               })
-              // Mantém o flash vermelho por 3 segundos
               .to(characterRightRef.current, {
                 duration: 3,
                 filter: "drop-shadow(0 0 20px red)",
@@ -324,7 +306,7 @@ const Arena = ({ duelData }) => {
                 ease: "none",
               });
 
-            // Aplica efeito de dano (shake + flash) no perdedor (Player 1)
+            // Aplica efeito de dano
             gsap.set(characterLeftRef.current, { clearProps: "animation" });
             gsap.killTweensOf(characterLeftRef.current);
             gsap
@@ -370,7 +352,6 @@ const Arena = ({ duelData }) => {
     }
   }, []);
 
-  // Pausar / retomar timeline
   const togglePlayPause = () => {
     const tl = timelineMain.current;
     if (tl.paused()) {
@@ -389,7 +370,6 @@ const Arena = ({ duelData }) => {
     setSpeed(next);
   };
 
-  // Tocar / pausar música
   const toggleMusic = () => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -404,7 +384,6 @@ const Arena = ({ duelData }) => {
 
   return (
     <div className="arena-container" ref={arenaRef}>
-      {/* NOVA: Elemento de áudio para a música de fundo */}
       <audio id="background-music" ref={audioRef} loop>
         <source src="/assets/music/battle-sound.mp3" type="audio/mpeg" />
       </audio>
@@ -412,7 +391,6 @@ const Arena = ({ duelData }) => {
         className="arena"
         style={{ backgroundImage: `url(${ArenaBackground})` }}
       >
-        {/* Anúncio de partida */}
         <div className="match-announcement" ref={matchAnnouncementRef}></div>
 
         <div
@@ -420,7 +398,6 @@ const Arena = ({ duelData }) => {
           ref={victoryAnnouncementRef}
         ></div>
 
-        {/* Informações dos players */}
         <div className="player-info left">
           <h2 className="player-name">{duelData.player1.name}</h2>
           <span className="turns-won" ref={scoreRefs.current.player1}>
@@ -435,7 +412,6 @@ const Arena = ({ duelData }) => {
           </span>
         </div>
 
-        {/* Personagens */}
         <img
           src={`/assets/personagens/${duelData.player1.character_url}`}
           alt="Jogador 1"
@@ -449,12 +425,10 @@ const Arena = ({ duelData }) => {
           ref={characterRightRef}
         />
 
-        {/* Cartas do Jogador 1 */}
         <div className="cards left-cards">
           {[1, 2, 3].map((card, index) => (
             <img
               key={`left-${card}`}
-              // Definindo um src default; logo após, a timeline o atualizará
               src="/pedra.png"
               alt="Carta do Jogador 1"
               className="card"
@@ -463,7 +437,6 @@ const Arena = ({ duelData }) => {
           ))}
         </div>
 
-        {/* Cartas do Jogador 2 */}
         <div className="cards right-cards">
           {[1, 2, 3].map((card, index) => (
             <img
@@ -476,14 +449,12 @@ const Arena = ({ duelData }) => {
           ))}
         </div>
 
-        {/* Indicador de Empates */}
         <div className="tie-indicator">
           <span className="counter" ref={scoreRefs.current.remaining}>
             EMPATES: 0
           </span>
         </div>
 
-        {/* Controles temporários para testes */}
         <div className="test-controls">
           <button className="control-btn" onClick={togglePlayPause}>
             {paused ? "Retomar" : "Pausar"}

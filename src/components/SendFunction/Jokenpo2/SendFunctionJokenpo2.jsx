@@ -32,13 +32,12 @@ function SendFunctionJokenpo2() {
 
   const [assistantStyle, setAssistantStyle] = useState("VERBOSE");
 
-  // Atualiza o agente selecionado
   const handleAgentTabClick = (agent) => {
     setAssistantStyle(agent);
     console.log("Mudando agente para:", agent);
   };
 
-  // Carregar função salva ao montar o componente
+
   useEffect(() => {
     async function fetchSavedFunction() {
       try {
@@ -48,7 +47,7 @@ function SendFunctionJokenpo2() {
         });
         if (response.status === 200 && response.data && response.data.code) {
           setText(response.data.code);
-          setHasSavedFunction(true); // Função salva encontrada!
+          setHasSavedFunction(true); 
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -61,7 +60,6 @@ function SendFunctionJokenpo2() {
     fetchSavedFunction();
   }, [token, defaultCode]);
 
-  // Efeito de digitação para exibir o feedback
   useEffect(() => {
     if (!feedback) {
       setTypedMessage("");
@@ -81,7 +79,6 @@ function SendFunctionJokenpo2() {
     return () => clearInterval(intervalId);
   }, [feedback]);
 
-  // Envio do feedback ao backend
   const handleSubmitFeedback = async () => {
     setLoading(true);
     setFeedback(null);
@@ -109,7 +106,6 @@ function SendFunctionJokenpo2() {
     }
   };
 
-  // Submissão da função
   const handleSubmitFunction = async () => {
     try {
       setLoading(true);
@@ -128,10 +124,9 @@ function SendFunctionJokenpo2() {
       });
       setFeedbackAgentId(response.data.feedbackId);
       setFeedback(response.data.feedback);
-      // Se a função estiver válida, abrimos o modal para avançar para a função 2.
       if (response.data.valid) {
         setSuccessModalOpen(true);
-        setHasSavedFunction(true); // Mantém que existe uma função salva
+        setHasSavedFunction(true); 
       }
     } catch (error) {
       const errorMessage =
@@ -142,7 +137,7 @@ function SendFunctionJokenpo2() {
     }
   };
 
-  // Função do botão "Run"
+  // Função do botão Run
   const handleRun = async () => {
     setLoading(true);
     setFeedback(null);
@@ -170,7 +165,6 @@ function SendFunctionJokenpo2() {
     }
   };
 
-  // Enviar feedback do usuário (like)
   const handleLike = async () => {
     console.log("like clicked!");
     try {
@@ -190,7 +184,6 @@ function SendFunctionJokenpo2() {
     }
   };
 
-  // Enviar feedback do usuário (dislike)
   const handleDislike = async () => {
     console.log("dislike clicked!");
     try {
@@ -213,7 +206,6 @@ function SendFunctionJokenpo2() {
     }
   };
 
-  // Controle do modal de instruções
   const [instructionsModalOpen, setInstructionsModalOpen] = useState(false);
   const handleOpenInstructions = () => {
     setInstructionsModalOpen(true);
@@ -222,7 +214,6 @@ function SendFunctionJokenpo2() {
     setInstructionsModalOpen(false);
   };
 
-  // Controle do modal de agentes
   const [agentsModalOpen, setAgentsModalOpen] = useState(false);
   const handleOpenAgents = () => {
     setAgentsModalOpen(true);
@@ -252,7 +243,6 @@ function SendFunctionJokenpo2() {
           </div>
         </div>
         <div className="editor-feedback-container">
-          {/* Editor de Código */}
           <div className="editor-section">
             <CodeMirror
               value={text}
@@ -264,7 +254,6 @@ function SendFunctionJokenpo2() {
               minHeight={"550px"}
             />
           </div>
-          {/* Área de Feedback e Seleção dos Agentes */}
           <div className="feedback-space">
             <div className="agent-tabs">
               <div

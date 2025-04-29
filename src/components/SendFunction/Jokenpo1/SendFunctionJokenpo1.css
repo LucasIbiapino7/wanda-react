@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap");
 
-/* SendFunction.module.css */
 .container-sendfunction {
   display: flex;
   flex-direction: column;
@@ -23,7 +22,6 @@
   display: inline-block;
 }
 
-/* Top section que engloba tudo */
 .top-section {
   display: flex;
   flex-direction: column;
@@ -33,7 +31,7 @@
 
 .informations-section {
   display: flex;
-  justify-content: space-between; /* Espaço entre o título e o botão */
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -43,8 +41,7 @@
   color: #fff;
 }
 
-
-.informations-section-buttons{
+.informations-section-buttons {
   display: flex;
   gap: 15px;
 }
@@ -66,26 +63,22 @@
   transform: translateY(-2px);
 }
 
-/* Novo container para exibir editor e feedback lado a lado */
 .editor-feedback-container {
   display: flex;
   gap: 10px;
   align-items: stretch;
 }
 
-/* Igualando a altura do editor e da área de feedback */
 .editor-feedback-container > .editor-section,
 .editor-feedback-container > .feedback-space {
   height: 550px;
 }
 
-/* Seção do Editor de Código */
 .editor-section {
-  flex: 3; /* Ocupa mais espaço */
+  flex: 3;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  /* Altura definida pelo container pai */
 }
 
 .title {
@@ -101,32 +94,28 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Área de Feedback */
 .feedback-space {
   flex: 2;
   background: #f5f5f5;
   padding: 1rem;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  /* Largura flexível dentro do container */
   display: flex;
   flex-direction: column;
 }
 
-/* Estilização da área do Feedback */
 .feedback {
   background-color: #ffffff;
   border: 2px solid #d1ecf1;
   width: 100%;
   white-space: normal;
   border-radius: 8px;
-  /* Ajuste a altura para subtrair o espaço do avatar e dos botões (valor ajustável) */
   height: calc(100% - 120px);
   padding: 20px;
   color: #333;
   font-size: 16px;
   overflow-y: auto;
-  overflow-x: hidden; /* Evita scroll lateral */
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -141,7 +130,6 @@
   word-wrap: break-word;
 }
 
-/* Avatar do Assistente */
 .assistant-avatar {
   display: flex;
   align-items: center;
@@ -178,7 +166,6 @@
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
 }
 
-/* Botões dentro da área de feedback */
 .container-buttons {
   display: flex;
   gap: 20px;
@@ -187,17 +174,14 @@
   margin-top: 1rem;
 }
 
-/* Seção dos botões de reação (like/dislike) */
 .feedback-reactions {
   display: flex;
   gap: 10px;
 }
 
-/* Botões de reação com cores fixas */
-/* Estilo base dos botões de reação */
 .reaction-button {
   background: transparent;
-  border: 2px solid #ffb84d; /* ou outra cor neutra que você esteja usando */
+  border: 2px solid #ffb84d;
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -209,26 +193,22 @@
   align-items: center;
 }
 
-/* Efeito de hover para o botão Like (verde) */
 .reaction-button.like:hover {
-  background-color: #4dac4a; /* verde */
+  background-color: #4dac4a;
   border-color: #4dac4a;
 }
 
-/* Efeito de hover para o botão Dislike (vermelho) */
 .reaction-button.dislike:hover {
-  background-color: #d14545; /* vermelho */
+  background-color: #d14545;
   border-color: #d14545;
 }
 
-/* Estilo para as imagens dentro dos botões */
 .reaction-button img {
   width: 60%;
   height: 60%;
   object-fit: contain;
 }
 
-/* Container para os botões Run, Feedback e Submeter */
 .container-buttons-send {
   display: flex;
   gap: 10px;
@@ -274,7 +254,6 @@
   transform: translateY(-2px);
 }
 
-/* Animação de fade-in (já existente) */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -284,7 +263,6 @@
   }
 }
 
-/* Efeito de digitação para os pontinhos */
 .typing-indicator {
   font-family: "Comic Neue", cursive;
   font-size: 1.5rem;
@@ -301,7 +279,6 @@
   }
 }
 
-/* Responsividade: em telas menores, empilha os elementos */
 @media (max-width: 768px) {
   .editor-feedback-container {
     flex-direction: column;
@@ -318,7 +295,6 @@
   }
 }
 
-/* Estilos para as abas de seleção dos agentes */
 .agent-tabs {
   display: flex;
   gap: 15px;
@@ -358,9 +334,7 @@
 .feedback-indicator {
   text-align: center;
   font-size: 0.9rem;
-  color: #4dac4a; /* Verde discreto para indicar sucesso */
+  color: #4dac4a;
   margin-top: 10px;
   font-style: italic;
 }
-
-

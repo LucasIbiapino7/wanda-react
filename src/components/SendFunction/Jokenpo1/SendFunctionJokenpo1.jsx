@@ -74,7 +74,7 @@ function SendFunctionJokenpo1() {
         });
         if (response.status === 200 && response.data && response.data.code) {
           setText(response.data.code);
-          setHasSavedFunction(true); // Função salva encontrada!
+          setHasSavedFunction(true); 
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -87,7 +87,7 @@ function SendFunctionJokenpo1() {
     fetchSavedFunction();
   }, [token, defaultCode]);
 
-  // Efeito de digitação para exibir o feedback
+
   useEffect(() => {
     if (!feedback) {
       setTypedMessage("");
@@ -154,10 +154,9 @@ function SendFunctionJokenpo1() {
       });
       setFeedbackAgentId(response.data.feedbackId);
       setFeedback(response.data.feedback);
-      // Se a função estiver válida, abrimos o modal para avançar para a função 2.
       if (response.data.valid) {
         setSuccessModalOpen(true);
-        setHasSavedFunction(true); // Mantém que existe uma função salva
+        setHasSavedFunction(true);
       }
     } catch (error) {
       const errorMessage =
@@ -168,7 +167,7 @@ function SendFunctionJokenpo1() {
     }
   };
 
-  // Função do botão "Run"
+  // Função do botão Run
   const handleRun = async () => {
     setLoading(true);
     setFeedback(null);
@@ -324,7 +323,6 @@ function SendFunctionJokenpo1() {
           </div>
         </div>
         <div className="editor-feedback-container">
-          {/* Editor de Código */}
           <div className="editor-section">
             <CodeMirror
               value={text}
@@ -336,7 +334,6 @@ function SendFunctionJokenpo1() {
               minHeight={"550px"}
             />
           </div>
-          {/* Área de Feedback e Seleção dos Agentes */}
           <div className="feedback-space">
             <div className="agent-tabs">
               <div
