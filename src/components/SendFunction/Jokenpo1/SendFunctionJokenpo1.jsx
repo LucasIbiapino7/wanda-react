@@ -53,15 +53,19 @@ function SendFunctionJokenpo1() {
     }
   }, []);
 
-  const handleStartTour = () => {
+  const handleStartTour = (dontShowAgain) => {
     setShowWelcome(false);
     setRunTour(true);
-    localStorage.setItem("wandaTourSeen", "true");
+    if (dontShowAgain) {
+      localStorage.setItem("wandaTourSeen", "true");
+    }
   };
 
-  const handleSkipTour = () => {
+  const handleSkipTour = (dontShowAgain) => {
     setShowWelcome(false);
-    localStorage.setItem("wandaTourSeen", "true");
+    if (dontShowAgain) {
+      localStorage.setItem("wandaTourSeen", "true");
+    }
   };
 
   // Carregar função salva ao montar o componente
@@ -74,7 +78,7 @@ function SendFunctionJokenpo1() {
         });
         if (response.status === 200 && response.data && response.data.code) {
           setText(response.data.code);
-          setHasSavedFunction(true); 
+          setHasSavedFunction(true);
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -86,7 +90,6 @@ function SendFunctionJokenpo1() {
     }
     fetchSavedFunction();
   }, [token, defaultCode]);
-
 
   useEffect(() => {
     if (!feedback) {
@@ -494,30 +497,30 @@ function SendFunctionJokenpo1() {
               <strong>Cosmo:</strong> Mais detalhista nas suas explicações.
             </li>
             <li>
-              <strong>Timmy:</strong> vai direto ao ponto, usando
-              poucas frases objetivas para destacar apenas o essencial.
+              <strong>Timmy:</strong> vai direto ao ponto, usando poucas frases
+              objetivas para destacar apenas o essencial.
             </li>
             <li>
-              <strong>Wanda:</strong> equilibra detalhes e
-              objetividade, oferecendo explicações claras sem se estender demais.
+              <strong>Wanda:</strong> equilibra detalhes e objetividade,
+              oferecendo explicações claras sem se estender demais.
             </li>
           </ul>
 
           <h3>Ações disponíveis:</h3>
           <ul>
             <li>
-              <strong>Feedback:</strong> envia seu código para que o
-              assistente escolhido analise sua função e envie comentários
-              personalizados sobre como você está usando os parâmetros da função.
+              <strong>Feedback:</strong> envia seu código para que o assistente
+              escolhido analise sua função e envie comentários personalizados
+              sobre como você está usando os parâmetros da função.
             </li>
             <li>
-              <strong>Run:</strong> executa testes na sua função sem
-              salvá-la, permitindo validar as saídas da função em situações reais do Jokenpo.
+              <strong>Run:</strong> executa testes na sua função sem salvá-la,
+              permitindo validar as saídas da função em situações reais do
+              Jokenpo.
             </li>
             <li>
-              <strong>Submeter:</strong> envia sua versão final para
-              validação definitiva. Se tudo estiver correto, você seguirá para a
-              Função 2.
+              <strong>Submeter:</strong> envia sua versão final para validação
+              definitiva. Se tudo estiver correto, você seguirá para a Função 2.
             </li>
           </ul>
         </div>

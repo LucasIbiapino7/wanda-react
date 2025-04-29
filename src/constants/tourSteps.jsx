@@ -16,7 +16,7 @@ export const tourSteps = [
     target: ".agent-tab:nth-child(1)",
     content: (
       <div>
-        <h3>Cosmo (Verbose)</h3>
+        <h3>Cosmo</h3>
         <p>
           Oi! Eu percebi que você está enfrentando um probleminha no seu código.
           O erro acontece na linha 2, onde você esqueceu de colocar o
@@ -35,7 +35,7 @@ export const tourSteps = [
     target: ".agent-tab:nth-child(2)",
     content: (
       <div>
-        <h3>Timmy (Succinct)</h3>
+        <h3>Timmy</h3>
         <p>
           O erro ocorre na linha 2: &apos;if card1 == &quot;pedra&quot;&apos;.
           Adicione &quot;:&quot; ao final da linha para corrigir.
@@ -49,7 +49,7 @@ export const tourSteps = [
     target: ".agent-tab:nth-child(3)",
     content: (
       <div>
-        <h3>Wanda (Intermediate)</h3>
+        <h3>Wanda</h3>
         <p>
           Para corrigir o erro, você deve adicionar &apos;:&apos; no final da linha 2.
           Aqui está a correção: python if card1 == &quot;pedra&quot;:

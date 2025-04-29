@@ -50,36 +50,6 @@
   border-radius: 8px;
 }
 
-.wm-buttons {
-  display: flex;
-  gap: 1rem;
-  margin-top: auto;
-}
-
-.wm-button {
-  background: transparent;
-  border: 2px solid #ffcc00;
-  color: #ffcc00;
-  padding: 0.6rem 1.4rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-.wm-button:hover {
-  background: rgba(255, 204, 0, 0.2);
-}
-
-.wm-button--primary {
-  background: #ffcc00;
-  color: #1e1e1e;
-}
-
-.wm-button--primary:hover {
-  background: #ffd633;
-}
-
 .wm-agent-list {
   list-style: none;
   padding: 0;
@@ -128,4 +98,73 @@
   font-size: 0.95rem;
   line-height: 1.5;
   color: #ddd;
+}
+
+.wm-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: auto;
+  width: 100%;
+}
+
+.wm-button-group {
+  display: flex;
+  gap: 1rem;
+}
+
+.wm-button {
+  background: transparent;
+  border: 2px solid #ffcc00;
+  color: #ffcc00;
+  padding: 0.6rem 1.4rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.wm-button:hover {
+  background: rgba(255, 204, 0, 0.2);
+}
+
+.wm-button--primary {
+  background: #ffcc00;
+  color: #1e1e1e;
+}
+
+.wm-button--primary:hover {
+  background: #ffd633;
+}
+
+.wm-dont-show {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: #ccc;
+  cursor: pointer;
+  user-select: none;
+}
+
+.wm-dont-show input[type="checkbox"] {
+  accent-color: #ffcc00;
+  width: 1.2em;
+  height: 1.2em;
+  margin: 0;
+  transition: transform 0.1s ease-in-out;
+}
+
+.wm-dont-show input[type="checkbox"]:hover {
+  transform: scale(1.1);
+}
+
+.wm-dont-show input[type="checkbox"]:focus {
+  outline: 2px solid rgba(255, 204, 0, 0.6);
+  outline-offset: 2px;
+}
+
+.wm-dont-show:hover {
+  color: #fff;
 }

@@ -8,6 +8,7 @@ import wandaImg from "../../assets/wanda.png";
 
 export default function WelcomeModal({ onStart, onSkip }) {
   const [page, setPage] = useState(0);
+  const [dontShowAgain, setDontShowAgain] = useState(false);
 
   return (
     <div className="wm-overlay">
@@ -27,15 +28,25 @@ export default function WelcomeModal({ onStart, onSkip }) {
               alt="Wanda recepcionando"
             />
             <div className="wm-buttons">
-              <button
-                className="wm-button wm-button--primary"
-                onClick={() => setPage(1)}
-              >
-                Próximo
-              </button>
-              <button className="wm-button" onClick={onSkip}>
-                Pular
-              </button>
+              <div className="wm-button-group">
+                <button
+                  className="wm-button wm-button--primary"
+                  onClick={() => setPage(1)}
+                >
+                  Próximo
+                </button>
+                <button className="wm-button" onClick={onSkip}>
+                  Pular
+                </button>
+              </div>
+              <label className="wm-dont-show">
+                <input
+                  type="checkbox"
+                  checked={dontShowAgain}
+                  onChange={() => setDontShowAgain(!dontShowAgain)}
+                />
+                Não mostrar novamente
+              </label>
             </div>
           </>
         )}
@@ -47,7 +58,8 @@ export default function WelcomeModal({ onStart, onSkip }) {
               <li className="wm-agent-item">
                 <img src={cosmoImg} alt="Cosmo" className="wm-agent-img" />
                 <div>
-                  <strong>Cosmo:</strong> Mais detalhista nas suas respostas, gosta de falar bastante.
+                  <strong>Cosmo:</strong> Mais detalhista nas suas respostas,
+                  gosta de falar bastante.
                 </div>
               </li>
               <li className="wm-agent-item">
@@ -72,15 +84,25 @@ export default function WelcomeModal({ onStart, onSkip }) {
               </p>
             </div>
             <div className="wm-buttons">
-              <button className="wm-button" onClick={() => setPage(0)}>
-                Voltar
-              </button>
-              <button
-                className="wm-button wm-button--primary"
-                onClick={() => setPage(2)}
-              >
-                Próximo
-              </button>
+              <div className="wm-button-group">
+                <button className="wm-button" onClick={() => setPage(0)}>
+                  Voltar
+                </button>
+                <button
+                  className="wm-button wm-button--primary"
+                  onClick={() => setPage(2)}
+                >
+                  Próximo
+                </button>
+              </div>
+              <label className="wm-dont-show">
+                <input
+                  type="checkbox"
+                  checked={dontShowAgain}
+                  onChange={() => setDontShowAgain(!dontShowAgain)}
+                />
+                Não mostrar novamente
+              </label>
             </div>
           </>
         )}
@@ -97,19 +119,30 @@ export default function WelcomeModal({ onStart, onSkip }) {
               <p>
                 Neste exemplo falta o dois-pontos (<code>:</code>) após a
                 condição <code>if</code>. Cada agente vai apontar esse erro de
-                uma forma diferente e você vai poder ver isso nas próximas etapas!
+                uma forma diferente e você vai poder ver isso nas próximas
+                etapas!
               </p>
             </div>
             <div className="wm-buttons">
-              <button className="wm-button" onClick={() => setPage(1)}>
-                Voltar
-              </button>
-              <button
-                className="wm-button wm-button--primary"
-                onClick={onStart}
-              >
-                Começar Tour
-              </button>
+              <div className="wm-button-group">
+                <button className="wm-button" onClick={() => setPage(1)}>
+                  Voltar
+                </button>
+                <button
+                  className="wm-button wm-button--primary"
+                  onClick={onStart}
+                >
+                  Começar Tour
+                </button>
+              </div>
+              <label className="wm-dont-show">
+                <input
+                  type="checkbox"
+                  checked={dontShowAgain}
+                  onChange={() => setDontShowAgain(!dontShowAgain)}
+                />
+                Não mostrar novamente
+              </label>
             </div>
           </>
         )}
