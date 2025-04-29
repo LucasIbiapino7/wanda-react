@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 100px; /* ajuste à altura do seu header */
+  padding-top: 100px;
   min-height: calc(80vh - 64px);
   color: #fff;
   font-family: "Segoe UI", sans-serif;
@@ -259,11 +259,10 @@
   color: #d6d6d6;
   line-height: 1.4;
   background: #1e1e1e;
-  height: 250px; /* altura fixa */
-  overflow: auto; /* scroll interno */
+  height: 250px;
+  overflow: auto;
 }
 
-/* Responsividade */
 @media (max-width: 768px) {
   .round2-header,
   .round2-editor {
@@ -331,7 +330,6 @@
   line-height: 1.4;
 }
 
-/* Responsividade */
 @media (max-width: 600px) {
   .assist-cards {
     gap: 1rem;
@@ -449,7 +447,7 @@
 }
 
 .validation-note {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #fff;
   margin-top: 1rem;
   font-style: italic;

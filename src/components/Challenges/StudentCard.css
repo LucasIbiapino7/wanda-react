@@ -26,13 +26,13 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background-color: #fff;                    
-  background-image: url('/src/assets/profile.svg');
+  background-color: #fff;
+  background-image: url("/src/assets/profile.svg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   margin: 0 auto 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Badges */
@@ -52,14 +52,12 @@
   transition: transform 0.2s ease;
 }
 
-/* Efeito hover nas badges */
 .badge:hover {
   transform: scale(1.1);
-  border-color: var(--primary); /* Nova propriedade */
+  border-color: var(--primary);
   cursor: pointer;
 }
 
-/* Container dos botões */
 .buttons-container {
   display: flex;
   gap: 25px;
@@ -82,16 +80,15 @@
   color: var(--secondary);
   position: relative;
   overflow: hidden;
-  border: 2px solid transparent; /* Adiciona borda para o efeito hover */
+  border: 2px solid transparent;
 }
 
 .btn-primary:hover {
-  background: #ffdf33; /* Amarelo mais claro */
+  background: #ffdf33;
   box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
   transform: translateY(-2px);
 }
 
-/* Ajuste no ícone de função */
 .function-icon img {
   cursor: pointer;
   color: var(--text);

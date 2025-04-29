@@ -6,7 +6,7 @@ import "./Header.css";
 import AuthContext from "../../context/AuthContext.jsx";
 
 function Header() {
-  const { isAuthenticated, isAdmin, logout } = useContext(AuthContext);
+  const { isAuthenticated, logout } = useContext(AuthContext);
 
   // Controla exibição do pequeno menu de perfil
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -36,11 +36,6 @@ function Header() {
       </div>
 
       <nav className="nav">
-        {isAdmin && (
-          <Link className="nav-link" to="/partida">
-            Partida
-          </Link>
-        )}
         <Link className="nav-link" to="/jokenpo1">
           Enviar Função
         </Link>

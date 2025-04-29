@@ -1,4 +1,5 @@
 import "./MainSection.css";
+import { useNavigate } from "react-router-dom";
 import heroImage from "../../assets/hero-bg.png";
 import Wanda from "../../assets/wanda.png";
 import Timmy from "../../assets/timmy.png";
@@ -9,6 +10,7 @@ import SubmitIcon from "../../assets/submitIcon.png";
 import MatchImg from "../../assets/arena-background-pixel-art.png";
 
 export default function MainSection() {
+  const navigate = useNavigate();
   const scrollToIntro = () => {
     const section = document.querySelector(".intro-section");
     if (section) {
@@ -211,7 +213,7 @@ export default function MainSection() {
           </p>
           <button
             className="cta-button"
-            onClick={() => (window.location.href = "/jokenpo1")}
+            onClick={() => (navigate("/jokenpo1"))}
           >
             Enviar funções
           </button>

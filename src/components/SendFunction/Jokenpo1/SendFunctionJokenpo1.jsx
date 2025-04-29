@@ -37,7 +37,7 @@ function SendFunctionJokenpo1() {
 
   const { token } = useContext(AuthContext);
 
-  const [assistantStyle, setAssistantStyle] = useState("VERBOSE");
+  const [assistantStyle, setAssistantStyle] = useState(null);
 
   // Atualiza o agente selecionado
   const handleAgentTabClick = (agent) => {
@@ -47,8 +47,8 @@ function SendFunctionJokenpo1() {
 
   // Exibe o modal ao abrir o componente
   useEffect(() => {
-    const seen = localStorage.getItem('wandaTourSeen');
-    if(!seen) {
+    const seen = localStorage.getItem("wandaTourSeen");
+    if (!seen) {
       setShowWelcome(true);
     }
   }, []);
@@ -56,12 +56,12 @@ function SendFunctionJokenpo1() {
   const handleStartTour = () => {
     setShowWelcome(false);
     setRunTour(true);
-    localStorage.setItem('wandaTourSeen', 'true');
+    localStorage.setItem("wandaTourSeen", "true");
   };
 
   const handleSkipTour = () => {
     setShowWelcome(false);
-    localStorage.setItem('wandaTourSeen', 'true');
+    localStorage.setItem("wandaTourSeen", "true");
   };
 
   // Carregar função salva ao montar o componente
@@ -412,6 +412,7 @@ function SendFunctionJokenpo1() {
                   className="send-button"
                   onClick={handleSubmitFeedback}
                   title="Envia seu código para análise"
+                  disabled={!assistantStyle}
                 >
                   Feedback
                 </button>
@@ -419,6 +420,7 @@ function SendFunctionJokenpo1() {
                   className="run-button"
                   onClick={handleRun}
                   title="Executa testes locais na sua função"
+                  disabled={!assistantStyle}
                 >
                   Run
                 </button>
@@ -426,6 +428,7 @@ function SendFunctionJokenpo1() {
                   className="submit-button"
                   onClick={handleSubmitFunction}
                   title="Submete sua função final"
+                  disabled={!assistantStyle}
                 >
                   Submeter
                 </button>
@@ -484,7 +487,42 @@ function SendFunctionJokenpo1() {
         title="Instruções sobre os agentes"
       >
         <div className="instructions">
-          <p>Aqui vão as informações sobre os agentes!</p>
+          <p>
+            Cada agente possui uma “personalidade” distinta na forma como
+            elabora suas respostas. Escolha aquele que mais combina com seu
+            estilo de aprendizado:
+          </p>
+          <ul>
+            <li>
+              <strong>Cosmo:</strong> Mais detalhista nas suas explicações.
+            </li>
+            <li>
+              <strong>Timmy:</strong> vai direto ao ponto, usando
+              poucas frases objetivas para destacar apenas o essencial.
+            </li>
+            <li>
+              <strong>Wanda:</strong> equilibra detalhes e
+              objetividade, oferecendo explicações claras sem se estender demais.
+            </li>
+          </ul>
+
+          <h3>Ações disponíveis:</h3>
+          <ul>
+            <li>
+              <strong>Feedback:</strong> envia seu código para que o
+              assistente escolhido analise sua função e envie comentários
+              personalizados sobre como você está usando os parâmetros da função.
+            </li>
+            <li>
+              <strong>Run:</strong> executa testes na sua função sem
+              salvá-la, permitindo validar as saídas da função em situações reais do Jokenpo.
+            </li>
+            <li>
+              <strong>Submeter:</strong> envia sua versão final para
+              validação definitiva. Se tudo estiver correto, você seguirá para a
+              Função 2.
+            </li>
+          </ul>
         </div>
       </InstructionsModal>
     </div>

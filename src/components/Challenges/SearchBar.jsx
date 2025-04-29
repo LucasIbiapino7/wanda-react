@@ -6,7 +6,7 @@ import SearchImg from "../../assets/search.svg"
 const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Debounce para evitar múltiplas requisições
+  // evita múltiplas requisições
   useEffect(() => {
     const timer = setTimeout(() => {
       onSearch(searchTerm);
@@ -30,7 +30,7 @@ const SearchBar = ({ onSearch }) => {
 };
 
 SearchBar.propTypes = {
-  onSearch: PropTypes.func.isRequired, // Garantindo que onSearch seja uma função
+  onSearch: PropTypes.func.isRequired,
 };
 
 export default SearchBar;

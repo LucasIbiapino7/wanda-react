@@ -1,5 +1,4 @@
 export const tourSteps = [
-  // 1. Apresentação dos agentes
   {
     target: ".agent-tabs",
     content: (
@@ -13,47 +12,53 @@ export const tourSteps = [
     placement: "bottom",
     disableBeacon: true,
   },
-
-  // 2a. Demonstração Cosmo (verbose)
   {
     target: ".agent-tab:nth-child(1)",
     content: (
       <div>
         <h3>Cosmo (Verbose)</h3>
-        <p>Exemplo de resposta do Cosmo</p>
+        <p>
+          Oi! Eu percebi que você está enfrentando um probleminha no seu código.
+          O erro acontece na linha 2, onde você esqueceu de colocar o
+          &quot;:&quot; após a condição do &quot;if&quot;. Sempre que você cria
+          uma estrutura condicional em Python, precisa lembrar de colocar esse
+          caractere depois da condição. Experimente adicionar o &quot;:&quot; e
+          veja se resolve! Isso deve ajudar seu código a funcionar direitinho.
+          😊
+        </p>
       </div>
     ),
     placement: "bottom",
     disableBeacon: true,
   },
-
-  // 2b. Demonstração Timmy (succinct)
   {
     target: ".agent-tab:nth-child(2)",
     content: (
       <div>
         <h3>Timmy (Succinct)</h3>
-        <p>Exemplo de resposta do Timmy</p>
+        <p>
+          O erro ocorre na linha 2: &apos;if card1 == &quot;pedra&quot;&apos;.
+          Adicione &quot;:&quot; ao final da linha para corrigir.
+        </p>
       </div>
     ),
     placement: "bottom",
     disableBeacon: true,
   },
-
-  // 2c. Demonstração Wanda (intermediate)
   {
     target: ".agent-tab:nth-child(3)",
     content: (
       <div>
         <h3>Wanda (Intermediate)</h3>
-        <p>Exemplo de resposta da Wanda</p>
+        <p>
+          Para corrigir o erro, você deve adicionar &apos;:&apos; no final da linha 2.
+          Aqui está a correção: python if card1 == &quot;pedra&quot;:
+        </p>
       </div>
     ),
     placement: "bottom",
     disableBeacon: true,
   },
-
-  // 3. Introdução área de ações
   {
     target: ".container-buttons-send",
     content: (
@@ -68,8 +73,6 @@ export const tourSteps = [
     placement: "top",
     disableBeacon: true,
   },
-
-  // 4. Botão Feedback
   {
     target: ".send-button",
     content: (
@@ -81,21 +84,18 @@ export const tourSteps = [
     placement: "top",
     disableBeacon: true,
   },
-
-  // 5. Botão Run
   {
     target: ".run-button",
     content: (
       <div>
         Clique em <strong>Run</strong> para executar a sua função em situações
-        reais do Jokenpo e se os valores que ela retorna estão dentro do esperado!
+        reais do Jokenpo e se os valores de saída da sua função estão dentro do
+        esperado!
       </div>
     ),
     placement: "top",
     disableBeacon: true,
   },
-
-  // 6. Botão Submeter
   {
     target: ".submit-button",
     content: (
@@ -107,8 +107,6 @@ export const tourSteps = [
     placement: "top",
     disableBeacon: true,
   },
-
-  // 7. Editor de código
   {
     target: ".editor-section",
     content: (
@@ -120,8 +118,6 @@ export const tourSteps = [
     placement: "right",
     disableBeacon: true,
   },
-
-  // 8. Escolha do agente
   {
     target: ".agent-tabs",
     content: (

@@ -13,7 +13,6 @@ const PendingChallenges = () => {
   // Estado para exibir mensagem de erro em um modal
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Função de busca dos desafios pendentes (paginado, size=4)
   const fetchPendingChallenges = useCallback(async () => {
     try {
       const url = "http://localhost:8080/jokenpo/challenge/pending";
@@ -54,7 +53,6 @@ const PendingChallenges = () => {
         console.log("Desafio aceito! ID da partida:", matchId);
         navigate(`/matches/${matchId}`);
       } else {
-        // Se for null ou 0, significa que foi rejeitado ou algo do tipo
         console.log("Desafio rejeitado (ou retornou null/0).");
       }
       setChallenges((prev) => prev.filter((ch) => ch.id !== challengeId));
@@ -69,7 +67,6 @@ const PendingChallenges = () => {
     }
   };
 
-  // Função para fechar o modal de erro
   const closeErrorModal = () => {
     setErrorMessage("");
   };

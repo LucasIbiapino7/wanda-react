@@ -1,7 +1,7 @@
 :root {
-    --primary: #ffd700;
-    --text: #ffffff;
-  }
+  --primary: #ffd700;
+  --text: #ffffff;
+}
 
 .search-container {
   position: sticky;
@@ -9,15 +9,14 @@
   align-items: center;
   top: 20px;
   margin-bottom: 40px;
-  z-index: 100;
   width: 500px;
-  max-width: 90%; /* Garante responsividade */
-  position: relative; /* Para posicionar absoluto o ícone */
+  max-width: 90%;
+  position: relative;
 }
 
 .search-input {
   width: 100%;
-  padding: 10px 45px 10px 15px; /* Espaço para o ícone */
+  padding: 10px 45px 10px 15px;
   border-radius: 20px;
   border: 3px solid rgba(255, 255, 255, 0.3);
   background: rgba(255, 255, 255, 0.05);
@@ -25,7 +24,7 @@
   font-size: 0.9rem;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
-  margin-right: 0; /* Removido o margin-right anterior */
+  margin-right: 0;
 }
 
 .search-input::placeholder {
@@ -53,10 +52,9 @@
   outline: none;
   border-color: var(--primary);
   box-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
-  padding-right: 40px; /* Mantém o texto longe do ícone */
+  padding-right: 40px;
 }
 
-/* Efeito de hover suave no container inteiro */
 .search-container:hover .search-input {
   background: rgba(255, 255, 255, 0.08);
 }

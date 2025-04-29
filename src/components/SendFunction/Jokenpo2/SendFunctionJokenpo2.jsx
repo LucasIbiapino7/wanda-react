@@ -4,7 +4,7 @@ import { dracula } from "@uiw/codemirror-theme-dracula";
 import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
 import axios from "axios";
-import './SendFunctionJokenpo2.css'
+import "./SendFunctionJokenpo2.css";
 import AuthContext from "../../../context/AuthContext";
 import cosmo from "../../../assets/cosmo-avatar.png";
 import timmy from "../../../assets/timmy.png";
@@ -240,18 +240,12 @@ function SendFunctionJokenpo2() {
             <span>Passo 2 de 2</span>
           </div>
           <div className="informations-section-buttons">
-            <button onClick={handleOpenInstructions}>
-              Instruções
-            </button>
+            <button onClick={handleOpenInstructions}>Instruções</button>
 
-            <button onClick={handleOpenAgents}>
-              Agentes
-            </button>
+            <button onClick={handleOpenAgents}>Agentes</button>
 
             {hasSavedFunction && (
-              <button
-                onClick={() => setSuccessModalOpen(true)}
-              >
+              <button onClick={() => setSuccessModalOpen(true)}>
                 Desafie seus amigos!
               </button>
             )}
@@ -415,7 +409,42 @@ function SendFunctionJokenpo2() {
         title="Instruções sobre os agentes"
       >
         <div className="instructions">
-          <p>Aqui vão as informações sobre os agentes!</p>
+          <p>
+            Cada agente possui uma “personalidade” distinta na forma como
+            elabora suas respostas. Escolha aquele que mais combina com seu
+            estilo de aprendizado:
+          </p>
+          <ul>
+            <li>
+              <strong>Cosmo:</strong> Mais detalhista nas suas explicações.
+            </li>
+            <li>
+              <strong>Timmy:</strong> vai direto ao ponto, usando poucas frases
+              objetivas para destacar apenas o essencial.
+            </li>
+            <li>
+              <strong>Wanda:</strong> equilibra detalhes e objetividade,
+              oferecendo explicações claras sem se estender demais.
+            </li>
+          </ul>
+
+          <h3>Ações disponíveis:</h3>
+          <ul>
+            <li>
+              <strong>Feedback:</strong> envia seu código para que o assistente
+              escolhido analise sua função e envie comentários personalizados
+              sobre como você está usando os parâmetros da função.
+            </li>
+            <li>
+              <strong>Run:</strong> executa testes na sua função sem salvá-la,
+              permitindo validar as saídas da função em situações reais do
+              Jokenpo.
+            </li>
+            <li>
+              <strong>Submeter:</strong> envia sua versão final para validação
+              definitiva. Se tudo estiver correto, você poderá desafiar seus amigos.
+            </li>
+          </ul>
         </div>
       </InstructionsModal>
     </div>

@@ -36,37 +36,34 @@
   }
 }
 
-/* Modal Overlay (Pending Challenges) */
 .modal-overlay-peding-challenges {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Para ficar acima de outros elementos */
+  z-index: 1000;
 }
 
-/* Container do Modal (Pending Challenges) */
 .modal-peding-challenges {
   background-color: #fff;
   padding: 1.5rem;
   border-radius: 8px;
   width: 90%;
-  max-width: 500px; /* largura máxima */
+  max-width: 500px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
   animation: modalOpen 0.3s ease-out;
 }
 
-.modal-peding-challenges p{
+.modal-peding-challenges p {
   color: black;
 }
 
-/* Animação de abertura (opcional) */
 @keyframes modalOpen {
   from {
     opacity: 0;
@@ -78,9 +75,8 @@
   }
 }
 
-/* Botão dentro do modal (Pending Challenges) */
 .modal-button-peding-challenges {
-  background-color: #ffb84d; /* Laranja que você usa */
+  background-color: #ffb84d;
   color: #fff;
   border: none;
   border-radius: 5px;

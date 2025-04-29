@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap");
 
-/* Overlay do Modal */
 .pfm-overlay {
   position: fixed;
   top: 0;
@@ -15,7 +14,6 @@
   z-index: 1000;
 }
 
-/* Container do Modal */
 .pfm-container {
   background: #1e1e1e;
   padding: 2rem;
@@ -30,7 +28,6 @@
   font-family: "Comic Neue", cursive;
 }
 
-/* Animação de abertura */
 @keyframes pfm-open {
   from {
     opacity: 0;
@@ -42,7 +39,6 @@
   }
 }
 
-/* Cabeçalho do Modal */
 .pfm-header {
   display: flex;
   justify-content: space-between;
@@ -58,7 +54,6 @@
   margin: 0;
 }
 
-/* Botão de Fechar */
 .pfm-close-btn {
   background: transparent;
   border: none;
@@ -72,7 +67,6 @@
   color: #ffd633;
 }
 
-/* Abas */
 .pfm-tabs {
   display: flex;
   gap: 1rem;
@@ -101,7 +95,6 @@
   color: #1e1e1e;
 }
 
-/* Corpo (código) */
 .pfm-body {
   background: #2b2b44;
   padding: 1rem;
@@ -119,7 +112,6 @@
   font-family: "Comic Neue", cursive;
 }
 
-/* Empty State */
 .pfm-empty {
   color: #ccc;
   text-align: center;

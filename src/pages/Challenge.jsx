@@ -75,8 +75,6 @@ const Challenge = () => {
   };
 
   const closeModal = () => setChallengeMessage("");
-
-  // **Mudança aqui**: agora recebe o objeto `student` inteiro
   const handleOpenModal = (student) => {
     setModalFunctions([
       { name: "Função 1", code: student.code },
