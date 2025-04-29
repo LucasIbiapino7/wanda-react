@@ -74,7 +74,7 @@ export default function ProfilePage() {
     }
   }, [token]);
 
-  // handler de paginação
+
   const handleMatchPageChange = (newPage) => {
     fetchMatches(newPage);
   };
@@ -84,7 +84,6 @@ export default function ProfilePage() {
   };
 
   const handleConfirmCharacter = async () => {
-    // só envia se mudou
     if (selectedChar === initialChar) return;
     setUpdatingChar(true);
     try {

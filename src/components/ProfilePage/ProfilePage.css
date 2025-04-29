@@ -146,8 +146,6 @@
   line-height: 1.4;
   color: #e0e0e0;
 }
-
-/* Scrollbar customizado (apenas Webkit) */
 .pp-func-content::-webkit-scrollbar {
   height: 6px;
 }

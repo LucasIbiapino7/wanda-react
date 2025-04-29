@@ -85,7 +85,6 @@
   position: relative;
 }
 
-/* Barrinha embaixo do nome */
 .bv-player-name::after {
   content: "";
   position: absolute;

@@ -20,7 +20,6 @@ export default function Tournament() {
     maxParticipants,
   }) => {
     try {
-      // monta o corpo da requisição
       const body = {
         name,
         description,
@@ -35,12 +34,9 @@ export default function Tournament() {
           "Content-Type": "application/json",
         },
       });
-      // só fecha o modal depois do sucesso
       setModalOpen(false);
-      // aqui você pode exibir um toast de sucesso, recarregar lista etc.
     } catch (err) {
       console.error("Erro ao criar torneio:", err);
-      // exiba um toast ou mensagem de erro, deixando o modal aberto
     }
   };
 

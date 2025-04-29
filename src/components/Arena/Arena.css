@@ -37,8 +37,6 @@
   right: 80px;
 }
 
-/* Css dos cards */
-
 .cards {
   position: absolute;
   top: 50%;
@@ -49,11 +47,11 @@
 }
 
 .left-cards {
-  left: 250px; /* Distância da borda esquerda */
+  left: 250px;
 }
 
 .right-cards {
-  right: 250px; /* Distância da borda direita */
+  right: 250px;
 }
 
 .card {
@@ -65,7 +63,6 @@
   object-fit: cover;
 }
 
-/* informações dos players */
 .player-info {
   position: absolute;
   top: 15px;
@@ -86,8 +83,8 @@
 
 .player-name {
   margin: 0;
-  font-size: 1.8em; /* Aumentei o tamanho */
-  letter-spacing: 3px; /* Aumentei o espaçamento */
+  font-size: 1.8em;
+  letter-spacing: 3px;
   font-family: "Silkscreen", "Press Start 2P", cursive;
   text-transform: uppercase;
   color: #ffd700;
@@ -95,23 +92,22 @@
     -3px 3px 0 #8b0000;
   -webkit-font-smoothing: none;
   image-rendering: pixelated;
-  animation: neon-glitch 1.2s ease-in-out infinite; /* Nova animação */
+  animation: neon-glitch 1.2s ease-in-out infinite;
 }
 
 .turns-won {
   display: block;
-  font-size: 0.9em; /* Aumentei um pouco */
+  font-size: 0.9em;
   font-family: "Press Start 2P", cursive;
   color: #00ff00;
-  margin-top: 8px; /* Aumentei o espaçamento */
-  text-shadow: 2px 2px 0 #004400, /* Sombra mais forte */ -2px -2px 0 #004400,
-    2px -2px 0 #004400, -2px 2px 0 #004400;
+  margin-top: 8px;
+  text-shadow: 2px 2px 0 #004400, -2px -2px 0 #004400, 2px -2px 0 #004400,
+    -2px 2px 0 #004400;
   letter-spacing: 1px;
   position: relative;
-  top: -3px; /* Ajuste fino de posição */
+  top: -3px;
 }
 
-/* ==== Novas Animacoes ==== */
 @keyframes neon-glitch {
   0%,
   100% {
@@ -124,7 +120,6 @@
   }
 }
 
-/* ==== Ajustes de Renderizacao ==== */
 @supports (-moz-osx-font-smoothing: grayscale) {
   .player-name,
   .turns-won {
@@ -132,8 +127,6 @@
     -webkit-font-smoothing: none;
   }
 }
-
-/* Turnos restantes estilo */
 
 .remaining-turns {
   position: absolute;
@@ -168,7 +161,6 @@
   }
 }
 
-/* DADOS DA ANIMAÇÃO*/
 .match-announcement {
   position: absolute;
   top: 22%;
@@ -225,6 +217,6 @@
   left: 50%;
   transform: translateX(-50%);
   font-family: "Press Start 2P", cursive;
-  color: #808080; /* cinza */
+  color: #808080;
   text-shadow: 2px 2px 0 #333;
 }
