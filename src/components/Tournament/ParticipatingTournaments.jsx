@@ -1,3 +1,4 @@
+// src/components/Tournament/ParticipatingTournaments.jsx
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import AuthContext from "../../context/AuthContext";
@@ -28,7 +29,6 @@ export default function ParticipatingTournaments() {
       setPage(data.number);
       setTotalPages(data.totalPages);
     } catch (err) {
-      console.error("Erro ao buscar meus torneios:", err);
       setError("Não foi possível carregar seus torneios.");
     } finally {
       setLoading(false);
@@ -49,52 +49,76 @@ export default function ParticipatingTournaments() {
       );
       fetchParticipating(page);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       setStartLoadingId(null);
     }
+  };
+
+  const renderCountdown = (startTime, status) => {
+    const now = new Date();
+    const start = new Date(startTime);
+    const diffMs = start - now;
+    if (status === "FINISHED") return "Finalizado";
+    if (diffMs <= 0) return "Em andamento";
+    const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const hrs = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
+    const mins = Math.floor((diffMs / (1000 * 60)) % 60);
+    return `${days}d ${hrs}h ${mins}m`;
   };
 
   return (
     <section className="participating-section">
       <h2 className="section-title">Meus Torneios</h2>
 
-      {loading && <p>Carregando seus torneios...</p>}
+      {loading && <p className="loading">Carregando seus torneios...</p>}
       {error && <p className="error">{error}</p>}
 
       <div className="tournaments-list">
-        {tournaments.map((t) => (
-          <div key={t.id} className="tournament-card">
-            <h4>{t.name}</h4>
-            <p>{t.description}</p>
-            <div className="tournament-meta">
-              <br />
-              Participantes: {t.currentParticipants}/{t.maxParticipants}
+        {tournaments.map((t) => {
+          const full = t.currentParticipants >= t.maxParticipants;
+          let borderColor = "#ffb84d";
+          if (t.canReady) borderColor = "#4da6ff";
+          else if (t.status === "FINISHED") borderColor = "#ccc";
+
+          return (
+            <div
+              key={t.id}
+              className="tournament-card"
+              style={{ borderLeft: `6px solid ${borderColor}` }}
+            >
+              <h4 className="card-title">{t.name}</h4>
+              <p className="card-description">{t.description}</p>
+              <div className="tournament-meta">
+                <span>Início: {new Date(t.startTime).toLocaleString()}</span>
+                <span>Começa em: {renderCountdown(t.startTime, t.status)}</span>
+                <span>Participantes: {t.currentParticipants}/{t.maxParticipants}</span>
+              </div>
+              <div className="tournament-actions">
+                {t.canReady ? (
+                  <button
+                    className="card-button start-button"
+                    disabled={startLoadingId === t.id}
+                    onClick={() => handleStartTournament(t.id)}
+                  >
+                    {startLoadingId === t.id
+                      ? "Preparando torneio..."
+                      : "Iniciar Torneio"}
+                  </button>
+                ) : t.status === "FINISHED" ? (
+                  <button
+                    className="card-button play-button"
+                    onClick={() => window.open(`/tournament/${t.id}`, "_blank")}
+                  >
+                    ▶ Ver Resultado
+                  </button>
+                ) : (
+                  <span className="status-tag">{t.status}</span>
+                )}
+              </div>
             </div>
-            <div className="tournament-actions">
-              {t.canReady ? (
-                <button
-                  className="card-button start-button"
-                  disabled={startLoadingId === t.id}
-                  onClick={() => handleStartTournament(t.id)}
-                >
-                  {startLoadingId === t.id
-                    ? "Aguarde enquanto o torneio acontece…"
-                    : "Iniciar Torneio"}
-                </button>
-              ) : t.status === "FINISHED" ? (
-                <button
-                  className="card-button play-button"
-                  onClick={() => window.open(`/tournament/${t.id}`, "_blank")}
-                >
-                  ▶ Ver Resultado
-                </button>
-              ) : (
-                <span className="status-tag">{t.status}</span>
-              )}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <Pagination
@@ -104,7 +128,7 @@ export default function ParticipatingTournaments() {
       />
 
       {!loading && tournaments.length === 0 && (
-        <p>Você não está participando de nenhum torneio.</p>
+        <p className="empty-message">Você não está participando de nenhum torneio.</p>
       )}
     </section>
   );

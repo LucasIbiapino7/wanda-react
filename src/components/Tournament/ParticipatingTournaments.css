@@ -2,6 +2,20 @@
   margin-top: 2rem;
 }
 
+.section-title {
+  color: white;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.loading,
+.error,
+.empty-message {
+  color: white;
+  text-align: center;
+  margin: 20px 0;
+}
+
 .tournaments-list {
   display: flex;
   flex-direction: column;
@@ -14,43 +28,75 @@
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   color: #fff;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.tournament-card h4 {
-  margin: 0 0 0.5rem;
+.tournament-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.card-title {
+  font-size: 1.3rem;
+  margin: 0 0 0.75rem;
+}
+
+.card-description {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  flex-grow: 1;
 }
 
 .tournament-meta {
   font-size: 0.9rem;
-  opacity: 0.8;
   margin-bottom: 1rem;
-}
-
-.tournament-actions {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
 }
 
+.tournament-meta span {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+}
+
+.tournament-actions {
+  text-align: right;
+}
+
 .card-button {
-  background-color: #ffb84d;
-  color: #fff;
   border: none;
   border-radius: 5px;
   padding: 0.5rem 1rem;
+  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, transform 0.2s;
 }
-.card-button:hover {
-  background-color: #ff9933;
+
+.start-button {
+  background-color: #4da6ff;
+  color: #fff;
+}
+
+.start-button:hover:not(:disabled) {
+  transform: translateY(-2px);
 }
 
 .play-button {
   background-color: #4dac4a;
+  color: #fff;
 }
+
 .play-button:hover {
   background-color: #409640;
+}
+
+.card-button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
 }
 
 .status-tag {
@@ -61,6 +107,6 @@
   text-transform: uppercase;
 }
 
-.error {
-  color: #f66;
+.empty-message {
+  color: #fff;
 }
