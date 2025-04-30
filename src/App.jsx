@@ -14,6 +14,7 @@ import { AuthProvider } from "./context/AuthContext";
 import Matches from "./pages/Matches.jsx";
 import TournamentBracket from "./pages/TournamentBracket.jsx";
 import Ranking from "./pages/Ranking.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Routes>
           {/* Rota pública */}
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<RegisterPage />} />
 
           {/* Rota privada */}
           <Route path="/" element={<PrivateRoute element={Home} />} />

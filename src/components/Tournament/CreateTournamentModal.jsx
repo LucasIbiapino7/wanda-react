@@ -30,7 +30,6 @@ export default function CreateTournamentModal({ isOpen, onClose, onCreate }) {
       maxParticipants: Number(form.maxParticipants),
     });
     setSubmitting(false);
-    // NÃO chama onClose() aqui — o pai fecha após o POST bem-sucedido
   };
 
   if (!isOpen) return null;

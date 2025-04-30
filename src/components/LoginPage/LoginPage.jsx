@@ -1,9 +1,9 @@
-import { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import AuthContext from "../../context/AuthContext.jsx"
-import "./LoginPage.css"
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import AuthContext from "../../context/AuthContext.jsx";
+import "./LoginPage.css";
 
-function  LoginPage() {
+function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,15 +15,14 @@ function  LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage('Enviando dados...');
+    setMessage("Enviando dados...");
 
     try {
       await login(email, password);
-      setMessage('Login bem-sucedido!');
-      navigate('/');
+      setMessage("Login bem-sucedido!");
+      navigate("/");
     } catch (error) {
-      console.error(error);
-      setMessage('Credenciais inválidas ou erro no servidor.');
+      setMessage(error.data.error);
     }
   };
 
@@ -60,6 +59,15 @@ function  LoginPage() {
         </form>
 
         {message && <p className="login-message">{message}</p>}
+
+        <div className="login-footer">
+          <p>
+            Não tem conta?{" "}
+            <span className="login-link" onClick={() => navigate("/register")}>
+              Cadastre-se
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );
