@@ -2,10 +2,20 @@ import PropTypes from "prop-types";
 import "./StudentCard.css";
 import CodeImg from "../../assets/code.svg";
 
-const StudentCard = ({ student, onChallenge, onViewFunctions, onBadgeClick }) => {
+const StudentCard = ({
+  student,
+  onChallenge,
+  onViewFunctions,
+  onBadgeClick,
+}) => {
   return (
     <div className="student-card">
-      <div className="avatar"></div>
+      <div className="avatar">
+        <img
+          src={`/assets/personagens/${student.characterUrl}`}
+          alt={student.characterUrl}
+        />
+      </div>
       <h3>{student.name}</h3>
       <div className="badges-container">
         {student.badges.map((badge) => (
@@ -22,7 +32,11 @@ const StudentCard = ({ student, onChallenge, onViewFunctions, onBadgeClick }) =>
 
       <div className="buttons-container">
         {student.code && (
-          <div className="function-icon" data-tooltip="Ver funções" onClick={onViewFunctions}>
+          <div
+            className="function-icon"
+            data-tooltip="Ver funções"
+            onClick={onViewFunctions}
+          >
             <img src={CodeImg} alt="Código" />
           </div>
         )}
@@ -41,6 +55,7 @@ StudentCard.propTypes = {
   student: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
+    characterUrl: PropTypes.string.isRequired,
     badges: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number.isRequired,
@@ -49,11 +64,11 @@ StudentCard.propTypes = {
       })
     ).isRequired,
     code: PropTypes.string,
-    code2: PropTypes.string, 
+    code2: PropTypes.string,
   }).isRequired,
   onChallenge: PropTypes.func.isRequired,
-  onViewFunctions: PropTypes.func.isRequired,  
-  onBadgeClick: PropTypes.func.isRequired
+  onViewFunctions: PropTypes.func.isRequired,
+  onBadgeClick: PropTypes.func.isRequired,
 };
 
 export default StudentCard;

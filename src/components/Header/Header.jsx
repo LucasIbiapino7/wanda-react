@@ -1,15 +1,16 @@
 import { useContext, useState } from "react";
-import logo from "../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
+import AuthContext from "../../context/AuthContext.jsx";
+import wandaLogo from "../../assets/logo.png";
+import labLogo from "../../assets/telemidia-logo.png";
 import profileImg from "../../assets/profile.svg";
 import "./Header.css";
-import AuthContext from "../../context/AuthContext.jsx";
 
-function Header() {
+export default function Header() {
   const { isAuthenticated, logout } = useContext(AuthContext);
 
-  // Controla exibição do pequeno menu de perfil
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [showMobileNav, setShowMobileNav] = useState(false);
 
   const navigate = useNavigate();
 
@@ -18,34 +19,35 @@ function Header() {
     navigate("/login");
   };
 
-  const handleProfileClick = () => {
-    setShowProfileMenu((prev) => !prev);
-  };
-
-  const goToProfile = () => {
-    setShowProfileMenu(false);
-    navigate("/profile"); // ou qualquer rota do seu perfil
-  };
+  const toggleProfile = () => setShowProfileMenu((p) => !p);
+  const toggleMobileNav = () => setShowMobileNav((p) => !p);
 
   return (
     <header className="header">
-      <div className="logo">
+      <div className="logo-group">
         <Link to="/">
-          <img src={logo} alt="Wanda Logo" className="logo-image" />
+          <img src={wandaLogo} alt="Wanda" className="logo-main" />
         </Link>
+        <img src={labLogo} alt="Lab" className="logo-lab" />
       </div>
 
-      <nav className="nav">
-        <Link className="nav-link" to="/jokenpo1">
+      <div className="hamburger" onClick={toggleMobileNav}>
+        <span />
+        <span />
+        <span />
+      </div>
+
+      <nav className={`nav ${showMobileNav ? "open" : ""}`}>
+        <Link className="nav-link" to="/jokenpo1" onClick={toggleMobileNav}>
           Enviar Função
         </Link>
-        <Link className="nav-link" to="/challenges">
+        <Link className="nav-link" to="/challenges" onClick={toggleMobileNav}>
           Desafios
         </Link>
-        <Link className="nav-link" to="/tournament">
+        <Link className="nav-link" to="/tournament" onClick={toggleMobileNav}>
           Torneios
         </Link>
-        <Link className="nav-link" to="/ranking">
+        <Link className="nav-link" to="/ranking" onClick={toggleMobileNav}>
           Ranking
         </Link>
 
@@ -53,13 +55,13 @@ function Header() {
           <div className="profile-container">
             <img
               src={profileImg}
-              alt="Profile"
+              alt="Perfil"
               className="profile-image"
-              onClick={handleProfileClick}
+              onClick={toggleProfile}
             />
             {showProfileMenu && (
               <div className="profile-menu">
-                <button onClick={goToProfile}>Meu Perfil</button>
+                <button onClick={() => {toggleMobileNav(); navigate("/profile");}}>Meu Perfil</button>
                 <button onClick={handleLogout}>Logout</button>
               </div>
             )}
@@ -69,5 +71,3 @@ function Header() {
     </header>
   );
 }
-
-export default Header;

@@ -73,12 +73,12 @@ const Arena = ({ duelData }) => {
 
     // 3. Para cada round dentro do match, anima as cartas jogadas simultaneamente.
     match.plays.forEach((play, index) => {
-      // Seleciona a carta pela posição (já que a ordem do array corresponde à ordem de jogada)
+      // Seleciona a carta pela posição
       const cardPlayer1 = player1CardsRef.current[index];
       const cardPlayer2 = player2CardsRef.current[index];
 
       if (cardPlayer1 && cardPlayer2) {
-        // Movimenta ambas as cartas para o centro simultaneamente.
+        // Movimenta ambas as cartas 
         const movePosition = ">0.2";
         tlMatch.to(
           cardPlayer1,
@@ -101,15 +101,15 @@ const Arena = ({ duelData }) => {
 
         tlMatch.call(() => {
           if (play.tie || play.winnerOfPlay === 0) {
-            // Empate: borda amarela em ambas
+            // Empate
             cardPlayer1.style.border = "4px solid yellow";
             cardPlayer2.style.border = "4px solid yellow";
           } else if (play.winnerOfPlay === 1) {
-            // Player 1 venceu: verde para ele, vermelho para o outro.
+            // Player 1 venceu
             cardPlayer1.style.border = "4px solid green";
             cardPlayer2.style.border = "4px solid red";
           } else if (play.winnerOfPlay === 2) {
-            // Player 2 venceu: verde para ele, vermelho para o outro.
+            // Player 2 venceu
             cardPlayer1.style.border = "4px solid red";
             cardPlayer2.style.border = "4px solid green";
           }
@@ -139,7 +139,7 @@ const Arena = ({ duelData }) => {
       }
     });
 
-    // 4. removemos todas as bordas ao final do match
+    // 4. removendo as bordas
     tlMatch.call(() => {
       player1CardsRef.current.forEach((card) => {
         card.style.border = "none";
@@ -149,7 +149,7 @@ const Arena = ({ duelData }) => {
       });
     });
 
-    // 5. Atualiza os placares com os dados do match.
+    // 5. Atualiza os placares
     tlMatch.call(() => {
       const { player1, player2, tie } = match.currentScore;
 
@@ -244,7 +244,6 @@ const Arena = ({ duelData }) => {
           });
 
           if (duelData.playerWinner.id === duelData.player1.id) {
-            // Destaque no personagem vencedor (Player 1)
             gsap.set(characterLeftRef.current, { clearProps: "animation" });
             gsap.killTweensOf(characterLeftRef.current);
             gsap
@@ -289,7 +288,6 @@ const Arena = ({ duelData }) => {
                 ease: "none",
               });
           } else {
-            // Vencedor é Player 2
             gsap.set(characterRightRef.current, { clearProps: "animation" });
             gsap.killTweensOf(characterRightRef.current);
             gsap
@@ -344,7 +342,7 @@ const Arena = ({ duelData }) => {
     }, arenaRef);
 
     return () => ctx.revert();
-  }, [duelData]); // Caso os dados mudem, a timeline se atualiza
+  }, [duelData]);
 
   useEffect(() => {
     if (audioRef.current) {
