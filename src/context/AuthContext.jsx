@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
+    const storedToken = sessionStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
       const decoded = jwtDecode(storedToken);
@@ -23,7 +23,6 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
-    console.log("caiu na função de login");
     try {
       const response = await axios.post("http://localhost:8080/auth/login", {
         email,
@@ -31,7 +30,7 @@ export function AuthProvider({ children }) {
       });
       const { token: receivedToken } = response.data;
       setToken(receivedToken);
-      localStorage.setItem("token", receivedToken);
+      sessionStorage.setItem("token", receivedToken);
       const decoded = jwtDecode(receivedToken);
       if (decoded.roles) {
         setRoles(decoded.roles);
@@ -45,7 +44,7 @@ export function AuthProvider({ children }) {
   const logout = () => {
     setToken(null);
     setRoles([]);
-    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
   };
 
   const isAuthenticated = !!token;

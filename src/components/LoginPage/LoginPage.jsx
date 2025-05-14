@@ -7,7 +7,6 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // Exemplo de estado para exibir mensagens
   const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
