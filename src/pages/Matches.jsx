@@ -18,7 +18,7 @@ function Matches() {
       setLoading(true);
       setError(null);
       try {
-        const url = `http://localhost:8080/jokenpo/match/${id}`;
+        const url = `${import.meta.env.VITE_API_URL}/jokenpo/match/${id}`;
         const response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${token}`,

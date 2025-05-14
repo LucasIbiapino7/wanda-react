@@ -29,7 +29,7 @@ function Register() {
     const name = `${firstName.trim()} ${lastName.trim()}`;
     setMessage("Enviando dados...");
     try {
-      const response = await axios.post("http://localhost:8080/auth/register", {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/register`, {
         email,
         name,
         password,

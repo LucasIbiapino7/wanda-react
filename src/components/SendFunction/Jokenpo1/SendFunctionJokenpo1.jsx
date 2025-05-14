@@ -72,7 +72,7 @@ function SendFunctionJokenpo1() {
   useEffect(() => {
     async function fetchSavedFunction() {
       try {
-        const url = "http://localhost:8080/jokenpo/jokenpo1";
+        const url = `${import.meta.env.VITE_API_URL}/jokenpo/jokenpo1`;
         const response = await axios.get(url, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -115,7 +115,7 @@ function SendFunctionJokenpo1() {
     setLoading(true);
     setFeedback(null);
     try {
-      const url = "http://localhost:8080/jokenpo/feedback";
+      const url = `${import.meta.env.VITE_API_URL}/jokenpo/feedback`;
       const requestBody = {
         code: text,
         assistantStyle: assistantStyle,
@@ -143,7 +143,7 @@ function SendFunctionJokenpo1() {
     try {
       setLoading(true);
       setFeedback(null);
-      const url = "http://localhost:8080/jokenpo";
+      const url = `${import.meta.env.VITE_API_URL}/jokenpo`;
       const requestBody = {
         code: text,
         assistantStyle: assistantStyle,
@@ -175,7 +175,7 @@ function SendFunctionJokenpo1() {
     setLoading(true);
     setFeedback(null);
     try {
-      const url = "http://localhost:8080/jokenpo/run";
+      const url = `${import.meta.env.VITE_API_URL}/jokenpo/run`;
       const requestBody = {
         code: text,
         assistantStyle: assistantStyle,
@@ -202,7 +202,7 @@ function SendFunctionJokenpo1() {
   const handleLike = async () => {
     console.log("like clicked!");
     try {
-      const url = "http://localhost:8080/jokenpo/feedback-user";
+      const url = `${import.meta.env.VITE_API_URL}/jokenpo/feedback-user`;
       const requestBody = { feedbackId: feedbackAgentId, feedbackUser: "like" };
       await axios.put(url, requestBody, {
         headers: {
@@ -222,7 +222,7 @@ function SendFunctionJokenpo1() {
   const handleDislike = async () => {
     console.log("dislike clicked!");
     try {
-      const url = "http://localhost:8080/jokenpo/feedback-user";
+      const url = `${import.meta.env.VITE_API_URL}/jokenpo/feedback-user`;
       const requestBody = {
         feedbackId: feedbackAgentId,
         feedbackUser: "dislike",

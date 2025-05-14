@@ -22,7 +22,7 @@ export default function OpenTournaments() {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get("http://localhost:8080/tournament", {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/tournament`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { size: 5, searchTerm: "", page: pageNum },
       });
@@ -44,7 +44,7 @@ export default function OpenTournaments() {
     try {
       const payload = { tournamentId, password: "" };
       await axios.post(
-        "http://localhost:8080/tournament/subscribe",
+        `${import.meta.env.VITE_API_URL}/tournament/subscribe`,
         payload,
         { headers: { Authorization: `Bearer ${token}` } }
       );

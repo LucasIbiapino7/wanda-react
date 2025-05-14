@@ -24,7 +24,7 @@ const Challenge = () => {
   const fetchStudents = useCallback(
     async (term = "", page = 0) => {
       try {
-        const url = "http://localhost:8080/jokenpo/findByName";
+        const url = `${import.meta.env.VITE_API_URL}/jokenpo/findByName`;
         const response = await axios.get(url, {
           params: { name: term, size: 4, page },
           headers: { Authorization: `Bearer ${token}` },
@@ -51,7 +51,7 @@ const Challenge = () => {
 
   const handleChallenge = async (challengedId) => {
     try {
-      const url = "http://localhost:8080/jokenpo/challenge";
+      const url = `${import.meta.env.VITE_API_URL}/jokenpo/challenge`;
       await axios.post(
         url,
         { challengedId },

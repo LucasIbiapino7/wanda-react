@@ -34,7 +34,7 @@ export default function ProfilePage() {
     async function fetchProfile() {
       try {
         const { data } = await axios.get(
-          "http://localhost:8080/jokenpo/profile",
+          `${import.meta.env.VITE_API_URL}/jokenpo/profile`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setProfile(data);
@@ -53,7 +53,7 @@ export default function ProfilePage() {
     setMatchLoading(true);
     setMatchError(null);
     try {
-      const { data } = await axios.get("http://localhost:8080/jokenpo/match", {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/jokenpo/match`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { size: 5, page },
       });
@@ -88,7 +88,7 @@ export default function ProfilePage() {
     setUpdatingChar(true);
     try {
       await axios.put(
-        "http://localhost:8080/jokenpo/profile/character",
+        `${import.meta.env.VITE_API_URL}/jokenpo/profile/character`,
         { characterUrl: selectedChar },
         { headers: { Authorization: `Bearer ${token}` } }
       );

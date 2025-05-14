@@ -14,7 +14,7 @@ export default function BracketViewer({ tournamentId }) {
     async function fetchBracket() {
       try {
         const response = await axios.get(
-          `http://localhost:8080/tournament/${tournamentId}`,
+          `${import.meta.env.VITE_API_URL}/tournament/${tournamentId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

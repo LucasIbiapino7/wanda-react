@@ -19,7 +19,7 @@ export default function ParticipatingTournaments() {
     setError(null);
     try {
       const { data } = await axios.get(
-        "http://localhost:8080/tournament/participating",
+        `${import.meta.env.VITE_API_URL}/tournament/participating`,
         {
           headers: { Authorization: `Bearer ${token}` },
           params: { size: 5, page: pageNum },
@@ -43,7 +43,7 @@ export default function ParticipatingTournaments() {
     setStartLoadingId(id);
     try {
       await axios.put(
-        `http://localhost:8080/tournament/${id}`,
+        `${import.meta.env.VITE_API_URL}/tournament/${id}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

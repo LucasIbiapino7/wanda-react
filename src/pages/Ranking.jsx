@@ -24,7 +24,7 @@ export default function Ranking() {
         setError(null);
 
         const { data } = await axios.get(
-          "http://localhost:8080/jokenpo/ranking",
+          `${import.meta.env.VITE_API_URL}/jokenpo/ranking`,
           {
             headers: { Authorization: `Bearer ${token}` },
             params: { size: 10, page: pageNum },

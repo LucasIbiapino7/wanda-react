@@ -15,7 +15,7 @@ const PendingChallenges = () => {
 
   const fetchPendingChallenges = useCallback(async () => {
     try {
-      const url = "http://localhost:8080/jokenpo/challenge/pending";
+      const url = `${import.meta.env.VITE_API_URL}/jokenpo/challenge/pending`;
       const response = await axios.get(url, {
         params: { size: 4 },
         headers: {
@@ -36,7 +36,7 @@ const PendingChallenges = () => {
   // Função para aceitar ou rejeitar um desafio
   const handleAcceptOrReject = async (challengeId, isAccepted) => {
     try {
-      const url = "http://localhost:8080/jokenpo/challenge/isAccepted";
+      const url = `${import.meta.env.VITE_API_URL}/jokenpo/challenge/isAccepted`;
       const requestBody = {
         challengeId: challengeId,
         accepted: isAccepted,
