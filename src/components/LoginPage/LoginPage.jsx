@@ -6,7 +6,7 @@ import "./LoginPage.css";
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [submitting, setSubmitting] = useState(false)
   const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
@@ -14,14 +14,23 @@ function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("Enviando dados...");
-
+    setMessage("");
+    setSubmitting(true)
     try {
-      await login(email, password);
-      setMessage("Login bem-sucedido!");
+      await login(email.trim(), password);
       navigate("/");
-    } catch (error) {
-      setMessage(error.data.error);
+    } catch (err) {
+      const status = err?.normalized?.status;
+      const apiMsg = err?.normalized?.message;
+      if(status === 401){
+        setMessage("Email ou senha inválidos.")
+      }else if(status === 422) {
+        setMessage("Dados inválidos. Verifique os campos.")
+      } else{
+        setMessage(apiMsg || "Não foi possível fazer login no momento.");
+      }
+    } finally{
+      setSubmitting(false)
     }
   };
 
@@ -39,6 +48,7 @@ function LoginPage() {
             placeholder="Digite seu email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="username"
             required
           />
 
@@ -49,11 +59,12 @@ function LoginPage() {
             placeholder="Digite sua senha"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete="current-password"
             required
           />
 
-          <button type="submit" className="login-button">
-            Entrar
+          <button type="submit" className="login-button" disabled={submitting}>
+            {submitting ? "Entrando..." : "Entrar"}
           </button>
         </form>
 

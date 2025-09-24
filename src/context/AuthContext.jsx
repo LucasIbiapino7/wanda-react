@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
-import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import PropTypes from "prop-types";
+import AuthService from "../services/AuthService";
 
 const AuthContext = createContext();
 
@@ -14,31 +14,23 @@ export function AuthProvider({ children }) {
     const storedToken = sessionStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
-      const decoded = jwtDecode(storedToken);
-      if (decoded.roles) {
-        setRoles(decoded.roles);
+      try{
+        const decoded = jwtDecode(storedToken);
+        setRoles(Array.isArray(decoded.roles) ? decoded.roles : []);
+      }catch{
+        // Erro ao decodificar o token
+        sessionStorage.removeItem("token");
       }
     }
     setLoading(false);
   }, []);
 
   const login = async (email, password) => {
-    try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, {
-        email,
-        password,
-      });
-      const { token: receivedToken } = response.data;
-      setToken(receivedToken);
-      sessionStorage.setItem("token", receivedToken);
-      const decoded = jwtDecode(receivedToken);
-      if (decoded.roles) {
-        setRoles(decoded.roles);
-      }
-    } catch (error) {
-      console.error("Ocorreu um erro:", error);
-      throw error;
-    }
+    const {token: receivedToken} = await AuthService.Login(email, password);
+    sessionStorage.setItem("token", receivedToken);
+    setToken(receivedToken);
+    const decoded = jwtDecode(receivedToken);
+    setRoles(Array.isArray(decoded.roles) ? decoded.roles : []);
   };
 
   const logout = () => {
