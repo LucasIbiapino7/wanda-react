@@ -19,7 +19,7 @@ function hardLogout() {
 // Monta a requisição com authorization quando não for "skipAuth"
 api.interceptors.request.use(
     (config) => {
-        if(config.skipAuth){
+        if(!config.skipAuth){
             const token = getToken();
             if(token){
                 config.headers.Authorization = `Bearer ${token}`
