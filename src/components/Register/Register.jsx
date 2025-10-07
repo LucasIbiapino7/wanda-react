@@ -43,18 +43,27 @@ export default function Register() {
   };
 
   const validate = () => {
-    const errs = { ...emptyErrs };
+    const errs = { firstName: "", lastName: "", email: "", password: "" };
 
-    const name = `${firstName} ${lastName}`.replace(/\s+/g, " ").trim();
-    if (name.length < 2 || name.length > 30) {
-      const msg = "O nome completo deve ter entre 2 e 30 caracteres.";
-      errs.firstName = msg;
-      errs.lastName = msg;
+    const fn = (firstName || "").replace(/\s+/g, " ").trim();
+    const ln = (lastName || "").replace(/\s+/g, " ").trim();
+
+    if (fn.length < 2)
+      errs.firstName = "Informe pelo menos 2 caracteres no nome.";
+    if (ln.length < 2)
+      errs.lastName = "Informe pelo menos 2 caracteres no sobrenome.";
+
+    const parts = `${fn} ${ln}`.trim().split(/\s+/);
+    if (parts.length < 2) {
+      const msg = "Informe nome e sobrenome.";
+      errs.firstName ||= msg;
+      errs.lastName ||= msg;
     }
+
     if (!emailRegex.test(email)) {
       errs.email = "Email inválido.";
     }
-    if (password.length < 6 || password.length > 50) {
+    if ((password || "").length < 6 || password.length > 50) {
       errs.password = "A senha deve conter entre 6 e 50 caracteres.";
     }
 
@@ -72,7 +81,9 @@ export default function Register() {
     setSubmitting(true);
     try {
       await AuthService.register({ firstName, lastName, email, password });
-      setGlobalMsg("Cadastro realizado com sucesso! Redirecionando para o login...");
+      setGlobalMsg(
+        "Cadastro realizado com sucesso! Redirecionando para o login..."
+      );
       setTimeout(() => navigate("/login"), 1500);
     } catch (err) {
       const status = err?.normalized?.status;
@@ -101,7 +112,9 @@ export default function Register() {
         });
         setTimeout(focusFirstError, 0);
       } else {
-        setGlobalMsg(err?.normalized?.message || "Não foi possível concluir o cadastro.");
+        setGlobalMsg(
+          err?.normalized?.message || "Não foi possível concluir o cadastro."
+        );
       }
     } finally {
       setSubmitting(false);
@@ -112,7 +125,9 @@ export default function Register() {
     <div className="register-page">
       <div className="register-container">
         <h2 className="register-title">Crie sua conta</h2>
-        <p className="register-subtitle">Preencha os campos para se cadastrar</p>
+        <p className="register-subtitle">
+          Preencha os campos para se cadastrar
+        </p>
 
         <form className="register-form" onSubmit={handleSubmit} noValidate>
           <label htmlFor="firstName">Nome:</label>
@@ -183,7 +198,11 @@ export default function Register() {
             </span>
           )}
 
-          <button type="submit" className="register-button" disabled={submitting}>
+          <button
+            type="submit"
+            className="register-button"
+            disabled={submitting}
+          >
             {submitting ? "Cadastrando..." : "Cadastrar"}
           </button>
         </form>
