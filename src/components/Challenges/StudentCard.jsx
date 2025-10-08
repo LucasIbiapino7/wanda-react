@@ -1,13 +1,9 @@
 import PropTypes from "prop-types";
 import "./StudentCard.css";
-import CodeImg from "../../assets/code.svg";
 
-const StudentCard = ({
-  student,
-  onChallenge,
-  onViewFunctions,
-  onBadgeClick,
-}) => {
+const StudentCard = ({ student, onOpenChallenge, onBadgeClick }) => {
+  const hasNick = student.nickName && String(student.nickName).trim().length > 0;
+
   return (
     <div className="student-card">
       <div className="avatar">
@@ -16,7 +12,12 @@ const StudentCard = ({
           alt={student.characterUrl}
         />
       </div>
-      <h3>{student.name}</h3>
+
+      <div className="student-title">
+        <h3 className="student-name">{student.name}</h3>
+        {hasNick && <span className="student-nick">@{student.nickName}</span>}
+      </div>
+
       <div className="badges-container">
         {student.badges.map((badge) => (
           <img
@@ -31,19 +32,7 @@ const StudentCard = ({
       </div>
 
       <div className="buttons-container">
-        {student.code && (
-          <div
-            className="function-icon"
-            data-tooltip="Ver funções"
-            onClick={onViewFunctions}
-          >
-            <img src={CodeImg} alt="Código" />
-          </div>
-        )}
-        <button
-          className="btn btn-primary"
-          onClick={() => onChallenge(student.id)}
-        >
+        <button className="btn btn-primary" onClick={onOpenChallenge}>
           Desafiar
         </button>
       </div>
@@ -55,6 +44,7 @@ StudentCard.propTypes = {
   student: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
+    nickName: PropTypes.string,
     characterUrl: PropTypes.string.isRequired,
     badges: PropTypes.arrayOf(
       PropTypes.shape({
@@ -63,11 +53,8 @@ StudentCard.propTypes = {
         iconUrl: PropTypes.string.isRequired,
       })
     ).isRequired,
-    code: PropTypes.string,
-    code2: PropTypes.string,
   }).isRequired,
-  onChallenge: PropTypes.func.isRequired,
-  onViewFunctions: PropTypes.func.isRequired,
+  onOpenChallenge: PropTypes.func.isRequired,
   onBadgeClick: PropTypes.func.isRequired,
 };
 

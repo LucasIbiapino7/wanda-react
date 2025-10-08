@@ -83,3 +83,150 @@ h1 {
   background-color: #ff9933;
   transform: translateY(-2px);
 }
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  background: rgba(255,255,255,0.06);
+  border: 1px dashed rgba(255,255,255,0.2);
+  border-radius: 12px;
+  padding: 24px;
+  color: #fff;
+}
+
+.no-results p {
+  margin: 0 0 10px;
+  opacity: 0.9;
+}
+
+.loading-state {
+  text-align: center;
+  color: #ffd700;
+  font-size: 1.2rem;
+  padding: 40px 0;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+
+/* ===== Bottom Sheet: escolher jogo ===== */
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  backdrop-filter: blur(2px);
+  z-index: 40;
+}
+
+.sheet {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 41;
+  background: #1c1c2a;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  box-shadow: 0 -8px 30px rgba(0,0,0,.35);
+  padding: 16px;
+  animation: sheetIn .18s ease-out;
+}
+
+@keyframes sheetIn {
+  from { transform: translateY(12px); opacity: .85; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+.sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.sheet-header h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+.sheet-close {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  opacity: .9;
+  cursor: pointer;
+}
+
+.sheet-body {
+  padding: 6px 2px 10px;
+}
+
+.sheet-subtitle {
+  color: #ffb84d;
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+
+/* Cards de jogos */
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.game-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #2b2b44, #3a3a5a);
+  border: 2px solid #ffb84d;
+  border-radius: 12px;
+  padding: 12px;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+}
+
+.game-card:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+}
+
+.game-card:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.3);
+}
+
+.game-card img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  image-rendering: pixelated; /* vibe retrô */
+}
+
+.game-sending {
+  font-size: .8rem;
+  color: #ffd700;
+}
+
+/* Pequenos ajustes responsive */
+@media (min-width: 768px) {
+  .sheet {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 520px;
+    border-radius: 16px;
+    bottom: 24px;
+  }
+  @keyframes sheetIn {
+    from { transform: translate(-50%, 12px); opacity: .85; }
+    to   { transform: translate(-50%, 0);    opacity: 1; }
+  }
+}

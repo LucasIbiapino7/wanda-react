@@ -1,77 +1,135 @@
 :root {
-  --primary: #FFD700;
-  --secondary: #333333;
-  --text: #FFFFFF;
+  --primary: #ffd700;
+  --panel: rgba(255,255,255,0.06);
+  --panel-border: rgba(255,255,255,0.10);
+  --chip-bg: rgba(255,255,255,0.10);
+  --chip-txt: #e9e9e9;
+  --ok: #33c16e;
+  --no: #e06262;
 }
 
 .pending-challenge-card {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 20px;
-  border-radius: 15px;
-  backdrop-filter: blur(5px);
-  border: 1px solid black;
-  transition: all 0.3s ease;
-  color: var(--text);
-  position: relative;
-  width: 100%;
-  display: flex;
+  display: grid;
+  grid-template-columns: 36px 1fr auto;
   align-items: center;
-  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(18,18,31,0.55), rgba(18,18,31,0.45));
+  border: 1px solid var(--panel-border);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: transform .15s ease, box-shadow .15s ease, border-color .2s ease;
 }
 
 .pending-challenge-card:hover {
-  transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.16);
+}
+.challenge-game-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  object-fit: contain;
+  background: rgba(255,255,255,0.08);
+  image-rendering: pixelated;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* Títulos/infos */
+.pending-card-titles {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .challenge-text {
+  margin: 0;
   font-size: 0.95rem;
-  margin-bottom: 10px;
+  color: #eaeaea;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-
 .challenge-text strong {
   color: var(--primary);
 }
 
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.challenge-game-name {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--chip-bg);
+  color: var(--chip-txt);
+  font-size: 0.78rem;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.14);
+}
+
 .challenge-date {
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 15px;
+  font-size: 0.78rem;
+  opacity: 0.8;
 }
 
 .pending-challenge-item-btns {
   display: flex;
-  gap: 15px;
-  justify-content: flex-end;
+  gap: 10px;
 }
 
-.pending-challenge-item-btns img {
-  width: 40px;
-  height: 40px;
-  padding: 8px;
+.circle-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.08);
   cursor: pointer;
-  border-radius: 50%;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px solid transparent;
+  transition: transform .12s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.circle-btn img {
+  width: 18px;
+  height: 18px;
 }
 
-.pending-challenge-item-btns img:hover {
-  transform: scale(1.1);
-  background: rgba(255, 255, 255, 0.1);
-  border-color: var(--primary);
+.circle-btn.ok:hover {
+  background: rgba(51,193,110,0.18);
+  border-color: rgba(51,193,110,0.55);
+  box-shadow: 0 0 0 4px rgba(51,193,110,0.12);
 }
-
-.pending-challenge-item-btns img:active {
-  transform: scale(0.95);
+.circle-btn.no:hover {
+  background: rgba(224,98,98,0.18);
+  border-color: rgba(224,98,98,0.55);
+  box-shadow: 0 0 0 4px rgba(224,98,98,0.12);
 }
+.circle-btn:active { transform: scale(0.96); }
 
-@media (max-width: 480px) {
+@media (max-width: 420px) {
   .pending-challenge-card {
-    padding: 15px;
+    grid-template-columns: 32px 1fr auto;
+    gap: 10px;
+    padding: 10px 12px;
   }
+  .challenge-game-icon { width: 32px; height: 32px; }
+  .circle-btn { width: 34px; height: 34px; }
+}
 
-  .pending-challenge-item-btns {
-    justify-content: center;
-  }
+.circle-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.circle-btn:disabled img {
+  filter: grayscale(0.3);
 }

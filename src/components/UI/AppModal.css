@@ -1,0 +1,69 @@
+.app-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 20, 0.55);
+  backdrop-filter: blur(3px);
+  display: grid;
+  place-items: center;
+  z-index: 60;
+}
+
+.app-modal {
+  width: min(520px, calc(100% - 32px));
+  border-radius: 14px;
+  padding: 18px 20px;
+  background: linear-gradient(135deg, rgba(58,58,90,.55), rgba(43,43,68,.6));
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow: 0 16px 40px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.06);
+  color: #fff;
+  animation: modalIn .16s ease-out;
+}
+
+@keyframes modalIn {
+  from { transform: translateY(6px); opacity: .0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.app-modal--success { border-color: rgba(66,215,125,.5); }
+.app-modal--error { border-color: rgba(255, 107, 107, .5); }
+
+.app-modal-title {
+  margin: 0 0 6px 0;
+  font-size: 1.1rem;
+  letter-spacing: .2px;
+}
+
+.app-modal-body {
+  margin-bottom: 14px;
+  color: rgba(255,255,255,.9);
+}
+
+.app-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.app-btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(255,255,255,.06);
+  color: #fff;
+  cursor: pointer;
+  transition: transform .1s ease, background .12s ease, border-color .12s ease;
+}
+.app-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.1);
+}
+.app-btn:active { transform: scale(.98); }
+
+.app-btn--primary {
+  background: #ffb84d;
+  color: #1b1b2a;
+  border-color: rgba(255,184,77,.7);
+}
+.app-btn--primary:hover {
+  background: #ff9933;
+}
