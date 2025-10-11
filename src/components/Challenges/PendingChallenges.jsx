@@ -6,6 +6,21 @@ import ChallengeService from "../../services/ChallengeService";
 import AppModal from "../UI/AppModal";
 import "./PendingChallenges.css";
 
+// Extração de mensagens do backend (mesma função do Challenge.jsx)
+function extractApiError(err) {
+  const status = err?.response?.status ?? err?.normalized?.status ?? 0;
+  const data = err?.response?.data;
+  const backendMsg = data?.error || data?.message;
+  const normalizedMsg = err?.normalized?.message;
+  const msg =
+    backendMsg ||
+    normalizedMsg ||
+    (status === 0
+      ? "Falha de conexão. Tente novamente."
+      : "Erro ao processar o desafio.");
+  return { status, message: msg };
+}
+
 const PendingChallenges = () => {
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,6 +33,14 @@ const PendingChallenges = () => {
 
   const [busyIds, setBusyIds] = useState(new Set());
 
+  // controle do modal de partida
+  const [matchModal, setMatchModal] = useState({
+    open: false,
+    phase: "loading", // "loading" | "success"
+    opponent: "",
+    matchId: null,
+  });
+
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -29,11 +52,8 @@ const PendingChallenges = () => {
       setTotalPages(data?.totalPages ?? 1);
     } catch (error) {
       console.error("Erro ao buscar desafios pendentes:", error);
-      setErrorMessage(
-        error?.response?.data?.error ||
-          error?.normalized?.message ||
-          "Não conseguimos carregar seus desafios pendentes."
-      );
+      const { message } = extractApiError(error);
+      setErrorMessage(message);
     } finally {
       setLoading(false);
     }
@@ -43,24 +63,57 @@ const PendingChallenges = () => {
     if (token) fetchPendingChallenges(page);
   }, [token, page, fetchPendingChallenges]);
 
-  const handleAcceptOrReject = async (challengeId, isAccepted) => {
+  const handleAcceptOrReject = async (challengeId, isAccepted, opponentName = "") => {
     setBusyIds((prev) => new Set(prev).add(challengeId));
+
+    // Se aceitou, abre o modal de "partida em andamento"
+    if (isAccepted) {
+      setMatchModal({
+        open: true,
+        phase: "loading",
+        opponent: opponentName,
+        matchId: null,
+      });
+    }
+
     try {
-      const matchId = await ChallengeService.decide({
+      const matchId = await ChallengeService.isAccepted({
         challengeId,
         accepted: isAccepted,
       });
+
+      // Remove da lista local
       setChallenges((prev) => prev.filter((ch) => ch.id !== challengeId));
+
       if (isAccepted && matchId) {
-        navigate(`/matches/${matchId}`);
+        // Troca a fase do modal para "success"
+        setMatchModal({
+          open: true,
+          phase: "success",
+          opponent: opponentName,
+          matchId,
+        });
+      } else if (isAccepted && !matchId) {
+        // Falhou silenciosamente (mas aceitou)
+        setMatchModal({
+          open: true,
+          phase: "success",
+          opponent: opponentName,
+          matchId: null,
+        });
       }
-    } catch (error) {
-      console.error("Erro ao aceitar/rejeitar desafio:", error);
-      setErrorMessage(
-        error?.response?.data?.error ||
-          error?.normalized?.message ||
-          "Ops! Não foi possível concluir essa ação."
-      );
+    } catch (err) {
+      const { status, message } = extractApiError(err);
+
+      let title = "Não conseguimos processar seu desafio!";
+      if (status === 0) title = "Falha de conexão";
+      else if (status >= 500) title = "Erro no servidor";
+
+      setErrorMessage(message);
+      setMatchModal((m) => ({ ...m, open: false }));
+
+      console.error("handleAcceptOrReject error:", { status, message, err });
+    } finally {
       setBusyIds((prev) => {
         const next = new Set(prev);
         next.delete(challengeId);
@@ -69,8 +122,17 @@ const PendingChallenges = () => {
     }
   };
 
-  const closeErrorModal = () => {
-    setErrorMessage("");
+  const closeErrorModal = () => setErrorMessage("");
+
+  const handleCloseMatchModal = () => {
+    setMatchModal({ open: false, phase: "loading", opponent: "", matchId: null });
+  };
+
+  const handleViewReplay = () => {
+    if (matchModal.matchId) {
+      window.open(`/matches/${matchModal.matchId}`, "_blank", "noopener,noreferrer");
+    }
+    handleCloseMatchModal();
   };
 
   return (
@@ -120,19 +182,68 @@ const PendingChallenges = () => {
         </div>
       )}
 
+      {/* Modal de erro */}
       <AppModal
         open={!!errorMessage}
         onClose={closeErrorModal}
         title="Algo deu errado"
         variant="error"
-        description={errorMessage}
         primaryAction={{
           id: "pending-err-ok",
           label: "Ok",
           onClick: closeErrorModal,
         }}
         initialFocus="pending-err-ok"
-      />
+      >
+        <p>{errorMessage}</p>
+      </AppModal>
+
+      {/* Modal de Partida (duas fases) */}
+      {matchModal.open && (
+        <AppModal
+          open={matchModal.open}
+          onClose={handleCloseMatchModal}
+          title={
+            matchModal.phase === "loading"
+              ? "Partida em andamento..."
+              : "Partida concluída!"
+          }
+          variant={matchModal.phase === "loading" ? "info" : "success"}
+          primaryAction={
+            matchModal.phase === "success"
+              ? {
+                  id: "view-replay",
+                  label: "Ver replay agora",
+                  onClick: handleViewReplay,
+                }
+              : null
+          }
+          initialFocus={matchModal.phase === "success" ? "view-replay" : undefined}
+        >
+          {matchModal.phase === "loading" ? (
+            <div className="match-loading-container">
+              <div className="spinner" />
+              <p>
+                ⚔️ Realizando partida
+                {matchModal.opponent ? ` contra ${matchModal.opponent}` : ""}…
+              </p>
+            </div>
+          ) : (
+            <div>
+              <p>
+                A partida contra{" "}
+                <strong>{matchModal.opponent || "seu oponente"}</strong> foi
+                realizada com sucesso!
+              </p>
+              <div className="modal-actions-inline">
+                <button className="btn btn-ghost" onClick={handleCloseMatchModal}>
+                  Continuar aqui
+                </button>
+              </div>
+            </div>
+          )}
+        </AppModal>
+      )}
     </div>
   );
 };

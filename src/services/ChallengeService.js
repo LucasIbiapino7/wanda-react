@@ -14,6 +14,17 @@ const ChallengeService = {
     const res = await api.get("/challenge/pending", { params: { page, size } });
     return res.data;
   },
+
+  /**
+   * Body: { challengeId: Long, accepted: Boolean }
+   * Retorno:
+   *  - Long (matchId) quando accepted=true e a partida é criada com sucesso
+   *  - null quando accepted=false
+   */
+  async isAccepted({ challengeId, accepted }) {
+    const response = await api.post("/challenge/isAccepted", { challengeId, accepted });
+    return response.data;
+  },
 };
 
 export default ChallengeService;

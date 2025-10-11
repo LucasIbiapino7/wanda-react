@@ -61,3 +61,48 @@
   opacity: .5;
   cursor: not-allowed;
 }
+
+.pending-accepting-banner {
+  margin: 8px 0 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(11, 102, 209, 0.12);
+  border: 1px solid rgba(11, 102, 209, 0.35);
+  color: #0b66d1;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.match-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+  color: #fff;
+  font-size: 1.1rem;
+  gap: 12px;
+}
+
+.spinner {
+  width: 38px;
+  height: 38px;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #ffcc00;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.modal-actions-inline {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
