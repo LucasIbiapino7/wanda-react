@@ -397,14 +397,14 @@ const Arena = ({ duelData }) => {
         ></div>
 
         <div className="player-info left">
-          <h2 className="player-name">{duelData.player1.name}</h2>
+          <h2 className="player-name">{duelData.player1.nickname || duelData.player1.name}</h2>
           <span className="turns-won" ref={scoreRefs.current.player1}>
             VITORIAS: 0
           </span>
         </div>
 
         <div className="player-info right">
-          <h2 className="player-name">{duelData.player2.name}</h2>
+          <h2 className="player-name">{duelData.player2.nickname || duelData.player2.name}</h2>
           <span className="turns-won" ref={scoreRefs.current.player2}>
             VITORIAS: 0
           </span>
@@ -480,11 +480,13 @@ Arena.propTypes = {
     player1: PropTypes.shape({
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
+      nickname: PropTypes.string,
       character_url: PropTypes.string.isRequired,
     }).isRequired,
     player2: PropTypes.shape({
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
+      nickname: PropTypes.string,
       character_url: PropTypes.string,
     }).isRequired,
     matches: PropTypes.arrayOf(

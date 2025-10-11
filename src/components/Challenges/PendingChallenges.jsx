@@ -130,7 +130,7 @@ const PendingChallenges = () => {
 
   const handleViewReplay = () => {
     if (matchModal.matchId) {
-      window.open(`/matches/${matchModal.matchId}`, "_blank", "noopener,noreferrer");
+      window.open(`/matches/${matchModal.matchId}`, "_blank");
     }
     handleCloseMatchModal();
   };
