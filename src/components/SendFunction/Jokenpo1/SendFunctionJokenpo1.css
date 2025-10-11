@@ -338,3 +338,155 @@
   margin-top: 10px;
   font-style: italic;
 }
+
+.agent-banner {
+  background: rgba(11, 102, 209, 0.15); 
+  border: 1px solid rgba(11, 102, 209, 0.4);
+  color: #0b66d1;                      
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+
+.agent-tab.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.agent-nudge {
+  position: relative;
+  align-self: start;
+  margin: 6px 0 4px 2px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  color: #fff;
+  background: rgba(197, 51, 51, 0.9);
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.container-buttons-send .send-button[disabled],
+.container-buttons-send .run-button[disabled],
+.container-buttons-send .submit-button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.help-dropdown {
+  position: relative;
+  display: inline-block;
+  isolation: isolate; 
+}
+
+.help-button {
+  padding: 0.56rem 1.05rem;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #1e1e1e;
+  background: linear-gradient(180deg, #ffcc00, #ffb84d);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.18);
+  backdrop-filter: saturate(110%);
+  will-change: transform;
+}
+
+.help-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+  filter: brightness(1.02);
+}
+
+.help-button:focus-visible {
+  outline: 2px solid #ffd633;
+  outline-offset: 2px;
+}
+
+.help-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 220px;
+  padding: 6px;
+  display: grid;
+  gap: 4px;
+  background: linear-gradient(180deg, rgba(30,30,30,0.92), rgba(30,30,30,0.96));
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  box-shadow:
+    0 8px 28px rgba(0,0,0,0.35),
+    0 2px 6px rgba(0,0,0,0.18);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transform: translateY(6px) scale(0.98);
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease;
+  z-index: 20;
+}
+.help-dropdown:hover .help-menu,
+.help-dropdown:focus-within .help-menu {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.help-menu > button {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  color: #f5f5f5;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.2px;
+  transition: background-color .16s ease, transform .12s ease, color .16s ease;
+}
+
+.help-menu > button:hover {
+  background: rgba(255, 204, 0, 0.14);
+  transform: translateY(-1px);
+  color: #fff;
+}
+
+.help-menu > button:active {
+  transform: translateY(0);
+}
+
+.help-menu .divider {
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+  margin: 4px 6px;
+  border-radius: 1px;
+}
+
+.help-menu::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 14px;
+  width: 12px;
+  height: 12px;
+  background: inherit;
+  border-left: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  transform: rotate(45deg);
+  z-index: -1; 
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .help-button,
+  .help-menu,
+  .help-menu > button {
+    transition: none !important;
+  }
+}
+
