@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import FunctionJokenpo1 from "./pages/FunctionJokenpo1.jsx";
 import FunctionJokenpo2 from "./pages/FunctionJokenpo2.jsx";
 import PrivateRoute from "./routes/PrivateRoute.jsx";
-// import AdminRoute from "./routes/AdminRoute.jsx";
+import AdminRoute from "./routes/AdminRoute.jsx";
 import Login from "./pages/Login";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import Challenge from "./pages/Challenge.jsx";
@@ -15,6 +15,10 @@ import Matches from "./pages/Matches.jsx";
 import TournamentBracket from "./pages/TournamentBracket.jsx";
 import Ranking from "./pages/Ranking.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
+import AdminUsersPage from "./pages/AdminUserPage.jsx";
+import BitsReplayPage from "./pages/BitsReplayPage.jsx";
+import GamesPage from "./pages/GamesPage.jsx";
+import FunctionBitsPage from "./pages/FunctionBitsPage.jsx";
 
 function App() {
   return (
@@ -25,9 +29,9 @@ function App() {
           {/* Rota pública */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/" element={<Home />} />
 
           {/* Rota privada */}
-          <Route path="/" element={<PrivateRoute element={Home} />} />
           <Route
             path="/jokenpo1"
             element={<PrivateRoute element={FunctionJokenpo1} />}
@@ -61,7 +65,22 @@ function App() {
             element={<PrivateRoute element={TournamentBracket} />}
           />
 
-          {/* Rota só para Admin - remover*/}
+          <Route
+            path="/bits-replay"
+            element={<PrivateRoute element={BitsReplayPage} />}
+          />
+
+          <Route
+            path="/bits"
+            element={<PrivateRoute element={FunctionBitsPage} />}
+          />
+
+          <Route path="/games" element={<PrivateRoute element={GamesPage} />} />
+
+          <Route
+            path="/admin/users"
+            element={<AdminRoute element={AdminUsersPage} />}
+          />
         </Routes>
       </Router>
     </AuthProvider>

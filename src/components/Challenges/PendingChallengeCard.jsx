@@ -3,29 +3,44 @@ import "./PendingChallengeCard.css";
 import RejectedImg from "../../assets/rejected.svg";
 import AcceptedImg from "../../assets/accept.svg";
 
+const GAME_LOGOS = {
+  jokenpo: "/assets/games/jokenpo-logo.png",
+  bits: "/assets/games/bits-logo.png",
+};
+
 const PendingChallengeCard = ({ challenge, onAcceptOrReject, disabled = false }) => {
-  const gameIcon = `/assets/games/${String(challenge.gameName || "").toLowerCase()}.png`;
+  const gameKey = String(challenge.gameName || "").toLowerCase().trim();
+  const gameIcon = GAME_LOGOS[gameKey] || null;
 
   const dt = new Date(challenge.createdAt);
-  const dateStr = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "2-digit" }).format(dt);
-  const timeStr = new Intl.DateTimeFormat("pt-BR", { hour: "2-digit", minute: "2-digit" }).format(dt);
+  const dateStr = new Intl.DateTimeFormat("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+  }).format(dt);
+  const timeStr = new Intl.DateTimeFormat("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(dt);
   const sentLabel = `${dateStr} • ${timeStr}`;
 
   return (
     <div className="pending-challenge-card">
-      <img
-        src={gameIcon}
-        alt={challenge.gameName}
-        className="challenge-game-icon"
-        onError={(e) => {
-          e.currentTarget.style.visibility = "hidden";
-        }}
-      />
+      {gameIcon ? (
+        <img
+          src={gameIcon}
+          alt={`Logo ${challenge.gameName}`}
+          className="challenge-game-icon"
+          onError={(e) => {
+            e.currentTarget.style.display = "none";
+          }}
+        />
+      ) : null}
 
       <div className="pending-card-titles">
         <p className="challenge-text">
           <strong>{challenge.challengerName}</strong> desafiou você!
         </p>
+
         <div className="meta-row">
           <span className="challenge-game-name">
             {String(challenge.gameName || "").toUpperCase()}
@@ -37,7 +52,7 @@ const PendingChallengeCard = ({ challenge, onAcceptOrReject, disabled = false })
       <div className="pending-challenge-item-btns">
         <button
           className="circle-btn ok"
-          onClick={() => onAcceptOrReject(challenge.id, true)}
+          onClick={() => onAcceptOrReject(challenge.id, true, challenge.challengerName)}
           aria-label="Aceitar desafio"
           title="Aceitar"
           disabled={disabled}
@@ -45,9 +60,10 @@ const PendingChallengeCard = ({ challenge, onAcceptOrReject, disabled = false })
         >
           <img src={AcceptedImg} alt="" />
         </button>
+
         <button
           className="circle-btn no"
-          onClick={() => onAcceptOrReject(challenge.id, false)}
+          onClick={() => onAcceptOrReject(challenge.id, false, challenge.challengerName)}
           aria-label="Rejeitar desafio"
           title="Rejeitar"
           disabled={disabled}

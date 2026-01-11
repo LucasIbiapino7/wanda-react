@@ -3,18 +3,27 @@
 :root {
   --bg-1: #17171f;
   --bg-2: #1f1f2d;
+
+  /* Base */
   --panel: #222237;
   --panel-2: #2b2b44;
   --ink: #ffffff;
   --muted: #cfd0d6;
 
+  /* Accent */
   --accent: #ffb84d;
   --accent-2: #ffcc00;
   --accent-3: #ff9933;
+
+  /* Feedback */
   --success: #4dac4a;
   --danger: #ff6666;
 
   --pixel: 8px;
+
+  --func-height: 350px;    
+  --func-max-width: 100%;      
+  --func-min-width: 670px;      
 }
 
 .pp-container {
@@ -56,7 +65,6 @@
   background-size: cover;
   background-position: center;
   image-rendering: pixelated;
-  /* “pixel border” */
   box-shadow: 0 0 0 calc(var(--pixel) / 2) var(--accent),
     calc(var(--pixel)) calc(var(--pixel)) 0 0 #0007;
 }
@@ -89,9 +97,10 @@
   border-radius: 10px;
   font-family: "VT323", monospace;
   font-size: 18px;
+  color: var(--ink);
 }
 .pp-nick-empty {
-  opacity: 0.7;
+  opacity: 0.75;
   font-style: italic;
 }
 .pp-nick-edit {
@@ -102,6 +111,7 @@
   border: 2px solid var(--accent);
   border-radius: 10px;
   padding: 6px 8px;
+  color: var(--ink);
 }
 .pp-nick-input {
   all: unset;
@@ -110,27 +120,43 @@
   color: var(--ink);
   min-width: 160px;
 }
+
+/* ===== Botões (contraste garantido) ===== */
 .pp-btn {
   border: 2px solid var(--accent);
-  background: var(--panel-2);
-  color: var(--ink);
+  background: #2f2f52; /* um pouco mais claro que --panel-2 */
+  color: #f7f7ff;      /* mais claro que --ink (melhor contraste) */
   font-family: "Press Start 2P";
   font-size: 12px;
   padding: 8px 12px;
   border-radius: 10px;
   cursor: pointer;
-  transition: transform 0.1s ease, background 0.2s ease;
+  transition: transform 0.1s ease, background 0.2s ease, filter 0.2s ease;
+  text-shadow: 0 1px 0 #000a;
 }
+
 .pp-btn:hover {
-  background: #343458;
+  background: #3a3a66;
   transform: translateY(-1px);
+  filter: brightness(1.02);
 }
+
+.pp-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  filter: none;
+}
+
+/* Primário (amarelo) — texto MAIS escuro e legível */
 .pp-btn--primary {
-  background: var(--accent);
-  color: #2b2b44;
+  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+  color: #17171f; /* bem legível no amarelo */
+  border-color: var(--accent);
+  text-shadow: none;
 }
 .pp-btn--primary:hover {
-  background: var(--accent-3);
+  background: linear-gradient(180deg, var(--accent), var(--accent-3));
 }
 
 /* ===== Stats (cartuchos) ===== */
@@ -144,7 +170,7 @@
   text-align: center;
   padding: 14px;
   border-radius: 12px;
-  background: var(--panel-2);
+  background: #2f2f52; /* melhor contraste */
   border: 2px solid var(--accent);
   box-shadow: calc(var(--pixel) / 2) calc(var(--pixel) / 2) 0 0 #0007;
 }
@@ -154,8 +180,9 @@
   color: var(--accent-2);
 }
 .pp-stat-label {
-  font-size: 0.9rem;
-  color: var(--muted);
+  font-size: 0.95rem;
+  color: #e4e5ee; /* mais claro que muted (melhor leitura) */
+  opacity: 0.9;
 }
 
 /* ===== Badges ===== */
@@ -189,12 +216,12 @@
 }
 .pp-no-badges {
   color: var(--ink);
-  opacity: 0.75;
+  opacity: 0.8;
 }
 
 /* ===== Functions (chips horizontais) ===== */
 .pp-functions {
-  background: var(--panel);
+  background: linear-gradient(180deg, #24243a, #1e1e30);
   border: 2px solid var(--accent);
   border-radius: 12px;
   box-shadow: calc(var(--pixel) / 2) calc(var(--pixel) / 2) 0 0 #0007 inset;
@@ -212,10 +239,11 @@
   height: 6px;
 }
 .pp-func-tabs::-webkit-scrollbar-thumb {
-  background: #555;
+  background: #64648a;
   border-radius: 6px;
 }
 
+/* Chips com texto mais visível */
 .pp-func-chip {
   display: inline-flex;
   align-items: center;
@@ -223,37 +251,54 @@
   padding: 8px 10px;
   border-radius: 12px;
   border: 2px solid #3a3a5a;
-  background: #1c1c2a;
-  color: #ddd;
+  background: #1a1a2c;
+  color: #f1f2ff; /* mais claro */
   cursor: pointer;
   white-space: nowrap;
   transition: transform 0.1s ease, border-color 0.2s ease, background 0.2s ease;
   font-family: "Press Start 2P";
   font-size: 10px;
+  text-shadow: 0 1px 0 #000a;
 }
+
 .pp-func-chip img {
   width: 18px;
   height: 18px;
   image-rendering: pixelated;
 }
+
 .pp-func-chip:hover {
   transform: translateY(-1px);
   border-color: var(--accent);
-}
-.pp-func-chip--active {
-  background: #262646;
-  border-color: var(--accent);
-  color: var(--ink);
+  background: #242444;
 }
 
+.pp-func-chip--active {
+  background: #2a2a52;
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+/* ===== Painel do código — tamanho FIXO (vertical e horizontal) ===== */
 .pp-func-content {
-  background: #121222;
+  background: #101022;
   border: 2px dashed #3a3a5a;
   border-radius: 12px;
   padding: 12px;
   margin-top: 10px;
-  overflow-x: auto;
+
+  /* Fix horizontal + vertical */
+  width: 100%;
+  max-width: var(--func-max-width);
+  min-width: var(--func-min-width);
+
+  height: var(--func-height);
+  overflow: auto;
+
+  /* evita “pulos” e dá sensação de área sólida */
+  box-sizing: border-box;
 }
+
 .pp-game-icon {
   width: 24px;
   height: 24px;
@@ -261,33 +306,37 @@
   margin-right: 8px;
   image-rendering: pixelated;
 }
+
 .pp-func-content pre {
   margin: 0;
-  font-family: "VT323", monospace; /* “mono retrô” */
+  font-family: "VT323", monospace;
   font-size: 20px;
   line-height: 1.25;
-  color: #e6e7ef;
+  color: #eef0ff;
 }
 
 /* ===== Character picker ===== */
 .pp-character-select {
   margin: 26px 0;
 }
+
 .pp-char-grid {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
+
 .pp-char-option {
   width: 72px;
   height: 72px;
   border-radius: 12px;
   padding: 4px;
   border: 2px solid #3a3a5a;
-  background: var(--panel);
+  background: #1a1a2c;
   cursor: pointer;
-  transition: transform 0.1s ease, border-color 0.2s ease;
+  transition: transform 0.1s ease, border-color 0.2s ease, background 0.2s ease;
 }
+
 .pp-char-option img {
   width: 100%;
   height: 100%;
@@ -295,17 +344,16 @@
   object-fit: cover;
   image-rendering: pixelated;
 }
+
 .pp-char-option:hover {
   transform: translateY(-2px);
   border-color: var(--accent);
+  background: #242444;
 }
+
 .pp-char-option--active {
   border-color: var(--accent);
-}
-.pp-char-msg {
-  margin-top: 6px;
-  color: var(--ink);
-  font-size: 0.95rem;
+  box-shadow: 0 0 0 2px rgba(255, 184, 77, 0.25);
 }
 
 .pp-char-confirm-btn {
@@ -314,20 +362,23 @@
   padding: 8px 14px;
   border-radius: 12px;
   border: 2px solid var(--accent);
-  background: var(--accent);
-  color: #2b2b44;
+  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+  color: #17171f;
   font-family: "Press Start 2P";
   font-size: 10px;
   cursor: pointer;
-  transition: transform 0.1s ease, background 0.2s ease;
+  transition: transform 0.1s ease, background 0.2s ease, filter 0.2s ease;
 }
 .pp-char-confirm-btn:hover {
-  background: var(--accent-3);
+  background: linear-gradient(180deg, var(--accent), var(--accent-3));
   transform: translateY(-1px);
+  filter: brightness(1.02);
 }
 .pp-char-confirm-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
+  filter: none;
 }
 
 /* ===== History (cards) ===== */
@@ -348,7 +399,7 @@
 }
 
 .pp-match-card {
-  background: linear-gradient(135deg, #23233a, #1a1a28);
+  background: linear-gradient(135deg, #24243b, #161626);
   border-radius: 12px;
   padding: 12px 14px;
   display: flex;
@@ -382,30 +433,34 @@
   border: 2px solid #fff;
   image-rendering: pixelated;
 }
+
 .pp-match-vs {
   font-family: "Press Start 2P";
   font-size: 10px;
   color: var(--accent);
 }
+
 .pp-winner {
   color: var(--success);
   font-weight: bold;
 }
 
+/* Botão assistir mais legível */
 .pp-match-button {
   border: 2px solid var(--accent);
-  background: var(--accent);
-  color: #2b2b44;
+  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+  color: #17171f;
   border-radius: 12px;
   padding: 6px 12px;
   font-family: "Press Start 2P";
   font-size: 10px;
   cursor: pointer;
-  transition: transform 0.1s ease, background 0.2s ease;
+  transition: transform 0.1s ease, background 0.2s ease, filter 0.2s ease;
 }
 .pp-match-button:hover {
-  background: var(--accent-3);
+  background: linear-gradient(180deg, var(--accent), var(--accent-3));
   transform: translateY(-1px);
+  filter: brightness(1.02);
 }
 
 .pp-loading,
@@ -415,16 +470,6 @@
   padding-top: 60px;
   font-size: 1rem;
   color: var(--danger);
-}
-
-@media (max-width: 720px) {
-  .pp-stats {
-    grid-template-columns: 1fr;
-  }
-  .pp-header {
-    flex-direction: column;
-    align-items: start;
-  }
 }
 
 /* ===== Topbar compacta ===== */
@@ -452,13 +497,18 @@
   grid-template-columns: 300px 1fr;
   gap: 16px;
 }
+
 .pp-aside .pp-card,
 .pp-main .pp-card {
-  background: var(--panel);
+  background: linear-gradient(180deg, #24243a, #1e1e30);
   border: 2px solid var(--accent);
   border-radius: 12px;
   padding: 12px;
   box-shadow: calc(var(--pixel) / 2) calc(var(--pixel) / 2) 0 0 #0007;
+}
+
+.pp-card h2{
+  color: var(--accent);
 }
 
 /* ajustar stats no card */
@@ -489,35 +539,56 @@
   color: var(--accent-2);
 }
 
-/* ===== Drawer lateral ===== */
-.pp-drawer {
+/* ===== Drawer de personagens (fundo agradável + “tech”) ===== */
+.pp-char-drawer {
   position: fixed;
   top: 0;
   right: -620px;
   width: 580px;
   max-width: 90vw;
   height: 100vh;
-  background: var(--panel);
+
+  /* fundo mais agradável */
+  background: radial-gradient(1200px 800px at 20% 10%, #2b2b55 0%, #1b1b2e 45%, #151525 100%) !important;
+  opacity: 1 !important;
+
   color: var(--ink);
   border-left: 2px solid var(--accent);
   box-shadow: -12px 0 0 #0005;
   padding: 100px 16px;
   transition: right 0.22s ease;
   z-index: 50;
+
+  /* leve textura */
+  background-image:
+    radial-gradient(1200px 800px at 20% 10%, #2b2b55 0%, #1b1b2e 45%, #151525 100%),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.03),
+      rgba(255, 255, 255, 0.03) 2px,
+      transparent 2px,
+      transparent 5px
+    ) !important;
 }
-.pp-drawer--open {
+
+.pp-char-drawer--open {
   right: 0;
 }
+
 .pp-drawer-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
 }
-.pp-backdrop {
+
+.pp-drawer-header h2{
+  color: var(--accent-2);
+}
+.pp-char-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.50);
   backdrop-filter: blur(1px);
   z-index: 40;
 }
@@ -528,21 +599,23 @@
   }
 }
 
+/* label do nickname */
 .pp-field-label {
   font-family: "Press Start 2P";
   font-size: 10px;
-  color: var(--muted);
+  color: #e6e7ef; /* mais visível */
   margin-right: 8px;
   opacity: 0.9;
 }
 
+/* Toast */
 .pp-toast {
   position: fixed;
   top: 16px;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--accent);
-  color: #2b2b44;
+  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+  color: #17171f;
   border: 2px solid #00000055;
   border-radius: 12px;
   padding: 10px 14px;
@@ -552,6 +625,7 @@
   box-shadow: 0 6px 0 #00000055;
   animation: ppToastIn 180ms ease-out;
 }
+
 @keyframes ppToastIn {
   from {
     transform: translate(-50%, -8px);
@@ -562,3 +636,48 @@
     opacity: 1;
   }
 }
+
+@media (max-width: 720px) {
+  .pp-stats {
+    grid-template-columns: 1fr;
+  }
+  .pp-header {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  :root {
+    --func-height: 280px;
+  }
+}
+
+.pp-match-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.pp-match-game {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 10px;
+  border-right: 2px solid rgba(255, 184, 77, 0.25);
+}
+
+.pp-match-game-logo {
+  width: 30px;
+  height: 30px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 2px 0 #0006);
+}
+
+.pp-match-game-name {
+  font-family: "Press Start 2P";
+  font-size: 9px;
+  color: var(--accent-2);
+  text-shadow: 0 1px 0 #000a;
+  opacity: 0.95;
+}
+

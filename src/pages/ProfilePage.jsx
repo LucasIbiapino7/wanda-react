@@ -41,8 +41,11 @@ export default function ProfilePage() {
 
   const gameIconSrc = (gameName) =>
     `/assets/games/${String(gameName || "").toLowerCase()}.png`;
+  const gameLogoSrc = (gameName) =>
+    `/assets/games/${String(gameName || "").toLowerCase()}-logo.png`;
 
-  // profile
+  const prettyGameName = (gameName) => String(gameName || "").toUpperCase();
+
   useEffect(() => {
     async function fetchProfile() {
       setLoading(true);
@@ -62,30 +65,44 @@ export default function ProfilePage() {
     if (token) fetchProfile();
   }, [token]);
 
-  // functions list
   const functions = useMemo(() => profile?.functions ?? [], [profile]);
   useEffect(() => {
     if (functions.length > 0) setActiveFuncIdx(0);
   }, [functions.length]);
 
-  // matches
-  const fetchMatches = async (page = 0) => {
-    setMatchLoading(true);
-    setMatchError(null);
-    try {
-      const data = await MatchService.list({ page, size: 5 });
-      setMatches(data.content || []);
-      setMatchPage(data.number ?? page);
-      setMatchTotalPages(data.totalPages ?? 0);
-    } catch (err) {
-      console.error("fetchMatches error:", err);
-      setMatchError("Não foi possível carregar suas partidas.");
-    } finally {
-      setMatchLoading(false);
-    }
-  };
   useEffect(() => {
-    if (token) fetchMatches(0);
+    if (!token) return;
+
+    let cancelled = false;
+
+    async function fetchMatches(page) {
+      setMatchLoading(true);
+      setMatchError(null);
+      try {
+        const data = await MatchService.list({ page, size: 5 });
+
+        if (cancelled) return;
+
+        setMatches(data.content || []);
+        setMatchPage(data.number ?? page);
+        setMatchTotalPages(data.totalPages ?? 0);
+      } catch (err) {
+        if (cancelled) return;
+        console.error("fetchMatches error:", err);
+        setMatchError("Não foi possível carregar suas partidas.");
+      } finally {
+        if (!cancelled) setMatchLoading(false);
+      }
+    }
+
+    fetchMatches(matchPage);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [token, matchPage]);
+  useEffect(() => {
+    if (token) setMatchPage(0);
   }, [token]);
 
   // nickname: validação client-side (espelha o back)
@@ -118,7 +135,6 @@ export default function ProfilePage() {
     setNickError("");
     try {
       await ProfileService.updateNickname(nickDraft.trim()); // 204
-      // espelha no estado local imediatamente
       setProfile((p) => ({ ...p, nickname: nickDraft.trim() }));
       setEditingNick(false);
       setToastMsg("Nickname atualizado!");
@@ -151,7 +167,6 @@ export default function ProfilePage() {
     setUpdatingChar(true);
     try {
       await ProfileService.updateCharacter(selectedChar); // 204
-      // atualiza imediatamente na UI
       setInitialChar(selectedChar);
       setProfile((p) => ({ ...p, characterUrl: selectedChar }));
       setToastMsg("Personagem atualizado!");
@@ -237,7 +252,9 @@ export default function ProfilePage() {
               )}
 
               {!editingNick ? (
-                <button className="pp-btn" onClick={startNickEdit}>EDIT</button>
+                <button className="pp-btn" onClick={startNickEdit}>
+                  EDIT
+                </button>
               ) : (
                 <>
                   <button
@@ -253,8 +270,13 @@ export default function ProfilePage() {
                 </>
               )}
             </div>
+
             {nickError && (
-              <div id="nick-error" className="field-error" style={{ marginTop: 8, maxWidth: 360 }}>
+              <div
+                id="nick-error"
+                className="field-error"
+                style={{ marginTop: 8, maxWidth: 360 }}
+              >
                 {nickError}
               </div>
             )}
@@ -320,7 +342,9 @@ export default function ProfilePage() {
             <div className="pp-functions-head">
               <h2>Funções</h2>
               <div className="pp-func-toolbar">
-                <button className="pp-btn" onClick={copyCode}>COPIAR CÓDIGO</button>
+                <button className="pp-btn" onClick={copyCode}>
+                  COPIAR CÓDIGO
+                </button>
               </div>
             </div>
 
@@ -330,11 +354,6 @@ export default function ProfilePage() {
                   f?.functionName ||
                   f?.game?.name ||
                   `Função ${String(idx + 1).padStart(2, "0")}`;
-
-                const icon = f?.game?.name
-                  ? `/assets/games/${String(f.game.name).toLowerCase()}.png`
-                  : `/assets/games/default.png`;
-
                 const active = activeFuncIdx === idx;
                 return (
                   <button
@@ -346,7 +365,6 @@ export default function ProfilePage() {
                     onClick={() => setActiveFuncIdx(idx)}
                     title={label}
                   >
-                    <img src={icon} alt="" />
                     <span>{label}</span>
                   </button>
                 );
@@ -354,13 +372,6 @@ export default function ProfilePage() {
             </div>
 
             <div className="pp-func-content" role="tabpanel">
-              {activeFunc?.game?.name && (
-                <img
-                  className="pp-game-icon"
-                  src={gameIconSrc(activeFunc.game.name)}
-                  alt={activeFunc.game.name}
-                />
-              )}
               <pre>
                 <code className="language-python">
                   {activeFunc?.code || "# nenhuma função cadastrada"}
@@ -380,56 +391,92 @@ export default function ProfilePage() {
             )}
 
             <div className="pp-matches-grid">
-              {matches.map((m) => (
-                <div key={m.id} className="pp-match-card">
-                  <div className="pp-match-players">
-                    <div className="pp-match-player">
-                      <img
-                        src={`/assets/personagens/${m.player1.character_url}`}
-                        alt={m.player1.name}
-                        className="pp-match-avatar"
-                      />
-                      <span className={m.winner.id === m.player1.id ? "pp-winner" : ""}>
-                        {m.player1.name}
-                      </span>
+              {matches.map((m) => {
+                const gameName = m?.game?.name;
+                const logo = gameLogoSrc(gameName);
+
+                return (
+                  <div key={m.id} className="pp-match-card">
+                    <div className="pp-match-left">
+                      <div className="pp-match-game">
+                        <img
+                          className="pp-match-game-logo"
+                          src={logo}
+                          alt={gameName ? `${gameName} logo` : "game logo"}
+                          onError={(e) => {
+                            e.currentTarget.style.display = "none";
+                          }}
+                        />
+                        {gameName && (
+                          <span className="pp-match-game-name">
+                            {prettyGameName(gameName)}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="pp-match-players">
+                        <div className="pp-match-player">
+                          <img
+                            src={`/assets/personagens/${m.player1.character_url}`}
+                            alt={m.player1.name}
+                            className="pp-match-avatar"
+                          />
+                          <span className={m.winner.id === m.player1.id ? "pp-winner" : ""}>
+                            {m.player1.nickname ? `@${m.player1.nickname}` : m.player1.name}
+                          </span>
+                        </div>
+
+                        <span className="pp-match-vs">vs</span>
+
+                        <div className="pp-match-player">
+                          <img
+                            src={`/assets/personagens/${m.player2.character_url}`}
+                            alt={m.player2.name}
+                            className="pp-match-avatar"
+                          />
+                          <span className={m.winner.id === m.player2.id ? "pp-winner" : ""}>
+                            {m.player2.nickname ? `@${m.player2.nickname}` : m.player2.name}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <span className="pp-match-vs">vs</span>
-                    <div className="pp-match-player">
-                      <img
-                        src={`/assets/personagens/${m.player2.character_url}`}
-                        alt={m.player2.name}
-                        className="pp-match-avatar"
-                      />
-                      <span className={m.winner.id === m.player2.id ? "pp-winner" : ""}>
-                        {m.player2.name}
-                      </span>
-                    </div>
+
+                    <button
+                      className="pp-match-button"
+                      onClick={() => window.open(`/matches/${m.id}`, "_blank")}
+                    >
+                      Assistir
+                    </button>
                   </div>
-                  <button
-                    className="pp-match-button"
-                    onClick={() => window.open(`/matches/${m.id}`, "_blank")}
-                  >
-                    Assistir
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <Pagination
               currentPage={matchPage}
               totalPages={matchTotalPages}
-              onPageChange={(p) => fetchMatches(p)}
+              onPageChange={(p) => {
+                if (!matchLoading) setMatchPage(p);
+              }}
             />
+
+            {matchLoading && <div className="pp-inline-msg">Carregando página…</div>}
           </section>
         </main>
       </div>
 
       {/* ===== Character Drawer ===== */}
-      <div className={"pp-drawer" + (showCharDrawer ? " pp-drawer--open" : "")} aria-hidden={!showCharDrawer}>
+      <div
+        className={"pp-char-drawer" + (showCharDrawer ? " pp-char-drawer--open" : "")}
+        aria-hidden={!showCharDrawer}
+      >
         <div className="pp-drawer-header">
           <h2>Escolha seu personagem</h2>
-          <button className="pp-btn" onClick={closeCharDrawer}>FECHAR</button>
+          <button className="pp-btn" onClick={closeCharDrawer}>
+            FECHAR
+          </button>
         </div>
+
         <div className="pp-char-grid">
           {characters.map((c) => (
             <div
@@ -441,6 +488,7 @@ export default function ProfilePage() {
             </div>
           ))}
         </div>
+
         <button
           className="pp-char-confirm-btn"
           onClick={handleConfirmCharacter}
@@ -449,8 +497,9 @@ export default function ProfilePage() {
           {updatingChar ? "Enviando..." : "Confirmar Personagem"}
         </button>
       </div>
+
       {/* backdrop */}
-      {showCharDrawer && <div className="pp-backdrop" onClick={closeCharDrawer} />}
+      {showCharDrawer && <div className="pp-char-backdrop" onClick={closeCharDrawer} />}
 
       {/* ===== Global Toast ===== */}
       {toastMsg && (

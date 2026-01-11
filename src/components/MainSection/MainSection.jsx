@@ -1,225 +1,366 @@
 import "./MainSection.css";
 import { useNavigate } from "react-router-dom";
-import heroImage from "../../assets/hero-bg.png";
-import Wanda from "../../assets/wanda.png";
-import Timmy from "../../assets/timmy.png";
+import { useContext } from "react";
+
 import Cosmo from "../../assets/cosmo-avatar.png";
-import FeedbackIcon from "../../assets/feedbackIcon.png";
-import RunIcon from "../../assets/runIcon.png";
-import SubmitIcon from "../../assets/submitIcon.png";
-import MatchImg from "../../assets/arena-background-pixel-art.png";
+import Timmy from "../../assets/timmy.png";
+import Wanda from "../../assets/wanda.png";
+import Logo from "../../assets/logo.png";
+import AuthContext from "../../context/AuthContext";
 
 export default function MainSection() {
   const navigate = useNavigate();
-  const scrollToIntro = () => {
-    const section = document.querySelector(".intro-section");
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
+  const { isAuthenticated, user } = useContext(AuthContext);
+
+  const scrollToSection = (id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  const firstName = (user?.name && String(user.name).split(" ")[0]) || "aluno";
+
   return (
-    <>
-      <section className="main-section">
-        <div className="hero-content">
-          <div className="hero-text">
-            <h1 className="hero-title">Bem-vindo ao Wanda</h1>
-            <p className="hero-subtitle">
-              Escreva e teste suas estratégias de Jokenpô com agentes
-              inteligentes.
-            </p>
-            <button className="hero-button" onClick={scrollToIntro}>Começar agora</button>
-          </div>
-          <div className="hero-image">
-            <img src={heroImage} alt="Ilustração de Jokenpô com agentes" />
-          </div>
-        </div>
-      </section>
-      <section className="intro-section">
-        <div className="intro-card">
-          <h2 className="intro-title">Como funciona o Jokenpô?</h2>
-          <p className="intro-text">
-            Aqui você pode jogar uma partida do clássico jogo Jokenpô contra
-            seus amigos e participar de torneios, mas como você vai escolher a
-            carta que vai ser jogada em cada rodada? Essa responsabilidade é
-            sua! Você vai escrever a lógica de duas funções em Python que
-            determinam qual carta (pedra, papel ou tesoura) será jogada no
-            primeiro e no segundo round de uma partida!
-          </p>
-        </div>
-      </section>
+    <div className="home-main">
+      {/* HERO */}
+      <section className="home-hero">
+        {isAuthenticated ? (
+          <div className="home-hero-card home-hero-card--logged">
+            <div className="hero-left hero-left--logged">
+              <h1 className="hero-title">Bem-vindo de volta, {firstName}!</h1>
 
-      <section className="section-round1">
-        <div className="round1-card">
-          <div className="round1-header">
-            <h2>Função do Primeiro Round!</h2>
-            <p>
-              No primeiro round você conhece as <strong>3 cartas</strong> na sua
-              mão, por meio dos parâmetros: card1, card2 e card3. Sendo assim,
-              você deve escrever a lógica da função strategy, pensando em uma
-              estratégia para escolher sua carta! Vale lembrar, que no início de
-              cada partida as cartas são distribuídas entre os dois jogadores, e
-              pode ocorrer de você ter duas cartas repetidas na sua mão, como:
-              pedra, pedra e tesoura.
-            </p>
-          </div>
-          <div className="round1-editor">
-            <div className="editor-toolbar">
-              <span className="dot red" />
-              <span className="dot yellow" />
-              <span className="dot green" />
+              <p className="hero-subtitle">
+                Escolha por onde continuar: Envie funções em nossos jogos,
+                desafie seus colegas, entre em torneios ou acompanhe o ranking
+                global.
+              </p>
+
+              <div className="hero-quick-grid">
+                <button
+                  type="button"
+                  className="hero-quick-card"
+                  onClick={() => navigate("/games")}
+                >
+                  <span className="hero-quick-label">Jogos</span>
+                  <span className="hero-quick-text">
+                    Ver jogos disponíveis e enviar suas funções.
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  className="hero-quick-card"
+                  onClick={() => navigate("/challenges")}
+                >
+                  <span className="hero-quick-label">Desafios</span>
+                  <span className="hero-quick-text">
+                    Desafiar seus amigos para um duelo.
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  className="hero-quick-card"
+                  onClick={() => navigate("/tournament")}
+                >
+                  <span className="hero-quick-label">Torneios</span>
+                  <span className="hero-quick-text">
+                    Ver torneios abertos e acompanhar os torneios que você
+                    participa.
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  className="hero-quick-card"
+                  onClick={() => navigate("/ranking")}
+                >
+                  <span className="hero-quick-label">Ranking</span>
+                  <span className="hero-quick-text">
+                    Acompanhar o Ranking geral.
+                  </span>
+                </button>
+              </div>
             </div>
-            <pre className="editor-content">
-              <code>
-                {`function strategy(card1, card2, card3):
-  # sua estratégia aqui
-`}
-              </code>
-            </pre>
           </div>
-        </div>
-      </section>
+        ) : (
+          <div className="home-hero-card">
+            <div className="hero-left">
+              <h1 className="hero-title">
+                Aprenda programação jogando com o Wanda
+              </h1>
 
-      <section className="section-round2">
-        <div className="round2-card">
-          <div className="round2-header">
-            <h2>Função do Segundo Round!</h2>
-            <p>
-              No segundo round você conhece as suas <strong>2 cartas</strong> e
-              as <strong>2 cartas do adversário</strong>. Sendo assim, você deve
-              escrever a lógica da função strategy, pensando em uma estratégia
-              para escolher sua carta!
-            </p>
-          </div>
-          <div className="round2-editor">
-            <div className="editor-toolbar">
-              <span className="dot red" />
-              <span className="dot yellow" />
-              <span className="dot green" />
+              <p className="hero-subtitle">
+                Uma plataforma para praticar lógica de programação dentro de
+                jogos de carta, com duelos, torneios e feedback guiado por
+                assistentes virtuais.
+              </p>
+
+              <div className="hero-actions">
+                <button
+                  className="hero-btn hero-btn-primary"
+                  onClick={() => navigate("/login")}
+                >
+                  Entrar e começar a jogar
+                </button>
+
+                <button
+                  className="hero-btn hero-btn-secondary"
+                  onClick={() => scrollToSection("games-section")}
+                >
+                  Ver jogos disponíveis
+                </button>
+              </div>
+
+              <p className="hero-note">
+                Ideal para alunos iniciantes em programação.
+              </p>
             </div>
-            <pre className="editor-content">
-              <code>
-                {`function strategy(card1, card2, opponentCard1, opponentCard2): 
-  # seu código aqui
-`}
-              </code>
-            </pre>
+
+            <div className="hero-right">
+              <img src={Logo} alt="Logo do Wanda" className="hero-logo" />
+            </div>
           </div>
-        </div>
+        )}
       </section>
 
-      <section className="assist-section">
-        <h2 className="assist-title">Conheça os nossos assistentes!</h2>
-        <p className="assist-text">
-          Enquanto escreve suas funções, você pode pedir a ajuda de um dos
-          nossos assistentes virtuais! Cada um deles tem uma personalidade
-          própria, mas pode ter certeza que eles podem te ajudar bastante!
-          Claro, cada um da sua forma!
-        </p>
-        <div className="assist-cards">
-          <div className="assist-card">
-            <img src={Cosmo} alt="Cosmo" className="assist-photo" />
-            <h3>Cosmo</h3>
-            <p>
-              Olá, meu nome é Cosmo. Minhas respostas são as mais longas, adoro
-              falar!
-            </p>
-          </div>
-          <div className="assist-card">
-            <img src={Timmy} alt="Timmy" className="assist-photo" />
-            <h3>Timmy</h3>
-            <p>Sou o Timmy. Vou ser o mais direto possível.</p>
-          </div>
-          <div className="assist-card">
-            <img src={Wanda} alt="Wanda" className="assist-photo" />
-            <h3>Wanda</h3>
-            <p>
-              Sou Wanda! Minhas respostas são em um estilo mais equilibrado do
-              que a dos outros dois!
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="agent-actions-section">
-        <h2 className="agent-actions-title">
-          Veja como eles podem ajudar você:
-        </h2>
-        <div className="agent-actions-cards">
-          <div className="agent-action-card">
-            <img
-              src={FeedbackIcon}
-              alt="Feedback"
-              className="agent-action-icon"
-            />
-            <h3 className="agent-action-name">Feedback</h3>
-            <p className="agent-action-text">
-              Analise semântica do seu código: os agentes apontam pontos de
-              melhoria e verificam como você está usando os parâmetros da sua
-              função!
-            </p>
-          </div>
-          <div className="agent-action-card">
-            <img src={RunIcon} alt="Rodar" className="agent-action-icon" />
-            <h3 className="agent-action-name">Rodar</h3>
-            <p className="agent-action-text">
-              Sua função é executada com entradas reais e é verificado como ela
-              se sai e se está retornando os valores dentro do esperado.
-            </p>
-          </div>
-          <div className="agent-action-card">
-            <img
-              src={SubmitIcon}
-              alt="Submeter"
-              className="agent-action-icon"
-            />
-            <h3 className="agent-action-name">Submeter</h3>
-            <p className="agent-action-text">
-              Aqui você salva sua função e pode começar a se divertir desafiando
-              seus amigos!
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="validation-section">
-        <h2 className="validation-title">Validação Automática do Código</h2>
-        <div className="validation-card">
-          <p className="validation-text">
-            Além disso, nossos agentes realizam uma checagem automática no seu
-            código ao apertar qualquer um dos botões:
-          </p>
-          <ul className="validation-list">
-            <li>Sintaxe válida e sem erros de indentação</li>
-            <li>
-              Presença obrigatória da função <code>strategy</code>
-            </li>
-            <li>Parâmetros corretos conforme cada round</li>
-          </ul>
-          <p className="validation-note">
-            Caso algum problema seja detectado, você vai receber um feedback dos
-            nossos assistentes, ajudando você a entender e corrigir o erro!
+      {/* O QUE É O WANDA */}
+      <section className="home-section" id="sobre">
+        <div className="home-section-header">
+          <h2 className="home-section-title">O que é o Wanda?</h2>
+          <p className="home-section-lead">
+            O Wanda é um ambiente em que você escreve funções em Python e vê o
+            resultado delas em jogos. Em vez de exercícios soltos, você cria
+            estratégias que realmente vão para a arena.
           </p>
         </div>
-      </section>
 
-      <section className="cta-section">
-        <div className="cta-card">
-          <h2 className="cta-title">Pronto para jogar de verdade?</h2>
-          <p className="cta-text">
-            Agora que já sabe como funciona, que tal submerter suas funções?
-            Depois disso, pode desafiar seus amigos ou entrar em torneios e
-            testar sua estratégia! Cada vitória conta no ranking e você pode ganhar algumas
-            badges exclusivas.
-          </p>
-          <button
-            className="cta-button"
-            onClick={() => (navigate("/jokenpo1"))}
-          >
-            Enviar funções
-          </button>
-          <img src={MatchImg} alt="Exemplo de Partida" className="cta-image" />
+        <div className="home-columns">
+          <div className="home-column">
+            <h3 className="home-column-title">Pensado para iniciantes</h3>
+            <ul className="home-list">
+              <li>Explica o contexto dos jogos antes de pedir código.</li>
+              <li>Foco em regras simples, mas com espaço para criatividade.</li>
+              <li>Permite errar, testar, ajustar e tentar de novo.</li>
+            </ul>
+          </div>
+
+          <div className="home-column">
+            <h3 className="home-column-title">Aprendizado guiado</h3>
+            <ul className="home-list">
+              <li>
+                Assistentes que explicam o que está acontecendo no código.
+              </li>
+              <li>
+                Feedback sobre retornos inválidos, fallbacks e estratégias.
+              </li>
+              <li>
+                Relatórios de partidas para entender o comportamento do bot.
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
-    </>
+
+      {/* JOGOS DISPONÍVEIS */}
+      <section className="home-section home-section--games" id="games-section">
+        <div className="home-section-header">
+          <h2 className="home-section-title">Jogos disponíveis</h2>
+          <p className="home-section-lead">Explore nossos jogos.</p>
+        </div>
+
+        <div className="home-games-grid">
+          {/*JOKENPO*/}
+          <article className="home-game-card">
+            <h3 className="home-game-title">Jokenpô</h3>
+            <p className="home-game-description">
+              O clássico pedra, papel e tesoura, onde você cria duas funções
+              para escolher suas cartas ao longo dos 3 rounds.
+            </p>
+
+            <ul className="home-game-points">
+              <li>Funções com poucos parâmetros.</li>
+              <li>Condicionais e decisões simples.</li>
+              <li>Ótimo para primeiro contato com o Wanda.</li>
+            </ul>
+
+            <div className="home-game-footer">
+              <span className="home-game-skill-tag">
+                Foco: estrututuras condicionais, parâmetros, variáveis, tipos
+                primitivos..
+              </span>
+              <button
+                className="home-game-btn"
+                onClick={() => navigate("/games")}
+              >
+                Enviar função para este jogo
+              </button>
+            </div>
+          </article>
+
+          {/*BITS*/}
+          <article className="home-game-card">
+            <h3 className="home-game-title">BITS</h3>
+            <p className="home-game-description">
+              Cada rodada, seu bot escolhe entre as cartas: BIT8, BIT16, BIT32 e
+              FIREWALL. A ideia, é escrever uma única função que selecione a sua
+              carta ao longo dos 4 rounds de uma partida!
+            </p>
+
+            <ul className="home-game-points">
+              <li>
+                Uso de estruturas condicionais e entendimento dos tipos de
+                variáveis
+              </li>
+              <li>Leitura de relatórios para ajustar a estratégia.</li>
+              <li>Ótimo para primeiro contato com o Wanda.</li>
+            </ul>
+
+            <div className="home-game-footer">
+              <span className="home-game-skill-tag">
+                Foco: Estruturas condicionais, parâmetros, variáveis, None,
+                tipos primitivos...
+              </span>
+              <button
+                className="home-game-btn"
+                onClick={() => navigate("/games")}
+              >
+                Enviar função para este jogo
+              </button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      {/* ASSISTENTES VIRTUAIS */}
+      <section className="home-section home-section--agents" id="assistentes">
+        <div className="home-section-header">
+          <h2 className="home-section-title">Assistentes virtuais</h2>
+          <p className="home-section-lead">
+            Você não precisa descobrir tudo sozinho. Cada assistente tem um
+            estilo diferente de explicação para te ajudar durante o processo.
+          </p>
+        </div>
+
+        <div className="agents-grid">
+          <article className="agent-card">
+            <img src={Cosmo} alt="Cosmo" className="agent-avatar" />
+            <h3 className="agent-name">Cosmo</h3>
+            <p className="agent-role">Explicações bem detalhadas</p>
+            <p className="agent-description">
+              Respostas mais longas, cheias de exemplos e explicações passo a
+              passo. Bom para quando você quer entender o &quot;porquê&quot; de
+              cada coisa.
+            </p>
+          </article>
+
+          <article className="agent-card">
+            <img src={Timmy} alt="Timmy" className="agent-avatar" />
+            <h3 className="agent-name">Timmy</h3>
+            <p className="agent-role">Direto ao ponto</p>
+            <p className="agent-description">
+              Fala pouco, mas vai direto ao que importa. Útil quando você já tem
+              uma noção e só precisa de um empurrãozinho.
+            </p>
+          </article>
+
+          <article className="agent-card">
+            <img src={Wanda} alt="Wanda" className="agent-avatar" />
+            <h3 className="agent-name">Wanda</h3>
+            <p className="agent-role">Equilíbrio</p>
+            <p className="agent-description">
+              Mistura de clareza e objetividade. Nem tão curto quanto o Timmy,
+              nem tão longo quanto o Cosmo: o meio-termo ideal.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      {/* FLUXO DE USO */}
+      <section className="home-section home-section--flow" id="fluxo">
+        <div className="home-section-header">
+          <h2 className="home-section-title">Como funciona na prática?</h2>
+          <p className="home-section-lead">
+            O foco é aprender a programar. Os jogos e torneios são o cenário
+            onde esse aprendizado acontece.
+          </p>
+        </div>
+
+        <div className="flow-grid">
+          <div className="flow-step">
+            <div className="flow-step-number">1</div>
+            <h3 className="flow-step-title">Escreva sua função</h3>
+            <p className="flow-step-text">
+              Você recebe a assinatura da função <code>strategy</code> com os
+              parâmetros e o contexto do jogo.
+            </p>
+          </div>
+
+          <div className="flow-step">
+            <div className="flow-step-number">2</div>
+            <h3 className="flow-step-title">Peça ajuda aos assistentes</h3>
+            <p className="flow-step-text">
+              Use os agentes para revisar, comentar e sugerir ajustes na sua
+              lógica.
+            </p>
+          </div>
+
+          <div className="flow-step">
+            <div className="flow-step-number">3</div>
+            <h3 className="flow-step-title">Teste e acompanhe o resultado</h3>
+            <p className="flow-step-text">
+              O sistema roda partidas e mostra onde sua função funcionou bem ou
+              precisou de fallback.
+            </p>
+          </div>
+
+          <div className="flow-step">
+            <div className="flow-step-number">4</div>
+            <h3 className="flow-step-title">Entre em duelos e torneios</h3>
+            <p className="flow-step-text">
+              Quando estiver confiante, participe de partidas contra colegas e
+              acompanhe sua evolução no ranking.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {!isAuthenticated && (
+        <section className="home-section home-section--cta" id="cta">
+          <div className="home-section-header">
+            <h2 className="home-section-title">Pronto para começar?</h2>
+            <p className="home-section-lead">
+              Crie sua conta, envie sua primeira função e veja o seu bot
+              entrando em jogo nas arenas do Wanda.
+            </p>
+          </div>
+
+          <div className="cta-actions">
+            <button
+              className="hero-btn hero-btn-primary"
+              onClick={() => navigate("/register")}
+            >
+              Criar conta
+            </button>
+
+            <button
+              className="hero-btn hero-btn-secondary"
+              onClick={() => navigate("/login")}
+            >
+              Já tenho conta
+            </button>
+
+            <button
+              type="button"
+              className="cta-link"
+              onClick={() => scrollToSection("games-section")}
+            >
+              Ver jogos antes de entrar
+            </button>
+          </div>
+        </section>
+      )}
+    </div>
   );
 }

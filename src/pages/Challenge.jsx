@@ -11,8 +11,8 @@ import ChallengeService from "../services/ChallengeService";
 import AppModal from "../components/UI/AppModal";
 
 const GAMES = [
-  { key: "jokenpo", label: "Jokenpo", icon: "/assets/games/jokenpo.png" },
-  { key: "bits", label: "BITS", icon: "/assets/games/bits.png" },
+  { key: "jokenpo", label: "Jokenpo", icon: "/assets/games/jokenpo-logo.png" },
+  { key: "bits", label: "BITS", icon: "/assets/games/bits-logo.png" },
 ];
 
 function extractApiError(err) {
@@ -23,7 +23,9 @@ function extractApiError(err) {
   const msg =
     backendMsg ||
     normalizedMsg ||
-    (status === 0 ? "Falha de conexão. Tente novamente." : "Erro ao enviar o desafio.");
+    (status === 0
+      ? "Falha de conexão. Tente novamente."
+      : "Erro ao enviar o desafio.");
   return { status, message: msg };
 }
 
@@ -38,7 +40,7 @@ const Challenge = () => {
     open: false,
     title: "",
     message: "",
-    variant: "default", 
+    variant: "default",
   });
 
   const [selectedBadge, setSelectedBadge] = useState(null);
@@ -60,6 +62,7 @@ const Challenge = () => {
         page,
         size: 4,
       });
+
       if (seq === requestSeq.current) {
         setStudents(data);
         setTotalPages(data.totalPages ?? 1);
@@ -72,18 +75,29 @@ const Challenge = () => {
   }, []);
 
   useEffect(() => {
+    if (!token) return;
     fetchStudents(searchTerm, currentPage);
-  }, [searchTerm, currentPage, fetchStudents]);
+  }, [token, searchTerm, currentPage, fetchStudents]);
 
-  const handleSearch = (term) => {
-    setCurrentPage(0);
-    setSearchTerm(term);
-  };
+  const handleSearch = useCallback(
+    (term) => {
+      const next = String(term ?? "").trim();
+      const prev = String(searchTerm ?? "").trim();
+
+      // evita resetar paginação se o SearchBar chamar onSearch com o mesmo termo
+      if (next === prev) return;
+
+      setCurrentPage(0);
+      setSearchTerm(next);
+    },
+    [searchTerm]
+  );
 
   const openGamePicker = (student) => {
     setTargetStudent(student);
     setSheetOpen(true);
   };
+
   const closeGamePicker = () => {
     setSheetOpen(false);
     setTargetStudent(null);
@@ -93,10 +107,11 @@ const Challenge = () => {
   const submitChallenge = async (game) => {
     if (!targetStudent) return;
     setSendingGameKey(game.key);
+
     try {
       await ChallengeService.create({
         challengedId: targetStudent.id,
-        gameName: game.key, 
+        gameName: game.key,
       });
 
       setModal({
@@ -117,7 +132,7 @@ const Challenge = () => {
       setModal({
         open: true,
         title,
-        message, 
+        message,
         variant: "error",
       });
 
@@ -127,8 +142,7 @@ const Challenge = () => {
     }
   };
 
-  const closeModal = () =>
-    setModal((m) => ({ ...m, open: false }));
+  const closeModal = () => setModal((m) => ({ ...m, open: false }));
 
   return (
     <div className="container-challenge">
@@ -137,6 +151,7 @@ const Challenge = () => {
       <SearchBar value={searchTerm} onSearch={handleSearch} />
 
       <h2 className="section-title">Desafie Seus Amigos</h2>
+
       <div className="students-grid">
         {loading ? (
           <div className="loading-state" role="status" aria-live="polite">
@@ -159,7 +174,6 @@ const Challenge = () => {
               onClick={() => {
                 setSearchTerm("");
                 setCurrentPage(0);
-                fetchStudents("", 0);
               }}
             >
               Limpar busca
@@ -211,6 +225,7 @@ const Challenge = () => {
 
             <div className="sheet-body">
               <p className="sheet-subtitle">Escolha o jogo:</p>
+
               <div className="game-grid">
                 {GAMES.map((g) => (
                   <button
@@ -220,7 +235,7 @@ const Challenge = () => {
                     disabled={!!sendingGameKey && sendingGameKey !== g.key}
                     aria-busy={sendingGameKey === g.key}
                   >
-                    <img src={g.icon} alt="" />
+                    <img src={g.icon} alt={`Logo ${g.label}`} />
                     <span>{g.label}</span>
                     {sendingGameKey === g.key && (
                       <span className="game-sending">Enviando...</span>

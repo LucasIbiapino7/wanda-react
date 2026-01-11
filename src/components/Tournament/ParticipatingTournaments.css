@@ -110,3 +110,15 @@
 .empty-message {
   color: #fff;
 }
+
+.game-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.game-logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}

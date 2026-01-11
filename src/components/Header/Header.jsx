@@ -7,7 +7,7 @@ import profileImg from "../../assets/profile.svg";
 import "./Header.css";
 
 export default function Header() {
-  const { isAuthenticated, logout } = useContext(AuthContext);
+  const { isAuthenticated, isAdmin, logout } = useContext(AuthContext);
 
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showMobileNav, setShowMobileNav] = useState(false);
@@ -31,15 +31,15 @@ export default function Header() {
         <img src={labLogo} alt="Lab" className="logo-lab" />
       </div>
 
-      <div className="hamburger" onClick={toggleMobileNav}>
+      <div className="hamburger" onClick={toggleMobileNav} aria-label="Abrir menu">
         <span />
         <span />
         <span />
       </div>
 
       <nav className={`nav ${showMobileNav ? "open" : ""}`}>
-        <Link className="nav-link" to="/jokenpo1" onClick={toggleMobileNav}>
-          Enviar Função
+        <Link className="nav-link" to="/games" onClick={toggleMobileNav}>
+          Jogos
         </Link>
         <Link className="nav-link" to="/challenges" onClick={toggleMobileNav}>
           Desafios
@@ -51,6 +51,18 @@ export default function Header() {
           Ranking
         </Link>
 
+        {/* Botão visível apenas para admins */}
+        {isAuthenticated && isAdmin && (
+          <Link
+            className="admin-btn"
+            to="/admin/users"
+            onClick={toggleMobileNav}
+            title="Gerenciar usuários"
+          >
+            Admin
+          </Link>
+        )}
+
         {isAuthenticated && (
           <div className="profile-container">
             <img
@@ -61,7 +73,14 @@ export default function Header() {
             />
             {showProfileMenu && (
               <div className="profile-menu">
-                <button onClick={() => {toggleMobileNav(); navigate("/profile");}}>Meu Perfil</button>
+                <button
+                  onClick={() => {
+                    toggleMobileNav();
+                    navigate("/profile");
+                  }}
+                >
+                  Meu Perfil
+                </button>
                 <button onClick={handleLogout}>Logout</button>
               </div>
             )}

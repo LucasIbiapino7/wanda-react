@@ -4,7 +4,8 @@ import { dracula } from "@uiw/codemirror-theme-dracula";
 import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
 import axios from "axios";
-import "./SendFunctionJokenpo2.css";
+
+import "./SendFunctionBits.css";
 
 import AuthContext from "../../../context/AuthContext";
 import cosmo from "../../../assets/cosmo-avatar.png";
@@ -18,22 +19,23 @@ import SuccessModal from "../SuccessModal";
 import FunctionService from "../../../services/FunctionService.js";
 import AppModal from "../../UI/AppModal.jsx";
 import HintBox from "../../UI/HintBox.jsx";
+import api from "../../../services/api.js";
 
-const GAME = "JOKENPO";
-const FUNCTION = "jokenpo2";
+const GAME = "BITS";
+const FUNCTION_DB_NAME = "bits";
 
 const ACTION_HINTS = {
   feedback: {
     label: "Feedback",
-    hint: "Análise semântica do seu código, sem rodar testes.",
+    hint: "Análise semântica do seu código, sem rodar partidas.",
   },
   run: {
     label: "Run",
-    hint: "Executa testes locais com seu código atual.",
+    hint: "Executa testes locais com seu código atual (sem salvar).",
   },
   submit: {
     label: "Submeter",
-    hint: "Valida e salva sua função para uso nos torneios.",
+    hint: "Valida e salva sua função para uso em duelos/torneios.",
   },
 };
 
@@ -42,25 +44,21 @@ function extractApiError(err) {
   const data = err?.response?.data;
   const backendMsg = data?.error || data?.message;
   const normalizedMsg = err?.normalized?.message;
-
   const message =
     backendMsg ||
     normalizedMsg ||
     (status === 0
       ? "Falha de conexão. Tente novamente."
       : "Não consegui concluir sua solicitação. Tente mais tarde.");
-
   return { status, message };
 }
 
-function SendFunctionJokenpo2() {
+export default function SendFunctionBits() {
   const navigate = useNavigate();
   const { token } = useContext(AuthContext);
 
-  const defaultCode =
-    "def strategy(card1, card2, opponentCard1, opponentCard2):";
+  const defaultCode ="def strategy(bit8, bit16, bit32, firewall, opp_last):";
   const [text, setText] = useState(defaultCode);
-
   const [feedback, setFeedback] = useState(null);
   const [typedMessage, setTypedMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -91,23 +89,29 @@ function SendFunctionJokenpo2() {
   const handleAgentTabClick = (agent) => {
     if (isProcessing) return;
     setAssistantStyle(agent);
-    localStorage.setItem("selectedAgent2", agent);
+    localStorage.setItem("selectedAgentBits", agent);
   };
 
   // restaura agente selecionado
   useEffect(() => {
-    const last = localStorage.getItem("selectedAgent2");
+    const last = localStorage.getItem("selectedAgentBits");
     if (last) setAssistantStyle(last);
   }, []);
 
-  // carrega função salva
+  // carrega função salva (BITS) via GET /api/function?gameName=bits
   useEffect(() => {
     async function fetchSavedFunction() {
       try {
-        const data = await FunctionService.getSaved(FUNCTION);
+        const { data } = await api.get("/api/function", {
+          params: { gameName: FUNCTION_DB_NAME },
+          skipAuth: false,
+        });
+
         if (data?.code) {
           setText(data.code);
           setHasSavedFunction(true);
+        } else {
+          setText(defaultCode);
         }
       } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -128,7 +132,6 @@ function SendFunctionJokenpo2() {
         }
       }
     }
-
     if (token) fetchSavedFunction();
   }, [token]);
 
@@ -138,11 +141,9 @@ function SendFunctionJokenpo2() {
       setTypedMessage("");
       return;
     }
-
     const msg = feedback;
     let i = -1;
     setTypedMessage(" ");
-
     const intervalId = setInterval(() => {
       if (i < msg.length - 1) {
         setTypedMessage((prev) => prev + msg[i]);
@@ -151,7 +152,6 @@ function SendFunctionJokenpo2() {
         clearInterval(intervalId);
       }
     }, 30);
-
     return () => clearInterval(intervalId);
   }, [feedback]);
 
@@ -168,21 +168,19 @@ function SendFunctionJokenpo2() {
   const commonBody = () => ({
     code: text,
     assistantStyle,
-    functionName: FUNCTION,
+    functionName: FUNCTION_DB_NAME,
     gameName: GAME,
   });
 
   // FEEDBACK
   const handleSubmitFeedback = async () => {
     if (!ensureAgent()) return;
-
     setIsProcessing(true);
     setRunningAction("feedback");
     setLoading(true);
     setFeedback(null);
     setFeedbackAgentId(null);
     setFeedbackSent(false);
-
     try {
       const data = await FunctionService.feedback(commonBody());
       setFeedbackAgentId(data.feedbackId);
@@ -200,10 +198,9 @@ function SendFunctionJokenpo2() {
     }
   };
 
-  // RUN
+  // Run
   const handleRun = async () => {
     if (!ensureAgent()) return;
-
     setIsProcessing(true);
     setRunningAction("run");
     setLoading(true);
@@ -231,7 +228,6 @@ function SendFunctionJokenpo2() {
   // SUBMIT
   const handleSubmitFunction = async () => {
     if (!ensureAgent()) return;
-
     setIsProcessing(true);
     setRunningAction("submit");
     setLoading(true);
@@ -300,12 +296,9 @@ function SendFunctionJokenpo2() {
   const labelFor = (key) => {
     if (runningAction !== key)
       return { feedback: "Feedback", run: "Run", submit: "Submeter" }[key];
-
-    return {
-      feedback: "Analisando…",
-      run: "Testando…",
-      submit: "Validando…",
-    }[key];
+    return { feedback: "Analisando…", run: "Testando…", submit: "Validando…" }[
+      key
+    ];
   };
 
   const agentName =
@@ -334,10 +327,8 @@ function SendFunctionJokenpo2() {
       : hoveredAction
       ? ACTION_HINTS[hoveredAction].hint
       : "Passe o mouse (ou use Tab) sobre um botão para saber o que ele faz.";
-
-  // ===== Ajuda (mesmo padrão do BITS/Jokenpo1): um modal com abas =====
   const [helpModalOpen, setHelpModalOpen] = useState(false);
-  const [helpTab, setHelpTab] = useState("instructions"); // "instructions" | "agents"
+  const [helpTab, setHelpTab] = useState("instructions"); 
 
   const openHelp = (tab = "instructions") => {
     setHelpTab(tab);
@@ -348,10 +339,10 @@ function SendFunctionJokenpo2() {
     <div className="container-sendfunction">
       <div className="top-section">
         <div className="informations-section">
-          <h1>Função 2 – Round 2</h1>
+          <h1>BITS — Estratégia</h1>
 
           <div className="progress-indicator">
-            <span>Passo 2 de 2</span>
+            <span>strategy</span>
           </div>
 
           <div className="informations-section-buttons">
@@ -368,7 +359,7 @@ function SendFunctionJokenpo2() {
             {hasSavedFunction && (
               <button
                 className="next-function-button"
-                onClick={() => setSuccessModalOpen(true)}
+                onClick={() => navigate("/challenges")}
                 title="Clique para desafiar seus amigos"
                 disabled={isProcessing}
               >
@@ -545,7 +536,7 @@ function SendFunctionJokenpo2() {
                 isOpen={successModalOpen}
                 onClose={() => setSuccessModalOpen(false)}
                 onProceed={() => navigate("/challenges")}
-                title="Função 2 enviada com sucesso!"
+                title="Função enviada com sucesso!"
                 message="Parabéns! Agora você pode desafiar seus amigos."
               />
             )}
@@ -563,12 +554,10 @@ function SendFunctionJokenpo2() {
       >
         <p>{modal.message}</p>
       </AppModal>
-
-      {/* Ajuda (Instruções + Agentes) no mesmo modal */}
       <InstructionsModal
         isOpen={helpModalOpen}
         onClose={() => setHelpModalOpen(false)}
-        title="Ajuda — Jokenpo (Função 2)"
+        title="Ajuda — BITS"
         footer={
           <div className="help-footer-tabs">
             <button
@@ -593,35 +582,33 @@ function SendFunctionJokenpo2() {
         {helpTab === "instructions" ? (
           <div className="instructions">
             <p>
-              Aqui você vai criar a sua lógica para a <b>função 2</b>, que é
-              responsável por escolher sua carta no segundo round de uma
-              partida!
+              Aqui você cria a lógica da função <b>strategy</b> do BITS. A cada
+              rodada, sua função decide qual carta jogar.
             </p>
+
             <ul>
               <li>
-                Sua função deve se chamar <b>strategy</b>
+                Sua função deve se chamar <b>strategy</b>.
               </li>
               <li>
-                <b>card1, card2:</b> São os parâmetros que representam suas
-                cartas nesse round.
+                Parâmetros: <b>bit8</b>, <b>bit16</b>, <b>bit32</b>,{" "}
+                <b>firewall</b> são representados por 0 (você já não tem essa carta) ou 1 (você ainda tem essa carta), enquanto <b>opp_last</b> pode ser None ou um dos valores de retorno.
               </li>
               <li>
-                <b>opponentCard1, opponentCard2:</b> São os parâmetros que
-                representam as cartas do seu oponente nesse round.
+                Você deve retornar uma string dentre: <b>&quot;BIT8&quot;</b>,{" "}
+                <b>&quot;BIT16&quot;</b>, <b>&quot;BIT32&quot;</b> ou{" "}
+                <b>&quot;FIREWALL&quot;</b>.
               </li>
-              <li>Suas cartas podem ser: “pedra”, “papel” ou “tesoura”.</li>
             </ul>
+
             <p>
-              A função deve retornar uma string que indica a carta a ser jogada
-              dentre: “pedra”, “papel” ou “tesoura”.
+              Dica: comece com regras simples e depois evolua analisando padrões
+              do oponente.
             </p>
           </div>
         ) : (
           <div className="instructions">
-            <p>
-              Cada agente possui uma “personalidade” distinta na forma como
-              elabora suas respostas:
-            </p>
+            <p>Cada agente possui uma “personalidade” distinta:</p>
             <ul>
               <li>
                 <strong>Cosmo:</strong> mais detalhista.
@@ -630,10 +617,10 @@ function SendFunctionJokenpo2() {
                 <strong>Timmy:</strong> direto ao ponto.
               </li>
               <li>
-                <strong>Wanda:</strong> equilíbrio entre detalhes e
-                objetividade.
+                <strong>Wanda:</strong> equilíbrio.
               </li>
             </ul>
+
             <h3>Ações:</h3>
             <ul>
               <li>
@@ -652,5 +639,3 @@ function SendFunctionJokenpo2() {
     </div>
   );
 }
-
-export default SendFunctionJokenpo2;

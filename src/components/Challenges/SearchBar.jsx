@@ -7,20 +7,26 @@ const SearchBar = ({ value = "", onSearch }) => {
   const [searchTerm, setSearchTerm] = useState(value);
   const inputRef = useRef(null);
 
+  // guarda sempre a versão mais recente do onSearch sem re-disparar debounce
+  const onSearchRef = useRef(onSearch);
+  useEffect(() => {
+    onSearchRef.current = onSearch;
+  }, [onSearch]);
+
   // mantém o input sincronizado com o pai
   useEffect(() => {
     setSearchTerm(value);
   }, [value]);
 
-  // debounce (único lugar com debounce)
+  // debounce (agora depende só do searchTerm)
   useEffect(() => {
-    const id = setTimeout(() => onSearch(searchTerm), 500);
+    const id = setTimeout(() => onSearchRef.current(searchTerm), 500);
     return () => clearTimeout(id);
-  }, [searchTerm, onSearch]);
+  }, [searchTerm]);
 
   const handleClear = () => {
     setSearchTerm("");
-    onSearch(""); // dispara busca vazia imediatamente
+    onSearchRef.current(""); // dispara busca vazia imediatamente
     inputRef.current?.focus();
   };
 

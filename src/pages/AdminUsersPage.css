@@ -1,0 +1,213 @@
+:root {
+  --primary: #9c27b0;
+  --primary-600: #8a1fa0;
+  --primary-50: #f7e9fb;
+  --ink: #333;
+  --muted: #777;
+  --border: #e7e7e7;
+  --bg-card: #fff;
+  --bg-table: #fafafa;
+  --success: #4caf50;
+  --danger: #e91e63;
+  --radius: 12px;
+  --shadow-sm: 0 2px 6px rgba(0,0,0,0.08);
+  --shadow-md: 0 6px 18px rgba(0,0,0,0.10);
+}
+
+.admin-users-page {
+  padding: 24px;
+  margin-top: 80px;
+  max-width: 1100px;
+  margin-inline: auto;
+  color: var(--ink);
+}
+
+.admin-title {
+  margin-bottom: 16px;
+  color: var(--ink);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.admin-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin: 12px 0 20px;
+}
+
+.admin-input,
+.admin-select {
+  padding: 10px 12px;
+  min-width: 260px;
+  flex: 1 1 260px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #fff;
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+
+.admin-select {
+  flex: 0 0 auto;
+  min-width: 140px;
+}
+
+.admin-input:focus,
+.admin-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.15);
+}
+
+.admin-button,
+.admin-button-outline {
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, background-color .2s ease;
+}
+
+.admin-button-outline {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--ink);
+}
+
+.admin-button-outline:hover:not(:disabled) {
+  background: #f8f8f8;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-button {
+  border: none;
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-button.promote {
+  background: var(--success);
+}
+
+.admin-button.promote:hover:not(:disabled) {
+  background: #449d48;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.admin-button.demote {
+  background: var(--danger);
+}
+
+.admin-button.demote:hover:not(:disabled) {
+  background: #d31758;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.admin-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Card da tabela */
+.admin-table-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-card);
+}
+
+.admin-table thead {
+  background: linear-gradient(0deg, var(--primary-50) 0%, #fff 100%);
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.admin-table th {
+  font-weight: 700;
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.admin-table tbody tr:nth-child(odd) {
+  background: var(--bg-table);
+}
+
+.admin-table tbody tr:hover {
+  background: #fff;
+  box-shadow: inset 0 0 0 9999px rgba(156, 39, 176, 0.04);
+}
+
+.admin-loading,
+.admin-empty {
+  text-align: center;
+  padding: 18px;
+  color: var(--muted);
+}
+
+/* Pagination */
+.admin-pagination {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.admin-pagination span {
+  min-width: 140px;
+  text-align: center;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Pill do perfil */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+}
+
+.tag-instructor {
+  background: rgba(76, 175, 80, 0.12);
+  color: #2e7d32;
+  border-color: rgba(76, 175, 80, 0.25);
+}
+
+.tag-student {
+  background: rgba(156, 39, 176, 0.12);
+  color: var(--primary-600);
+  border-color: rgba(156, 39, 176, 0.25);
+}
+
+/* Responsivo */
+@media (max-width: 720px) {
+  .admin-table th:nth-child(1),
+  .admin-table td:nth-child(1) { display: none; } 
+  .admin-controls { gap: 10px; }
+}

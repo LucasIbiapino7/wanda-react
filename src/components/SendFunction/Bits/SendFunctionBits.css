@@ -295,10 +295,10 @@
   padding: 8px 12px;
   border-radius: 10px;
   cursor: pointer;
-  font-weight: 800;
 }
 
 .help-tab-btn.active {
   border-color: rgba(255, 205, 0, 0.85);
   background: rgba(255, 205, 0, 0.18);
 }
+
