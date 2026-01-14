@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { TextPlugin } from "gsap/TextPlugin";
 gsap.registerPlugin(TextPlugin);
 
-import "./arena.css";
+import "./Arena.css";
 import PropTypes from "prop-types";
 import arenaBitsBg from "../../assets/arena-bits-background.png";
 
