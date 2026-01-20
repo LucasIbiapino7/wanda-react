@@ -14,9 +14,7 @@ export default function MainSection() {
 
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+    if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
   const firstName = (user?.name && String(user.name).split(" ")[0]) || "aluno";
@@ -123,6 +121,51 @@ export default function MainSection() {
             </div>
           </div>
         )}
+      </section>
+
+      {/* PAINEL — SELETIVO DE BOLSAS */}
+      <section className="home-section home-section--notice" id="bolsas">
+        <div className="home-section-header">
+          <span className="home-section-eyebrow">Inscrições abertas</span>
+          <h2 className="home-section-title">Seletivo de bolsas do Wanda</h2>
+          <p className="home-section-lead">
+            Participe do seletivo e acompanhe todas as informações oficiais do
+            processo. Mais informações no PDF.
+          </p>
+        </div>
+
+        <div className="home-notice-grid">
+          <div className="home-notice-card home-notice-card--single">
+            <h3 className="home-notice-title">
+              Mais informações o Wanda
+            </h3>
+
+            <p className="home-notice-text">
+              O Projeto Wanda é uma iniciativa educacional que utiliza jogos de
+              cartas e recursos tecnológicos para apoiar o ensino de lógica de
+              programação. Vinculado à UFMA e aprovado no Edital CAPES
+              InovaEDUCAÇÃO, o projeto busca promover inovação pedagógica,
+              aprendizado ativo e uso de tecnologias educacionais de acesso
+              público. Esta chamada pública tem como objetivo selecionar
+              estudantes de graduação e pós-graduação da área de Ciência da
+              Computação para atuação em atividades de pesquisa e
+              desenvolvimento, contribuindo para a criação e aprimoramento de
+              soluções educacionais baseadas em card games.
+            </p>
+
+            <div className="home-notice-actions">
+              <a
+                className="home-notice-btn home-notice-btn--primary home-notice-btn--download"
+                href="/edital-wanda.pdf"
+                target="_blank"
+                rel="noreferrer"
+                title="Abrir edital em PDF"
+              >
+                Baixar edital (PDF)
+              </a>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* O QUE É O WANDA */}
