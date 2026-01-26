@@ -122,7 +122,6 @@ export default function MainSection() {
           </div>
         )}
       </section>
-
       {/* PAINEL — SELETIVO DE BOLSAS */}
       <section className="home-section home-section--notice" id="bolsas">
         <div className="home-section-header">
@@ -130,14 +129,15 @@ export default function MainSection() {
           <h2 className="home-section-title">Seletivo de bolsas do Wanda</h2>
           <p className="home-section-lead">
             Participe do seletivo e acompanhe todas as informações oficiais do
-            processo. Mais informações no PDF.
+            processo. Última atualização: Homologação e Resultado provisório das
+            inscrições. Os documentos abaixo estão em PDF.
           </p>
         </div>
 
         <div className="home-notice-grid">
           <div className="home-notice-card home-notice-card--single">
             <h3 className="home-notice-title">
-              Mais informações o Wanda
+              Mais informações sobre o processo.
             </h3>
 
             <p className="home-notice-text">
@@ -153,7 +153,36 @@ export default function MainSection() {
               soluções educacionais baseadas em card games.
             </p>
 
+            <div className="home-notice-divider" />
+
+            <div className="home-notice-meta">
+              <p className="home-notice-meta-title">
+                Documentos do processo (PDF)
+              </p>
+              <p className="home-notice-meta-subtitle">
+                Acompanhe as atualizações oficiais.
+              </p>
+            </div>
+
             <div className="home-notice-actions">
+              <a
+                className="home-notice-btn home-notice-btn--info"
+                href="/Homologacao_de_Inscricoes_wanda.pdf"
+                target="_blank"
+                rel="noreferrer"
+                title="Abrir homologação das inscrições em PDF"
+              >
+                Homologação das inscrições (PDF)
+              </a>
+              <a
+                className="home-notice-btn home-notice-btn--info"
+                href="/Resultado_Provisorio_wanda.pdf"
+                target="_blank"
+                rel="noreferrer"
+                title="Abrir resultado provisório em PDF"
+              >
+                Resultado provisório (PDF)
+              </a>
               <a
                 className="home-notice-btn home-notice-btn--primary home-notice-btn--download"
                 href="/edital-wanda.pdf"
@@ -164,6 +193,11 @@ export default function MainSection() {
                 Baixar edital (PDF)
               </a>
             </div>
+
+            <p className="home-notice-footnote">
+              Última atualização: Homologação + Resultado provisório
+              disponíveis.
+            </p>
           </div>
         </div>
       </section>
