@@ -129,8 +129,8 @@ export default function MainSection() {
           <h2 className="home-section-title">Seletivo de bolsas do Wanda</h2>
           <p className="home-section-lead">
             Participe do seletivo e acompanhe todas as informações oficiais do
-            processo. Última atualização: Homologação e Resultado provisório das
-            inscrições. Os documentos abaixo estão em PDF.
+            processo. Última atualização: documentos de 28 de janeiro. Os
+            documentos abaixo estão em PDF.
           </p>
         </div>
 
@@ -159,44 +159,79 @@ export default function MainSection() {
               <p className="home-notice-meta-title">
                 Documentos do processo (PDF)
               </p>
-              <p className="home-notice-meta-subtitle">
-                Acompanhe as atualizações oficiais.
-              </p>
             </div>
 
-            <div className="home-notice-actions">
+            <div className="home-notice-actions home-notice-actions--stack">
+              <a
+                className="home-notice-btn home-notice-btn--info home-notice-btn--info-strong"
+                href="/Resultado_Definitivo_wanda.pdf"
+                target="_blank"
+                rel="noreferrer"
+                title="Resultado definitivo — 28 de janeiro (PDF)"
+              >
+                Resultado definitivo{" "}
+                <span className="home-notice-date">28 jan</span>
+              </a>
+
+              <a
+                className="home-notice-btn home-notice-btn--info home-notice-btn--info-strong"
+                href="/Inscricoes_Homologadas_wanda.pdf"
+                target="_blank"
+                rel="noreferrer"
+                title="Inscrições homologadas — 28 de janeiro (PDF)"
+              >
+                Inscrições homologadas{" "}
+                <span className="home-notice-date">28 jan</span>
+              </a>
+
+              <a
+                className="home-notice-btn home-notice-btn--info home-notice-btn--info-strong"
+                href="/Analise_de_Recursos_wanda.pdf"
+                target="_blank"
+                rel="noreferrer"
+                title="Análise de recursos — 28 de janeiro (PDF)"
+              >
+                Análise de recursos{" "}
+                <span className="home-notice-date">28 jan</span>
+              </a>
+
               <a
                 className="home-notice-btn home-notice-btn--info"
                 href="/Homologacao_de_Inscricoes_wanda.pdf"
                 target="_blank"
                 rel="noreferrer"
-                title="Abrir homologação das inscrições em PDF"
+                title="Homologação das inscrições — 26 de janeiro (PDF)"
               >
-                Homologação das inscrições (PDF)
+                Homologação das inscrições{" "}
+                <span className="home-notice-date">26 jan</span>
               </a>
+
               <a
                 className="home-notice-btn home-notice-btn--info"
                 href="/Resultado_Provisorio_wanda.pdf"
                 target="_blank"
                 rel="noreferrer"
-                title="Abrir resultado provisório em PDF"
+                title="Resultado provisório — 26 de janeiro (PDF)"
               >
-                Resultado provisório (PDF)
+                Resultado provisório{" "}
+                <span className="home-notice-date">26 jan</span>
               </a>
+
               <a
                 className="home-notice-btn home-notice-btn--primary home-notice-btn--download"
                 href="/edital-wanda.pdf"
                 target="_blank"
                 rel="noreferrer"
-                title="Abrir edital em PDF"
+                title="Edital — 19 de janeiro (PDF)"
               >
-                Baixar edital (PDF)
+                Baixar edital{" "}
+                <span className="home-notice-date home-notice-date--on-primary">
+                  19 jan
+                </span>
               </a>
             </div>
-
             <p className="home-notice-footnote">
-              Última atualização: Homologação + Resultado provisório
-              disponíveis.
+              Última atualização: documentos de <strong>28 jan</strong>.
             </p>
           </div>
         </div>

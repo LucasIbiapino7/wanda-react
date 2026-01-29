@@ -819,6 +819,57 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
 }
 
+.home-notice-date {
+  margin-left: 10px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.home-notice-date--on-primary {
+  background: rgba(0, 0, 0, 0.18);
+  border-color: rgba(0, 0, 0, 0.18);
+  color: rgba(43, 43, 68, 0.95);
+}
+
+.home-notice-btn--info-strong {
+  border: 1px solid rgba(49, 213, 255, 0.35);
+  box-shadow: 0 0 0 1px rgba(49, 213, 255, 0.10),
+    0 10px 22px rgba(0, 0, 0, 0.70);
+}
+
+.home-notice-btn--info-strong:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 1px rgba(49, 213, 255, 0.18),
+    0 14px 28px rgba(0, 0, 0, 0.80);
+}
+
+.home-notice-actions--stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.home-notice-actions--stack .home-notice-btn {
+  width: 100%;
+  justify-content: space-between; 
+  padding: 0.7rem 1.05rem;
+  border-radius: 14px; 
+}
+
+.home-notice-actions--stack .home-notice-date {
+  margin-left: 12px;
+  flex-shrink: 0;
+}
+
+
 @media (max-width: 900px) {
   .home-notice-btn {
     width: 100%;
