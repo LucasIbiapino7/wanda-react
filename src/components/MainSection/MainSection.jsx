@@ -122,7 +122,9 @@ export default function MainSection() {
           </div>
         )}
       </section>
+
       {/* PAINEL — SELETIVO DE BOLSAS */}
+      {/* 
       <section className="home-section home-section--notice" id="bolsas">
         <div className="home-section-header">
           <span className="home-section-eyebrow">Inscrições abertas</span>
@@ -236,6 +238,7 @@ export default function MainSection() {
           </div>
         </div>
       </section>
+      */}
 
       {/* O QUE É O WANDA */}
       <section className="home-section" id="sobre">
