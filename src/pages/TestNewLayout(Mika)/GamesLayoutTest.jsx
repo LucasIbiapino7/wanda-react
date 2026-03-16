@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { dracula } from "@uiw/codemirror-theme-dracula";
 import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
@@ -403,35 +404,6 @@ export default function GameLayoutTest() {
       )}
 
       <div className="top-section">
-        <div className="informations-section">
-          <h1>Função 1 – Round 1</h1>
-
-          
-
-          <div className="informations-section-buttons">
-            <button
-              className="help-button"
-              type="button"
-              onClick={() => openHelp("instructions")}
-              title="Abrir ajuda"
-              disabled={isProcessing}
-            >
-              Ajuda
-            </button>
-
-            {hasSavedFunction && (
-              <button
-                className="next-function-button"
-                onClick={() => setSuccessModalOpen(true)}
-                title="Clique para ir para a função 2"
-                disabled={isProcessing}
-              >
-                Vá para função 2!
-              </button>
-            )}
-          </div>
-        </div>
-
         <div className="editor-feedback-container">
           
           <div className="feedback-space" aria-busy={isProcessing}>
@@ -449,7 +421,18 @@ export default function GameLayoutTest() {
                 <div className="description-top">
                   <span className="description-title">Função 1 - Round 1</span>
                   <div className="progress-indicator">
-                    <span>Passo 1 de 2</span>
+                    {hasSavedFunction ? (
+                      <button
+                        className="next-function-button"
+                        onClick={() => setSuccessModalOpen(true)}
+                        title="Clique para ir para a função 2"
+                        disabled={isProcessing}
+                      >
+                        Vá para função 2!
+                      </button>
+                    ): (
+                      <span>Passo 1 de 2</span>
+                    )}
                   </div>
                 </div>
                 <div className="description-content">
@@ -460,10 +443,10 @@ export default function GameLayoutTest() {
                   </p>
                   <ul>
                     <li>
-                      Sua função deve se chamar <b>strategy</b>
+                      Sua função deve se chamar <code>strategy</code>
                     </li>
                     <li>
-                      <b>card1, card2, card3:</b> são os parâmetros que representam
+                      <code>card1</code>, <code>card2</code>, <code>card3</code>: são os parâmetros que representam
                       suas cartas nesse round.
                     </li>
                     <li>Suas cartas podem ser: “pedra”, “papel” ou “tesoura”.</li>
@@ -527,6 +510,16 @@ export default function GameLayoutTest() {
                     <img src={wanda} alt="Wanda" className="agent-img" />
                     <span>Wanda</span>
                   </div>
+
+                  <button
+                    className="help-button"
+                    type="button"
+                    onClick={() => openHelp("instructions")}
+                    title="Abrir ajuda"
+                    disabled={isProcessing}
+                  >
+                    ?
+                  </button>
                 </div>
                 {showAgentNudge && (
                   <div className="agent-nudge" role="alert">
@@ -553,83 +546,81 @@ export default function GameLayoutTest() {
                 </div>
               </div>
             )}
-            <div className="container-buttons">
-              {feedbackAgentId ? (
-                <div className="feedback-reactions">
+            <div className="feedback-footer">
+              <div className="container-buttons">
+                {feedbackAgentId ? (
+                  <div className="feedback-reactions">
+                    <button
+                      className="reaction-button dislike"
+                      onClick={handleDislike}
+                      title="Deixe um feedback negativo"
+                      disabled={isProcessing}
+                    >
+                      <img src={dislike} alt="dislike" />
+                    </button>
+                    <button
+                      className="reaction-button like"
+                      onClick={handleLike}
+                      title="Deixe um feedback positivo"
+                      disabled={isProcessing}
+                    >
+                      <img src={like} alt="like" />
+                    </button>
+                  </div>
+                ) : (
+                  feedbackSent && (
+                  <div className="feedback-indicator">
+                    Feedback enviado com sucesso!
+                  </div>
+                  )
+                )}
+                <div className="container-buttons-send">
                   <button
-                    className="reaction-button dislike"
-                    onClick={handleDislike}
-                    title="Deixe um feedback negativo"
-                    disabled={isProcessing}
+                    className="send-button"
+                    onClick={() => {
+                      handleSubmitFeedback();
+                      setActiveTab('assistantAI');
+                    }}
+                    disabled={!assistantStyle || isProcessing}
+                    onMouseEnter={() => setHoveredAction("feedback")}
+                    onMouseLeave={() => setHoveredAction(null)}
+                    onFocus={() => setHoveredAction("feedback")}
+                    onBlur={() => setHoveredAction(null)}
                   >
-                    <img src={dislike} alt="dislike" />
+                    {labelFor("feedback")}
                   </button>
                   <button
-                    className="reaction-button like"
-                    onClick={handleLike}
-                    title="Deixe um feedback positivo"
-                    disabled={isProcessing}
+                    className="run-button"
+                    onClick={() => {
+                      handleRun();
+                      setActiveTab('assistantAI');
+                    }}
+                    disabled={!assistantStyle || isProcessing}
+                    onMouseEnter={() => setHoveredAction("run")}
+                    onMouseLeave={() => setHoveredAction(null)}
+                    onFocus={() => setHoveredAction("run")}
+                    onBlur={() => setHoveredAction(null)}
                   >
-                    <img src={like} alt="like" />
+                    {labelFor("run")}
+                  </button>
+                  <button
+                    className="submit-button"
+                    onClick={() => {
+                      handleSubmitFunction();
+                      setActiveTab('assistantAI');
+                    }}
+                    disabled={!assistantStyle || isProcessing}
+                    onMouseEnter={() => setHoveredAction("submit")}
+                    onMouseLeave={() => setHoveredAction(null)}
+                    onFocus={() => setHoveredAction("submit")}
+                    onBlur={() => setHoveredAction(null)}
+                  >
+                    {labelFor("submit")}
                   </button>
                 </div>
-              ) : (
-                feedbackSent && (
-                <div className="feedback-indicator">
-                  Feedback enviado com sucesso!
-                </div>
-                )
-              )}
-
-              <div className="container-buttons-send">
-                <button
-                  className="send-button"
-                  onClick={() => {
-                    handleSubmitFeedback(); 
-                    setActiveTab('assistantAI');
-                  }}
-                  disabled={!assistantStyle || isProcessing}
-                  onMouseEnter={() => setHoveredAction("feedback")}
-                  onMouseLeave={() => setHoveredAction(null)}
-                  onFocus={() => setHoveredAction("feedback")}
-                  onBlur={() => setHoveredAction(null)}
-                >
-                  {labelFor("feedback")}
-                </button>
-
-                <button
-                  className="run-button"
-                  onClick={() => {
-                    handleRun();
-                    setActiveTab('assistantAI');
-                  }}
-                  disabled={!assistantStyle || isProcessing}
-                  onMouseEnter={() => setHoveredAction("run")}
-                  onMouseLeave={() => setHoveredAction(null)}
-                  onFocus={() => setHoveredAction("run")}
-                  onBlur={() => setHoveredAction(null)}
-                >
-                  {labelFor("run")}
-                </button>
-
-                <button
-                  className="submit-button"
-                  onClick={() => {
-                    handleSubmitFunction();
-                    setActiveTab('assistantAI');
-                  }}
-                  disabled={!assistantStyle || isProcessing}
-                  onMouseEnter={() => setHoveredAction("submit")}
-                  onMouseLeave={() => setHoveredAction(null)}
-                  onFocus={() => setHoveredAction("submit")}
-                  onBlur={() => setHoveredAction(null)}
-                >
-                  {labelFor("submit")}
-                </button>
               </div>
+              <HintBox text={currentHint} className="hitbox-container"/>
             </div>
-
-            <HintBox text={currentHint} className="hitbox-container"/>
 
             {successModalOpen && (
               <SuccessModal
@@ -649,7 +640,7 @@ export default function GameLayoutTest() {
               extensions={[python()]}
               basicSetup={{ autocompletion: true, indentUnit: " " }}
               minWidth={"100%"}
-              minHeight={"550px"}
+              minHeight={"600px"}
             />
           </div>
         </div>
@@ -671,64 +662,40 @@ export default function GameLayoutTest() {
       <InstructionsModal
         isOpen={helpModalOpen}
         onClose={() => setHelpModalOpen(false)}
-        title="Ajuda — Jokenpo (Função 1)"
-        footer={
-          <div className="help-footer-tabs">
-            <button
-              type="button"
-              className={`help-tab-btn ${
-                helpTab === "instructions" ? "active" : ""
-              }`}
-              onClick={() => setHelpTab("instructions")}
-            >
-              Instruções
-            </button>
-            <button
-              type="button"
-              className={`help-tab-btn ${helpTab === "agents" ? "active" : ""}`}
-              onClick={() => setHelpTab("agents")}
-            >
-              Agentes
-            </button>
-          </div>
-        }
-      >
-        {helpTab === "instructions" ? (
-          <div className="instructions">
-            
-          </div>
-        ) : (
-          <div className="instructions">
-            <p>
-              Cada agente possui uma “personalidade” distinta na forma como
-              elabora suas respostas:
-            </p>
-            <ul>
-              <li>
-                <strong>Cosmo:</strong> mais detalhista.
-              </li>
-              <li>
-                <strong>Timmy:</strong> direto ao ponto.
-              </li>
-              <li>
-                <strong>Wanda:</strong> equilíbrio entre detalhes e
-                objetividade.
-              </li>
-            </ul>
-            <h3>Ações:</h3>
-            <ul>
-              <li>
-                <strong>Feedback:</strong> análise semântica do seu código.
-              </li>
-              <li>
-                <strong>Run:</strong> executa testes sem salvar.
-              </li>
-              <li>
-                <strong>Submeter:</strong> valida e salva sua função.
-              </li>
-            </ul>
-          </div>
-        )}
+        title="Ajuda"
+      >     
+        <div className="instructions">
+          <h3>Agentes:</h3>
+          <p>
+            Cada agente possui uma “personalidade” distinta na forma como
+            elabora suas respostas:
+          </p>
+          <ul>
+            <li>
+              <strong>Cosmo:</strong> mais detalhista.
+            </li>
+            <li>
+              <strong>Timmy:</strong> direto ao ponto.
+            </li>
+            <li>
+              <strong>Wanda:</strong> equilíbrio entre detalhes e
+              objetividade.
+            </li>
+          </ul>
+          <h3>Ações:</h3>
+          <ul>
+            <li>
+              <strong>Feedback:</strong> análise semântica do seu código.
+            </li>
+            <li>
+              <strong>Run:</strong> executa testes sem salvar.
+            </li>
+            <li>
+              <strong>Submeter:</strong> valida e salva sua função.
+            </li>
+          </ul>
+        </div>
+        
       </InstructionsModal>
     </div>
   );

@@ -1,5 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap");
 
+code {
+  background-color: rgba(128, 128, 128, 0.404);
+  padding: 4px;
+  border-radius: 6px;
+}
+
 .container-sendfunction {
   display: flex;
   flex-direction: column;
@@ -10,7 +16,7 @@
 }
 
 .progress-indicator {
-  background: linear-gradient(135deg, #ffcc00, #ffb84d);
+  
   padding: 0.3rem 0.6rem;
   border-radius: 25px;
   font-size: 1.1rem;
@@ -46,19 +52,19 @@
   gap: 15px;
 }
 
-.informations-section button {
+.progress-indicator button {
   padding: 0.6rem 1.2rem;
   font-size: 1rem;
   font-weight: bold;
   color: #fff;
-  background-color: #ffb84d;
+  background: linear-gradient(135deg, #ffcc00, #ffb84d);
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s;
 }
 
-.informations-section button:hover {
+.progress-indicator button:hover {
   background-color: #ff9933;
   transform: translateY(-2px);
 }
@@ -71,7 +77,7 @@
 
 .editor-feedback-container > .editor-section,
 .editor-feedback-container > .feedback-space {
-  height: 550px;
+  min-height: 600px;
 }
 
 .editor-section {
@@ -139,7 +145,7 @@
 .assistantAI-container, .description-container {
   display: flex;
   flex-direction: column;
-  height: calc(100% - 120px);
+  overflow: auto;
   padding: 1rem;
 }
 
@@ -147,7 +153,9 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 1rem;
+  padding: 1rem;
 }
 
 .description-title {
@@ -160,8 +168,24 @@
 
 .description-content {
   color: #000000;
+  padding: 1rem;
+  letter-spacing: 1px;
+  list-style-position: inside;
 }
 
+.description-content > p {
+  margin-bottom: 13px;
+  line-height: 1.6rem;
+}
+
+.description-content > ul {
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+}
+
+li {
+  margin-bottom: 1rem;
+}
 
 .hitbox-container {
   margin: 1rem 1rem 0 1rem;
@@ -230,12 +254,15 @@
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
 }
 
+.feedback-footer {
+  margin-top: auto;
+}
+
 .container-buttons {
   display: flex;
   gap: 20px;
   justify-content: space-between;
   align-items: center;
-  margin-top: 0.5rem;
   padding: 0 1rem;
 }
 
@@ -448,13 +475,14 @@
 }
 
 .help-button {
-  padding: 0.56rem 1.05rem;
-  font-size: 0.98rem;
+  width: 50px;
+  height: 50px;
+  font-size: 1.2rem;
   font-weight: 700;
   color: #1e1e1e;
   background: linear-gradient(180deg, #ffcc00, #ffb84d);
   border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 10px;
+  border-radius: 50%;
   cursor: pointer;
   transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
   box-shadow: 0 3px 10px rgba(0,0,0,0.18);
