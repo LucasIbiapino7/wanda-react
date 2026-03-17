@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { dracula } from "@uiw/codemirror-theme-dracula";
 import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
@@ -408,10 +407,16 @@ export default function GameLayoutTest() {
           
           <div className="feedback-space" aria-busy={isProcessing}>
             <div className="overview-tabs"> {/*nova mudanca - Mika*/}
-              <button onClick={() => {setActiveTab('description')}}>
+              <button 
+                onClick={() => {setActiveTab('description')}}
+                className={`tab-button ${activeTab == 'description' ? 'tab-button-active' : ''}`}
+              >
                 Descrição
               </button>
-              <button onClick={() => {setActiveTab('assistantAI')}}>
+              <button 
+                onClick={() => {setActiveTab('assistantAI')}}
+                className={`tab-button ${activeTab == 'assistantAI' ? 'tab-button-active' : ''}`}
+              >
                 Assistentes IA
               </button>
             </div>
@@ -420,20 +425,6 @@ export default function GameLayoutTest() {
               <div className="description-container">
                 <div className="description-top">
                   <span className="description-title">Função 1 - Round 1</span>
-                  <div className="progress-indicator">
-                    {hasSavedFunction ? (
-                      <button
-                        className="next-function-button"
-                        onClick={() => setSuccessModalOpen(true)}
-                        title="Clique para ir para a função 2"
-                        disabled={isProcessing}
-                      >
-                        Vá para função 2!
-                      </button>
-                    ): (
-                      <span>Passo 1 de 2</span>
-                    )}
-                  </div>
                 </div>
                 <div className="description-content">
                   <p>
@@ -455,6 +446,7 @@ export default function GameLayoutTest() {
                   <p>
                     A função deve retornar uma string: “pedra”, “papel” ou “tesoura”.
                   </p>
+                  
                 </div>
               </div>
             ): ( 
@@ -510,16 +502,6 @@ export default function GameLayoutTest() {
                     <img src={wanda} alt="Wanda" className="agent-img" />
                     <span>Wanda</span>
                   </div>
-
-                  <button
-                    className="help-button"
-                    type="button"
-                    onClick={() => openHelp("instructions")}
-                    title="Abrir ajuda"
-                    disabled={isProcessing}
-                  >
-                    ?
-                  </button>
                 </div>
                 {showAgentNudge && (
                   <div className="agent-nudge" role="alert">
@@ -546,6 +528,56 @@ export default function GameLayoutTest() {
                 </div>
               </div>
             )}
+            <div className="help-footer">
+              <button
+                  className="help-button"
+                  type="button"
+                  onClick={() => openHelp("instructions")}
+                  title="Abrir ajuda"
+                  disabled={isProcessing}
+                >
+                  ?
+              </button>
+              <div className="progress-indicator">
+                  {hasSavedFunction ? (
+                    <button
+                      className="next-function-button"
+                      onClick={() => setSuccessModalOpen(true)}
+                      title="Clique para ir para a função 2"
+                      disabled={isProcessing}
+                    >
+                      Vá para função 2!
+                    </button>
+                  ): (
+                    <span>Passo 1 de 2</span>
+                  )}
+              </div>
+            </div>
+            
+
+            {successModalOpen && (
+              <SuccessModal
+                isOpen={successModalOpen}
+                onClose={() => setSuccessModalOpen(false)}
+                onProceed={handleProceedToFunction2}
+                title="Função enviada com sucesso!"
+                message="Clique em Avançar para escrever a Função 2."
+              />
+            )}
+          </div>
+          <div className="editor-section">
+            <div className="CodeMirror">
+              <CodeMirror
+                value={text}
+                onChange={(newValue) => setText(newValue)}
+                theme={dracula}
+                extensions={[python()]}
+                basicSetup={{ autocompletion: true, indentUnit: " " }}
+                minWidth="100%"
+                height="100%"
+              
+              />
+            </div>
             <div className="feedback-footer">
               <div className="container-buttons">
                 {feedbackAgentId ? (
@@ -621,27 +653,6 @@ export default function GameLayoutTest() {
               </div>
               <HintBox text={currentHint} className="hitbox-container"/>
             </div>
-
-            {successModalOpen && (
-              <SuccessModal
-                isOpen={successModalOpen}
-                onClose={() => setSuccessModalOpen(false)}
-                onProceed={handleProceedToFunction2}
-                title="Função enviada com sucesso!"
-                message="Clique em Avançar para escrever a Função 2."
-              />
-            )}
-          </div>
-          <div className="editor-section">
-            <CodeMirror
-              value={text}
-              onChange={(newValue) => setText(newValue)}
-              theme={dracula}
-              extensions={[python()]}
-              basicSetup={{ autocompletion: true, indentUnit: " " }}
-              minWidth={"100%"}
-              minHeight={"600px"}
-            />
           </div>
         </div>
       </div>
