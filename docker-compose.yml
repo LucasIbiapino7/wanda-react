@@ -1,0 +1,23 @@
+services:
+  wanda-react:
+    image: wanda-react
+    container_name: wanda-react
+    build:
+      context: .
+      dockerfile: dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-https://wanda.telemidia-ma.com.br/api}
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    networks:
+      - wanda-network
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  wanda-network:
+    external: true
