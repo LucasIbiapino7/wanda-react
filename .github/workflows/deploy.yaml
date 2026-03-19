@@ -1,0 +1,17 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, linux, wanda-react]
+
+    steps:
+      - name: Deploy local
+        run: |
+            cd /var/www/wanda/wanda-react
+            git fetch origin main
+            git reset --hard origin/main
+            docker compose up --build -d
