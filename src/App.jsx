@@ -19,6 +19,7 @@ import AdminUsersPage from "./pages/AdminUserPage.jsx";
 import BitsReplayPage from "./pages/BitsReplayPage.jsx";
 import GamesPage from "./pages/GamesPage.jsx";
 import FunctionBitsPage from "./pages/FunctionBitsPage.jsx";
+import AdminPage from "./pages/AdminPage.jsx";
 
 function App() {
   return (
@@ -81,6 +82,8 @@ function App() {
             path="/admin/users"
             element={<AdminRoute element={AdminUsersPage} />}
           />
+
+          <Route path="/admin" element={<AdminRoute element={AdminPage} />} />
         </Routes>
       </Router>
     </AuthProvider>
