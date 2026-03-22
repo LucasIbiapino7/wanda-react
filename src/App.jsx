@@ -19,7 +19,6 @@ import AdminUsersPage from "./pages/AdminUserPage.jsx";
 import BitsReplayPage from "./pages/BitsReplayPage.jsx";
 import GamesPage from "./pages/GamesPage.jsx";
 import FunctionBitsPage from "./pages/FunctionBitsPage.jsx";
-import GameLayoutTest from "./pages/TestNewLayout(Mika)/GamesLayoutTest.jsx";
 
 function App() {
   return (
@@ -33,10 +32,6 @@ function App() {
           <Route path="/" element={<Home />} />
 
           {/* Rota privada */}
-          <Route 
-            path="/LayoutTest"
-            element={<PrivateRoute element={GameLayoutTest} />}
-          />
           <Route
             path="/jokenpo1"
             element={<PrivateRoute element={FunctionJokenpo1} />}
