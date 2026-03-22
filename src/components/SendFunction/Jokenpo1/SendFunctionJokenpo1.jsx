@@ -21,6 +21,7 @@ import { tourSteps } from "../../../constants/tourSteps.jsx";
 import FunctionService from "../../../services/FunctionService.js";
 import AppModal from "../../UI/AppModal.jsx";
 import HintBox from "../../UI/HintBox.jsx";
+import GameOnboarding from "../../GameOnboarding/GameOnboarding.jsx";
 
 const GAME = "JOKENPO";
 const FUNCTION = "jokenpo1";
@@ -354,12 +355,6 @@ export default function SendFunctionJokenpo1() {
 
   // ===== Ajuda (mesmo padrão do BITS): um modal com abas =====
   const [helpModalOpen, setHelpModalOpen] = useState(false);
-  const [helpTab, setHelpTab] = useState("instructions"); // "instructions" | "agents"
-
-  const openHelp = (tab = "instructions") => {
-    setHelpTab(tab);
-    setHelpModalOpen(true);
-  };
 
   return (
     <div className="container-sendfunction">
@@ -395,7 +390,12 @@ export default function SendFunctionJokenpo1() {
       )}
 
       {showWelcome && (
-        <WelcomeModal onStart={handleStartTour} onSkip={handleSkipTour} />
+        <GameOnboarding 
+          isOpen={showWelcome} 
+          onFinish={() => {
+            setShowWelcome(false);
+            setRunTour(true);
+          }}/>
       )}
 
       <div className="top-section">
@@ -410,7 +410,7 @@ export default function SendFunctionJokenpo1() {
             <button
               className="help-button"
               type="button"
-              onClick={() => openHelp("instructions")}
+              onClick={() => setHelpModalOpen(true)}
               title="Abrir ajuda"
               disabled={isProcessing}
             >
@@ -617,87 +617,11 @@ export default function SendFunctionJokenpo1() {
         <p>{modal.message}</p>
       </AppModal>
 
-      {/* Ajuda (Instruções + Agentes) no MESMO modal */}
-      <InstructionsModal
+      
+      <GameOnboarding
         isOpen={helpModalOpen}
-        onClose={() => setHelpModalOpen(false)}
-        title="Ajuda — Jokenpo (Função 1)"
-        footer={
-          <div className="help-footer-tabs">
-            <button
-              type="button"
-              className={`help-tab-btn ${
-                helpTab === "instructions" ? "active" : ""
-              }`}
-              onClick={() => setHelpTab("instructions")}
-            >
-              Instruções
-            </button>
-            <button
-              type="button"
-              className={`help-tab-btn ${helpTab === "agents" ? "active" : ""}`}
-              onClick={() => setHelpTab("agents")}
-            >
-              Agentes
-            </button>
-          </div>
-        }
-      >
-        {helpTab === "instructions" ? (
-          <div className="instructions">
-            <p>
-              Aqui você vai criar a sua lógica para a <b>função 1</b>, que é
-              responsável por escolher sua carta no primeiro round de uma
-              partida!
-            </p>
-            <ul>
-              <li>
-                Sua função deve se chamar <b>strategy</b>
-              </li>
-              <li>
-                <b>card1, card2, card3:</b> são os parâmetros que representam
-                suas cartas nesse round.
-              </li>
-              <li>Suas cartas podem ser: “pedra”, “papel” ou “tesoura”.</li>
-              <li>Você pode ter cartas repetidas na mão.</li>
-            </ul>
-            <p>
-              A função deve retornar uma string: “pedra”, “papel” ou “tesoura”.
-            </p>
-          </div>
-        ) : (
-          <div className="instructions">
-            <p>
-              Cada agente possui uma “personalidade” distinta na forma como
-              elabora suas respostas:
-            </p>
-            <ul>
-              <li>
-                <strong>Cosmo:</strong> mais detalhista.
-              </li>
-              <li>
-                <strong>Timmy:</strong> direto ao ponto.
-              </li>
-              <li>
-                <strong>Wanda:</strong> equilíbrio entre detalhes e
-                objetividade.
-              </li>
-            </ul>
-            <h3>Ações:</h3>
-            <ul>
-              <li>
-                <strong>Feedback:</strong> análise semântica do seu código.
-              </li>
-              <li>
-                <strong>Run:</strong> executa testes sem salvar.
-              </li>
-              <li>
-                <strong>Submeter:</strong> valida e salva sua função.
-              </li>
-            </ul>
-          </div>
-        )}
-      </InstructionsModal>
+        onFinish={() => setHelpModalOpen(false)}
+      />
     </div>
   );
 }
