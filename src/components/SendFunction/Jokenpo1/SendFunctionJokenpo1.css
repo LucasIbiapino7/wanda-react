@@ -24,14 +24,15 @@
 
 .top-section {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  flex-direction: row;
+  justify-content: space-between;
   padding-top: 60px;
 }
 
 .informations-section {
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
+  gap: 20px;
   align-items: center;
 }
 
@@ -282,6 +283,14 @@
 }
 
 @media (max-width: 768px) {
+  .informations-section, .informations-section-buttons {
+    flex-direction: column;
+  }
+
+  .agent-tab {
+    padding: 2px 4px;
+  }
+
   .editor-feedback-container {
     flex-direction: column;
   }
@@ -385,6 +394,9 @@
 }
 
 .help-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   padding: 0.56rem 1.05rem;
   font-size: 0.98rem;
   font-weight: 700;

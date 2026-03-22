@@ -5,6 +5,7 @@ import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
 import axios from "axios";
 import "./SendFunctionJokenpo1.css";
+import { Info } from 'lucide-react'
 
 import AuthContext from "../../../context/AuthContext";
 import cosmo from "../../../assets/cosmo-avatar.png";
@@ -393,43 +394,38 @@ export default function SendFunctionJokenpo1() {
         <GameOnboarding 
           isOpen={showWelcome} 
           onFinish={() => {
-            setShowWelcome(false);
-            setRunTour(true);
+            handleStartTour(showWelcome)
           }}/>
       )}
 
       <div className="top-section">
         <div className="informations-section">
           <h1>Função 1 – Round 1</h1>
+          <span className="progress-indicator">Passo 1 de 2</span>
+        </div>
+        <div className="informations-section-buttons">
+          <button
+            className="help-button"
+            type="button"
+            onClick={() => setHelpModalOpen(true)}
+            title="Abrir ajuda"
+            disabled={isProcessing}
+          >
+            <Info /> Ajuda
+          </button>
 
-          <div className="progress-indicator">
-            <span>Passo 1 de 2</span>
-          </div>
-
-          <div className="informations-section-buttons">
+          {hasSavedFunction && (
             <button
-              className="help-button"
-              type="button"
-              onClick={() => setHelpModalOpen(true)}
-              title="Abrir ajuda"
+              className="next-function-button"
+              onClick={() => setSuccessModalOpen(true)}
+              title="Clique para ir para a função 2"
               disabled={isProcessing}
             >
-              Ajuda
+              Vá para função 2!
             </button>
-
-            {hasSavedFunction && (
-              <button
-                className="next-function-button"
-                onClick={() => setSuccessModalOpen(true)}
-                title="Clique para ir para a função 2"
-                disabled={isProcessing}
-              >
-                Vá para função 2!
-              </button>
-            )}
-          </div>
+          )}
         </div>
-
+      </div>
         <div className="editor-feedback-container">
           <div className="editor-section">
             <CodeMirror
@@ -603,7 +599,7 @@ export default function SendFunctionJokenpo1() {
             )}
           </div>
         </div>
-      </div>
+      
 
       {/* Modal padronizado */}
       <AppModal

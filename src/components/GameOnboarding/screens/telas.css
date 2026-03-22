@@ -76,6 +76,7 @@
 /* Tela 0  */
 .tela0__passos {
   display: flex;
+  flex-direction: row;
   align-items: stretch;
   gap: 10px;
 }
@@ -322,6 +323,7 @@
 
 .tela2__cartas {
   display: flex;
+  flex-direction: row;
   gap: 8px;
 }
 
@@ -675,4 +677,23 @@
 .tela4__btn-comecar:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(255, 204, 0, 0.4);
+}
+
+@media screen and (max-width:720px) {
+  .tela0__passos {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tela0__passo {
+    width: 100%;
+  }
+
+  .tela0__seta {
+    transform: rotate(90deg);
+  }
+
+  .tela2__cartas {
+    flex-direction: column;
+  }
 }

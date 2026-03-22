@@ -24,14 +24,15 @@
 
 .top-section {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 20px;
   padding-top: 60px;
 }
 
 .informations-section {
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
+  gap: 20px;
   align-items: center;
 }
 
@@ -276,6 +277,19 @@
 }
 
 @media (max-width: 768px) {
+  .informations-section, .informations-section-buttons {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .editor-feedback-container {
+    flex-direction: column;
+  }
+
+  .agent-tab {
+    padding: 2px 4px;
+  }
+  
   .editor-feedback-container { flex-direction: column; }
   .feedback-space { width: 100%; height: auto; }
   .feedback { height: 300px; }
