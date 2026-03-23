@@ -13,6 +13,12 @@ const CARDS = [{
     description: 'Visualize registros de uso por período',
     route: '/admin/auditoria',
   },
+  {
+    icon: '📊',
+    title: 'Pesquisa',
+    description: 'Dashboard de uso dos agentes e interações',
+    route: '/admin/research',
+  },
 ]
 
 export default function AdminPage() {

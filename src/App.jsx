@@ -21,6 +21,7 @@ import GamesPage from "./pages/GamesPage.jsx";
 import FunctionBitsPage from "./pages/FunctionBitsPage.jsx";
 import AdminPage from "./pages/AdminPage.jsx";
 import AuditPage from "./pages/AuditPage.jsx";
+import ResearchPage from "./pages/ResourchPage.jsx";
 
 function App() {
   return (
@@ -87,6 +88,11 @@ function App() {
           <Route
             path="/admin/auditoria"
             element={<AdminRoute element={AuditPage} />}
+          />
+
+          <Route
+            path="/admin/research"
+            element={<AdminRoute element={ResearchPage} />}
           />
 
           <Route path="/admin" element={<AdminRoute element={AdminPage} />} />

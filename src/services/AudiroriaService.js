@@ -40,6 +40,13 @@ const AuditoriaService = {
     })
     return response.data
   },
+
+  async findAgentes({ from, to } = {}) {
+  const response = await api.get('/admin/auditoria/agentes', {
+    params: { from: formater(from), to: formater(to, true) },
+  })
+  return response.data
+},
 }
 
 export default AuditoriaService
