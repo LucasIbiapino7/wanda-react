@@ -55,9 +55,9 @@ export default function Header() {
         {isAuthenticated && isAdmin && (
           <Link
             className="admin-btn"
-            to="/admin/users"
+            to="/admin"
             onClick={toggleMobileNav}
-            title="Gerenciar usuários"
+            title="Área do administrador"
           >
             Admin
           </Link>

@@ -1,0 +1,146 @@
+.research-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  margin-top: 80px;
+  padding: 32px 24px;
+}
+
+.research-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e7e7e7;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+  padding: 28px 28px 24px;
+}
+
+.research-page__header {
+  margin-bottom: 24px;
+}
+
+.research-page__title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.research-page__subtitle {
+  font-size: 0.95rem;
+  color: #9c27b0;
+  font-weight: 600;
+}
+
+.research-section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #333;
+  margin: 24px 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #f3e5f5;
+}
+
+/* Métricas */
+.research-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.research-metric {
+  background: #f7e9fb;
+  border: 1px solid rgba(156, 39, 176, 0.15);
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.research-metric__value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #9c27b0;
+  line-height: 1;
+}
+
+.research-metric__label {
+  font-size: 0.82rem;
+  color: #777;
+}
+
+/* Cards de agente */
+.research-agentes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.research-agente-card {
+  border: 1px solid #e7e7e7;
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #fafafa;
+}
+
+.research-agente-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.research-agente-card__nome {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.research-agente-card__pct {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #333;
+}
+
+.research-progress {
+  height: 8px;
+  background: #ede7f6;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.research-progress__bar {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.6s ease;
+}
+
+.research-agente-card__footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: #777;
+}
+
+.research-satisfaction {
+  font-size: 0.82rem;
+}
+
+/* Gráficos */
+.research-charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 8px;
+}
+
+.research-chart-block {
+  min-width: 0;
+}
+
+@media (max-width: 720px) {
+  .research-charts {
+    grid-template-columns: 1fr;
+  }
+}
