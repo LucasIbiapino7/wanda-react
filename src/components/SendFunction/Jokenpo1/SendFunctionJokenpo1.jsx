@@ -15,8 +15,6 @@ import like from "../../../assets/like.svg";
 import dislike from "../../../assets/dislike.svg";
 
 import SuccessModal from "../SuccessModal";
-import Joyride from "react-joyride";
-import { tourSteps } from "../../../constants/tourSteps.jsx";
 import FunctionService from "../../../services/FunctionService.js";
 import AppModal from "../../UI/AppModal.jsx";
 import HintBox from "../../UI/HintBox.jsx";
@@ -75,8 +73,7 @@ export default function SendFunctionJokenpo1() {
   const [feedbackSent, setFeedbackSent] = useState(false);
 
   // tour e welcome
-  const [showWelcome, setShowWelcome] = useState(false);
-  const [runTour, setRunTour] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
 
   // estado de função salva / sucesso
   const [hasSavedFunction, setHasSavedFunction] = useState(false);
@@ -107,7 +104,6 @@ export default function SendFunctionJokenpo1() {
 
   const handleStartTour = (dontShowAgain) => {
     setShowWelcome(false);
-    setRunTour(true);
     if (dontShowAgain) localStorage.setItem("wandaTourSeen", "true");
   };
 
@@ -357,36 +353,6 @@ export default function SendFunctionJokenpo1() {
 
   return (
     <div className="container-sendfunction">
-      {runTour && (
-        <Joyride
-          steps={tourSteps}
-          run={true}
-          disableBeacon
-          continuous
-          showProgress
-          showSkipButton
-          locale={{
-            back: "Voltar",
-            close: "Fechar",
-            last: "Fim",
-            next: "Próximo",
-            skip: "Pular",
-          }}
-          styles={{
-            options: {
-              arrowColor: "#ffcc00",
-              backgroundColor: "#1e1e1e",
-              textColor: "#fff",
-              primaryColor: "#ffcc00",
-              spotlightPadding: 8,
-            },
-            tooltipContainer: { borderRadius: "8px", padding: "1rem" },
-          }}
-          callback={({ status }) => {
-            if (["finished", "skipped"].includes(status)) setRunTour(false);
-          }}
-        />
-      )}
 
       {showWelcome && (
         <GameOnboardingJokenpo

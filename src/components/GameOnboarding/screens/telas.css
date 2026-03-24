@@ -224,7 +224,7 @@
 
 .tela1__carta img {
   width: 100%;
-
+  height: 100%;
 }
 
 .tela1__carta--grande {
@@ -285,9 +285,6 @@
 .tela1__badge--draw { background: rgba(255, 204, 0, 0.12);  color: var(--amarelo); border: 1.5px solid var(--amarelo); }
 
 
-
-
-/* ══ Tela 2 ══ */
 .tela2__fade {
   animation: tela2Aparece 0.5s ease;
 }
@@ -333,6 +330,12 @@
   gap: 8px;
 }
 
+.tela2__relacao-txt {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .tela2__carta {
   width: 52px;
   height: 68px;
@@ -348,12 +351,18 @@
 
 .tela2__carta img, .tela2__relacao-carta img, .tela2__val img {
   width: 100%;
+  height: 100%;
 }
  
 .tela2__carta--revelada {
   border-color: var(--amarelo);
   background: rgba(255, 204, 0, 0.1);
   animation: virar 0.4s ease;
+}
+
+.tela2__carta--revelada img {
+  width: 100%;
+  height: 100%;
 }
 
 @keyframes virar {
@@ -400,7 +409,11 @@
 .tela2__relacao-carta {
   font-size: 18px;
   margin: 0 2px;
+  width: 20px;
+  height: 25px;
 }
+
+
 
 .tela2__return--destaque {
   color: var(--amarelo);
@@ -435,6 +448,15 @@
   font-weight: 700;
   color: var(--amarelo);
   font-family: 'Courier New', monospace;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+}
+
+.tela2__tag img {
+  width: 20px;
+  height: 25px;
 }
 
 .tela2__indent  { padding-left: 20px; display: block; }
@@ -447,9 +469,6 @@
 .tela2__emoji   { font-style: normal; }
 
 
-
-
-/* ══ Tela 3 ══ */
 .tela3__agentes {
   display: flex;
   gap: 10px;

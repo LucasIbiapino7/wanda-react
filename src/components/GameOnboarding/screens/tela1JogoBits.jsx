@@ -151,7 +151,7 @@ export default function Tela1JogoBits({ onPronto }) {
                 onClick={() => jogar(c.key)}
                 disabled={!esperando}
               >
-                <span style={{ fontSize: 28 }}>{c.emoji}</span>
+                <img src={c.image} alt={`representação da carta ${c.label}`} />
                 <span className="tela1__carta-label">{c.label}</span>
               </button>
             ))}

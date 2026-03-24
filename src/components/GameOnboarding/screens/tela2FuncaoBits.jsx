@@ -1,10 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import "./telas.css";
 import timmyImage from "../../../assets/timmy.png";
+import CardBit8 from "../../../assets/bits/bit8.png"
+import CardBit16 from "../../../assets/bits/bit16.png"
+import CardBit32 from "../../../assets/bits/bit32.png"
+import CardFirewall from "../../../assets/bits/firewall.png"
 
 // Cartas do BITS com emoji representativo
 const CARTAS_BITS = ["BIT8", "BIT16", "BIT32", "FIREWALL"];
-const EMOJI_BITS  = { BIT8: "🟦", BIT16: "🟩", BIT32: "🟥", FIREWALL: "🛡️" };
+const IMAGE_BITS = {BIT8: CardBit8, BIT16: CardBit16, BIT32: CardBit32, FIREWALL: CardFirewall}
 
 // Cada jogador começa com 1 de cada carta (simplificado para a demonstração)
 function sortearMaos() {
@@ -65,9 +69,7 @@ export default function Tela2FuncaoBits({ onPronto }) {
                     ].join(" ")}
                     style={{ animationDelay: `${i * 0.12}s` }}
                   >
-                    {etapa >= 2 ? (
-                      <span style={{ fontSize: 22 }}>{EMOJI_BITS[carta]}</span>
-                    ) : "🂠"}
+                    <img src={IMAGE_BITS[carta]} alt={``} />
                   </div>
                 ))}
               </div>
@@ -93,7 +95,7 @@ export default function Tela2FuncaoBits({ onPronto }) {
                 Ambos começam com{" "}
                 {jogador.map((c, i) => (
                   <span key={i} className="tela2__relacao-carta">
-                    {EMOJI_BITS[c]}
+                    <img src={IMAGE_BITS[c]} alt={`Imagem da carta ${c}`}/>
                   </span>
                 ))}{" "}
                 — mas as cartas do adversário ficam ocultas.
@@ -103,7 +105,6 @@ export default function Tela2FuncaoBits({ onPronto }) {
         </div>
       )}
 
-      {/* Etapa 3+: assinatura da função */}
       {etapa >= 3 && (
         <div className="tela2__secao tela2__fade">
           <p className="tela__subtitulo" style={{ marginBottom: 10 }}>
@@ -127,8 +128,7 @@ export default function Tela2FuncaoBits({ onPronto }) {
             </span>
             <br />
             <span className="tela2__indent">
-              <span className="tela2__cmt"># opp_last = última carta jogada pelo adversário (ou </span>
-              <span className="tela2__val">None</span>
+              <span className="tela2__cmt"># opp_last = última carta jogada pelo adversário (ou <span className="tela2__val">None</span> caso seja a primeira rodada</span> 
               <span className="tela2__cmt">)</span>
             </span>
             <br />
@@ -143,10 +143,10 @@ export default function Tela2FuncaoBits({ onPronto }) {
           {etapa >= 4 && (
             <div className="tela2__retorno-hint tela2__fade">
               Sua função deve retornar qual carta jogar:{" "}
-              <span className="tela2__tag">🟦 "BIT8"</span>
-              <span className="tela2__tag">🟩 "BIT16"</span>
-              <span className="tela2__tag">🟥 "BIT32"</span>
-              <span className="tela2__tag">🛡️ "FIREWALL"</span>
+              <span className="tela2__tag"><img src={IMAGE_BITS["BIT8"]} alt="" /> "BIT8"</span>
+              <span className="tela2__tag"><img src={IMAGE_BITS["BIT16"]} alt="" /> "BIT16"</span>
+              <span className="tela2__tag"><img src={IMAGE_BITS["BIT32"]} alt="" /> "BIT32"</span>
+              <span className="tela2__tag"><img src={IMAGE_BITS["FIREWALL"]} alt="" /> "FIREWALL"</span>
             </div>
           )}
         </div>
