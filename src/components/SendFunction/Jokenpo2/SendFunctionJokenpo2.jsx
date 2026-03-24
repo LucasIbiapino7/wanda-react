@@ -4,7 +4,8 @@ import { dracula } from "@uiw/codemirror-theme-dracula";
 import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
 import axios from "axios";
-import "./SendFunctionJokenpo2.css";
+import "../SendFunction.css";
+import { Info } from "lucide-react";
 
 import AuthContext from "../../../context/AuthContext";
 import cosmo from "../../../assets/cosmo-avatar.png";
@@ -13,7 +14,7 @@ import wanda from "../../../assets/wanda.png";
 import like from "../../../assets/like.svg";
 import dislike from "../../../assets/dislike.svg";
 
-import InstructionsModal from "../InstructionsModal";
+import GameOnboardingJokenpo from "../../GameOnboarding/games/GameOnboardingJokenpo.jsx";
 import SuccessModal from "../SuccessModal";
 import FunctionService from "../../../services/FunctionService.js";
 import AppModal from "../../UI/AppModal.jsx";
@@ -63,7 +64,6 @@ function SendFunctionJokenpo2() {
 
   const [feedback, setFeedback] = useState(null);
   const [typedMessage, setTypedMessage] = useState("");
-  const [loading, setLoading] = useState(false);
 
   // processamento global e ação corrente
   const [isProcessing, setIsProcessing] = useState(false);
@@ -178,7 +178,6 @@ function SendFunctionJokenpo2() {
 
     setIsProcessing(true);
     setRunningAction("feedback");
-    setLoading(true);
     setFeedback(null);
     setFeedbackAgentId(null);
     setFeedbackSent(false);
@@ -194,7 +193,6 @@ function SendFunctionJokenpo2() {
       else if (status >= 500) title = "Erro no servidor";
       setModal({ open: true, title, message, variant: "error" });
     } finally {
-      setLoading(false);
       setIsProcessing(false);
       setRunningAction(null);
     }
@@ -206,7 +204,6 @@ function SendFunctionJokenpo2() {
 
     setIsProcessing(true);
     setRunningAction("run");
-    setLoading(true);
     setFeedback(null);
     setFeedbackAgentId(null);
     setFeedbackSent(false);
@@ -222,7 +219,6 @@ function SendFunctionJokenpo2() {
       else if (status >= 500) title = "Erro no servidor";
       setModal({ open: true, title, message, variant: "error" });
     } finally {
-      setLoading(false);
       setIsProcessing(false);
       setRunningAction(null);
     }
@@ -234,7 +230,6 @@ function SendFunctionJokenpo2() {
 
     setIsProcessing(true);
     setRunningAction("submit");
-    setLoading(true);
     setFeedback(null);
     setFeedbackAgentId(null);
     setFeedbackSent(false);
@@ -255,7 +250,6 @@ function SendFunctionJokenpo2() {
       else if (status >= 500) title = "Erro no servidor";
       setModal({ open: true, title, message, variant: "error" });
     } finally {
-      setLoading(false);
       setIsProcessing(false);
       setRunningAction(null);
     }
@@ -296,6 +290,8 @@ function SendFunctionJokenpo2() {
     }
   };
 
+  const closeModal = () => setModal((m) => ({ ...m, open: false }));
+
   // rótulos dinâmicos dos botões
   const labelFor = (key) => {
     if (runningAction !== key)
@@ -317,9 +313,7 @@ function SendFunctionJokenpo2() {
       ? "Wanda"
       : null;
 
-  const closeModal = () => setModal((m) => ({ ...m, open: false }));
-
-  // estado de hover/focus para decidir o texto do HintBox
+  // HintBox (hover/focus)
   const [hoveredAction, setHoveredAction] = useState(null);
 
   const processingText = {
@@ -335,224 +329,196 @@ function SendFunctionJokenpo2() {
       ? ACTION_HINTS[hoveredAction].hint
       : "Passe o mouse (ou use Tab) sobre um botão para saber o que ele faz.";
 
-  // ===== Ajuda (mesmo padrão do BITS/Jokenpo1): um modal com abas =====
   const [helpModalOpen, setHelpModalOpen] = useState(false);
-  const [helpTab, setHelpTab] = useState("instructions"); // "instructions" | "agents"
-
-  const openHelp = (tab = "instructions") => {
-    setHelpTab(tab);
-    setHelpModalOpen(true);
-  };
-
+  
   return (
     <div className="container-sendfunction">
+
+      
       <div className="top-section">
         <div className="informations-section">
           <h1>Função 2 – Round 2</h1>
-
-          <div className="progress-indicator">
-            <span>Passo 2 de 2</span>
-          </div>
-
-          <div className="informations-section-buttons">
-            <button
-              className="help-button"
-              type="button"
-              onClick={() => openHelp("instructions")}
-              title="Abrir ajuda"
-              disabled={isProcessing}
-            >
-              Ajuda
-            </button>
-
-            {hasSavedFunction && (
-              <button
-                className="next-function-button"
-                onClick={() => setSuccessModalOpen(true)}
-                title="Clique para desafiar seus amigos"
-                disabled={isProcessing}
-              >
-                Desafie seus amigos!
-              </button>
-            )}
-          </div>
+          <span className="progress-indicator">Passo 2 de 2</span>
         </div>
 
-        <div className="editor-feedback-container">
-          <div className="editor-section">
-            <CodeMirror
-              value={text}
-              onChange={(newValue) => setText(newValue)}
-              theme={dracula}
-              extensions={[python()]}
-              basicSetup={{ autocompletion: true, indentUnit: "    " }}
-              minWidth={"100%"}
-              minHeight={"550px"}
-            />
-          </div>
+        <div className="informations-section-buttons">
+          <button
+            className="help-button"
+            type="button"
+            onClick={() => setHelpModalOpen(true)}
+            title="Abrir ajuda"
+            disabled={isProcessing}
+          >
+            <Info /> Ajuda
+          </button>
 
-          <div className="feedback-space" aria-busy={isProcessing}>
-            {!assistantStyle && (
-              <div className="agent-banner" role="note">
-                <strong>Escolha um agente</strong> para usar Feedback, Run ou
-                Submeter.
-              </div>
-            )}
-
-            <div className="agent-tabs">
-              <div
-                className={`agent-tab ${
-                  assistantStyle === "VERBOSE" ? "active" : ""
-                } ${isProcessing ? "disabled" : ""}`}
-                onClick={() => handleAgentTabClick("VERBOSE")}
-                title={
-                  isProcessing
-                    ? "Aguarde o processamento terminar"
-                    : "Selecionar Cosmo"
-                }
-              >
-                <img src={cosmo} alt="Cosmo" className="agent-img" />
-                <span>Cosmo</span>
-              </div>
-
-              <div
-                className={`agent-tab ${
-                  assistantStyle === "SUCCINCT" ? "active" : ""
-                } ${isProcessing ? "disabled" : ""}`}
-                onClick={() => handleAgentTabClick("SUCCINCT")}
-                title={
-                  isProcessing
-                    ? "Aguarde o processamento terminar"
-                    : "Selecionar Timmy"
-                }
-              >
-                <img src={timmy} alt="Timmy" className="agent-img" />
-                <span>Timmy</span>
-              </div>
-
-              <div
-                className={`agent-tab ${
-                  assistantStyle === "INTERMEDIATE" ? "active" : ""
-                } ${isProcessing ? "disabled" : ""}`}
-                onClick={() => handleAgentTabClick("INTERMEDIATE")}
-                title={
-                  isProcessing
-                    ? "Aguarde o processamento terminar"
-                    : "Selecionar Wanda"
-                }
-              >
-                <img src={wanda} alt="Wanda" className="agent-img" />
-                <span>Wanda</span>
-              </div>
-            </div>
-
-            {showAgentNudge && (
-              <div className="agent-nudge" role="alert">
-                Selecione um agente para continuar ↑
-              </div>
-            )}
-
-            <div className="feedback">
-              {isProcessing ? (
-                <div className="thinking">
-                  <p>
-                    <em>
-                      {agentName
-                        ? `${agentName} está analisando…`
-                        : "Processando…"}
-                    </em>
-                  </p>
-                  <div className="typing-indicator">•••</div>
-                </div>
-              ) : feedback ? (
-                <pre>{typedMessage}</pre>
-              ) : (
-                <p>Escolha um agente para usar Feedback, Run ou Submeter.</p>
-              )}
-            </div>
-
-            <div className="container-buttons">
-              {feedbackAgentId ? (
-                <div className="feedback-reactions">
-                  <button
-                    className="reaction-button dislike"
-                    onClick={handleDislike}
-                    title="Deixe um feedback negativo"
-                    disabled={isProcessing}
-                  >
-                    <img src={dislike} alt="dislike" />
-                  </button>
-                  <button
-                    className="reaction-button like"
-                    onClick={handleLike}
-                    title="Deixe um feedback positivo"
-                    disabled={isProcessing}
-                  >
-                    <img src={like} alt="like" />
-                  </button>
-                </div>
-              ) : (
-                feedbackSent && (
-                  <div className="feedback-indicator">
-                    Feedback enviado com sucesso!
-                  </div>
-                )
-              )}
-
-              <div className="container-buttons-send">
-                <button
-                  className="send-button"
-                  onClick={handleSubmitFeedback}
-                  disabled={!assistantStyle || isProcessing}
-                  onMouseEnter={() => setHoveredAction("feedback")}
-                  onMouseLeave={() => setHoveredAction(null)}
-                  onFocus={() => setHoveredAction("feedback")}
-                  onBlur={() => setHoveredAction(null)}
-                >
-                  {labelFor("feedback")}
-                </button>
-
-                <button
-                  className="run-button"
-                  onClick={handleRun}
-                  disabled={!assistantStyle || isProcessing}
-                  onMouseEnter={() => setHoveredAction("run")}
-                  onMouseLeave={() => setHoveredAction(null)}
-                  onFocus={() => setHoveredAction("run")}
-                  onBlur={() => setHoveredAction(null)}
-                >
-                  {labelFor("run")}
-                </button>
-
-                <button
-                  className="submit-button"
-                  onClick={handleSubmitFunction}
-                  disabled={!assistantStyle || isProcessing}
-                  onMouseEnter={() => setHoveredAction("submit")}
-                  onMouseLeave={() => setHoveredAction(null)}
-                  onFocus={() => setHoveredAction("submit")}
-                  onBlur={() => setHoveredAction(null)}
-                >
-                  {labelFor("submit")}
-                </button>
-              </div>
-            </div>
-
-            <HintBox text={currentHint} />
-
-            {successModalOpen && (
-              <SuccessModal
-                isOpen={successModalOpen}
-                onClose={() => setSuccessModalOpen(false)}
-                onProceed={() => navigate("/challenges")}
-                title="Função 2 enviada com sucesso!"
-                message="Parabéns! Agora você pode desafiar seus amigos."
-              />
-            )}
-          </div>
+          {hasSavedFunction && (
+            <button
+              className="next-function-button"
+              onClick={() => setSuccessModalOpen(true)}
+              title="Clique para desafiar seus amigos"
+              disabled={isProcessing}
+            >
+              Desafie seus amigos!
+            </button>
+          )}
         </div>
       </div>
 
+      
+      <div className="editor-feedback-container">
+        <div className="editor-section">
+          <CodeMirror
+            value={text}
+            onChange={(newValue) => setText(newValue)}
+            theme={dracula}
+            extensions={[python()]}
+            basicSetup={{ autocompletion: true, indentUnit: "    " }}
+            minWidth={"100%"}
+            minHeight={"550px"}
+          />
+        </div>
+
+        <div className="feedback-space" aria-busy={isProcessing}>
+          {!assistantStyle && (
+            <div className="agent-banner" role="note">
+              <strong>Escolha um agente</strong> para usar Feedback, Run ou
+              Submeter.
+            </div>
+          )}
+
+          <div className="agent-tabs">
+            <div
+              className={`agent-tab ${assistantStyle === "VERBOSE" ? "active" : ""} ${isProcessing ? "disabled" : ""}`}
+              onClick={() => handleAgentTabClick("VERBOSE")}
+              title={isProcessing ? "Aguarde o processamento terminar" : "Selecionar Cosmo"}
+            >
+              <img src={cosmo} alt="Cosmo" className="agent-img" />
+              <span>Cosmo</span>
+            </div>
+
+            <div
+              className={`agent-tab ${assistantStyle === "SUCCINCT" ? "active" : ""} ${isProcessing ? "disabled" : ""}`}
+              onClick={() => handleAgentTabClick("SUCCINCT")}
+              title={isProcessing ? "Aguarde o processamento terminar" : "Selecionar Timmy"}
+            >
+              <img src={timmy} alt="Timmy" className="agent-img" />
+              <span>Timmy</span>
+            </div>
+
+            <div
+              className={`agent-tab ${assistantStyle === "INTERMEDIATE" ? "active" : ""} ${isProcessing ? "disabled" : ""}`}
+              onClick={() => handleAgentTabClick("INTERMEDIATE")}
+              title={isProcessing ? "Aguarde o processamento terminar" : "Selecionar Wanda"}
+            >
+              <img src={wanda} alt="Wanda" className="agent-img" />
+              <span>Wanda</span>
+            </div>
+          </div>
+
+          {showAgentNudge && (
+            <div className="agent-nudge" role="alert">
+              Selecione um agente para continuar ↑
+            </div>
+          )}
+
+          <div className="feedback">
+            {isProcessing ? (
+              <div className="thinking">
+                <p>
+                  <em>{agentName ? `${agentName} está analisando…` : "Processando…"}</em>
+                </p>
+                <div className="typing-indicator">•••</div>
+              </div>
+            ) : feedback ? (
+              <pre>{typedMessage}</pre>
+            ) : (
+              <p>Escolha um agente para usar Feedback, Run ou Submeter.</p>
+            )}
+          </div>
+
+          <div className="container-buttons">
+            {feedbackAgentId ? (
+              <div className="feedback-reactions">
+                <button
+                  className="reaction-button dislike"
+                  onClick={handleDislike}
+                  title="Deixe um feedback negativo"
+                  disabled={isProcessing}
+                >
+                  <img src={dislike} alt="dislike" />
+                </button>
+                <button
+                  className="reaction-button like"
+                  onClick={handleLike}
+                  title="Deixe um feedback positivo"
+                  disabled={isProcessing}
+                >
+                  <img src={like} alt="like" />
+                </button>
+              </div>
+            ) : (
+              feedbackSent && (
+                <div className="feedback-indicator">
+                  Feedback enviado com sucesso!
+                </div>
+              )
+            )}
+
+            <div className="container-buttons-send">
+              <button
+                className="send-button"
+                onClick={handleSubmitFeedback}
+                disabled={!assistantStyle || isProcessing}
+                onMouseEnter={() => setHoveredAction("feedback")}
+                onMouseLeave={() => setHoveredAction(null)}
+                onFocus={() => setHoveredAction("feedback")}
+                onBlur={() => setHoveredAction(null)}
+              >
+                {labelFor("feedback")}
+              </button>
+
+              <button
+                className="run-button"
+                onClick={handleRun}
+                disabled={!assistantStyle || isProcessing}
+                onMouseEnter={() => setHoveredAction("run")}
+                onMouseLeave={() => setHoveredAction(null)}
+                onFocus={() => setHoveredAction("run")}
+                onBlur={() => setHoveredAction(null)}
+              >
+                {labelFor("run")}
+              </button>
+
+              <button
+                className="submit-button"
+                onClick={handleSubmitFunction}
+                disabled={!assistantStyle || isProcessing}
+                onMouseEnter={() => setHoveredAction("submit")}
+                onMouseLeave={() => setHoveredAction(null)}
+                onFocus={() => setHoveredAction("submit")}
+                onBlur={() => setHoveredAction(null)}
+              >
+                {labelFor("submit")}
+              </button>
+            </div>
+          </div>
+
+          <HintBox text={currentHint} />
+
+          {successModalOpen && (
+            <SuccessModal
+              isOpen={successModalOpen}
+              onClose={() => setSuccessModalOpen(false)}
+              onProceed={() => navigate("/challenges")}
+              title="Função 2 enviada com sucesso!"
+              message="Parabéns! Agora você pode desafiar seus amigos."
+            />
+          )}
+        </div>
+      </div>
+
+      
       <AppModal
         open={modal.open}
         onClose={closeModal}
@@ -564,91 +530,11 @@ function SendFunctionJokenpo2() {
         <p>{modal.message}</p>
       </AppModal>
 
-      {/* Ajuda (Instruções + Agentes) no mesmo modal */}
-      <InstructionsModal
+      
+      <GameOnboardingJokenpo
         isOpen={helpModalOpen}
-        onClose={() => setHelpModalOpen(false)}
-        title="Ajuda — Jokenpo (Função 2)"
-        footer={
-          <div className="help-footer-tabs">
-            <button
-              type="button"
-              className={`help-tab-btn ${
-                helpTab === "instructions" ? "active" : ""
-              }`}
-              onClick={() => setHelpTab("instructions")}
-            >
-              Instruções
-            </button>
-            <button
-              type="button"
-              className={`help-tab-btn ${helpTab === "agents" ? "active" : ""}`}
-              onClick={() => setHelpTab("agents")}
-            >
-              Agentes
-            </button>
-          </div>
-        }
-      >
-        {helpTab === "instructions" ? (
-          <div className="instructions">
-            <p>
-              Aqui você vai criar a sua lógica para a <b>função 2</b>, que é
-              responsável por escolher sua carta no segundo round de uma
-              partida!
-            </p>
-            <ul>
-              <li>
-                Sua função deve se chamar <b>strategy</b>
-              </li>
-              <li>
-                <b>card1, card2:</b> São os parâmetros que representam suas
-                cartas nesse round.
-              </li>
-              <li>
-                <b>opponentCard1, opponentCard2:</b> São os parâmetros que
-                representam as cartas do seu oponente nesse round.
-              </li>
-              <li>Suas cartas podem ser: “pedra”, “papel” ou “tesoura”.</li>
-            </ul>
-            <p>
-              A função deve retornar uma string que indica a carta a ser jogada
-              dentre: “pedra”, “papel” ou “tesoura”.
-            </p>
-          </div>
-        ) : (
-          <div className="instructions">
-            <p>
-              Cada agente possui uma “personalidade” distinta na forma como
-              elabora suas respostas:
-            </p>
-            <ul>
-              <li>
-                <strong>Cosmo:</strong> mais detalhista.
-              </li>
-              <li>
-                <strong>Timmy:</strong> direto ao ponto.
-              </li>
-              <li>
-                <strong>Wanda:</strong> equilíbrio entre detalhes e
-                objetividade.
-              </li>
-            </ul>
-            <h3>Ações:</h3>
-            <ul>
-              <li>
-                <strong>Feedback:</strong> análise semântica do seu código.
-              </li>
-              <li>
-                <strong>Run:</strong> executa testes sem salvar.
-              </li>
-              <li>
-                <strong>Submeter:</strong> valida e salva sua função.
-              </li>
-            </ul>
-          </div>
-        )}
-      </InstructionsModal>
+        onFinish={() => setHelpModalOpen(false)}
+      />
     </div>
   );
 }

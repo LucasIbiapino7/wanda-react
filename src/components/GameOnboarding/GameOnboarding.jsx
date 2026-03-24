@@ -1,19 +1,11 @@
 import { useState } from 'react'
 import './GameOnboarding.css'
 
-import Tela0BoasVindas from './screens/tela0boasVindas'
-import Tela1Jogo from './screens/tela1Jogo'
-import Tela2Funcao from './screens/tela2funcao'
-import Tela3Agentes from './screens/tela3Agentes'
-import Tela4Fim from './screens/tela4fim'
+export default function GameOnboarding({ onFinish, isOpen, telas = [], titulo = 'WANDA' }) {
 
-const TOTAL = 5
+  if (!isOpen) return null
 
-export default function GameOnboarding({ onFinish, isOpen }) {
-
-  if (!isOpen) {
-    return null;
-  }
+  const TOTAL = telas.length
 
   const [atual, setAtual] = useState(0)
   const [podeAvancar, setPodeAvancar] = useState(false)
@@ -24,32 +16,34 @@ export default function GameOnboarding({ onFinish, isOpen }) {
   }
 
   const avancar = () => ir(Math.min(atual + 1, TOTAL - 1))
-  const voltar = () => ir(Math.max(atual - 1, 0))
-  const pular = () => ir(TOTAL - 1)
+  const voltar  = () => ir(Math.max(atual - 1, 0))
+  const pular   = () => ir(TOTAL - 1)
 
-  const telas = [
-    <Tela0BoasVindas onPronto={() => setPodeAvancar(true)} />,
-    <Tela1Jogo onPronto={() => setPodeAvancar(true)} />,
-    <Tela2Funcao onPronto={() => setPodeAvancar(true)} />,
-    <Tela3Agentes onPronto={() => setPodeAvancar(true)} />,
-    <Tela4Fim onRever={() => ir(0)} onFinish={onFinish} />,
-  ]
-
-  const ehUltima  = atual === TOTAL - 1
+  const ehUltima   = atual === TOTAL - 1
   const ehPrimeira = atual === 0
+
+  const telasProps = telas.map((tela, i) => {
+    const eUltima = i === TOTAL - 1
+    return {
+      elemento: eUltima
+        ? { ...tela, props: { ...tela.props, onRever: () => ir(0), onFinish } }
+        : { ...tela, props: { ...tela.props, onPronto: () => setPodeAvancar(true) } },
+    }
+  })
 
   return (
     <div className="overlay-onboarding">
       <div className="onboarding">
+
         <div className="onboarding__topbar">
-          <span className="onboarding__logo">WANDA</span>
+          <span className="onboarding__logo">{titulo}</span>
           <div className="onboarding__dots">
             {Array.from({ length: TOTAL }).map((_, i) => (
               <div
                 key={i}
                 className={[
                   'onboarding__dot',
-                  i < atual  ? 'onboarding__dot--done'   : '',
+                  i < atual   ? 'onboarding__dot--done'   : '',
                   i === atual ? 'onboarding__dot--active' : '',
                 ].join(' ')}
               />
@@ -62,7 +56,8 @@ export default function GameOnboarding({ onFinish, isOpen }) {
           )}
           {ehUltima && <div style={{ width: 60 }} />}
         </div>
-        {telas.map((tela, i) => (
+
+        {telasProps.map(({ elemento }, i) => (
           <div
             key={i}
             className={[
@@ -70,9 +65,10 @@ export default function GameOnboarding({ onFinish, isOpen }) {
               i === atual ? 'onboarding__screen--active' : '',
             ].join(' ')}
           >
-            {tela}
+            {elemento}
           </div>
         ))}
+
         {!ehUltima && (
           <div className="onboarding__nav">
             {!ehPrimeira
@@ -88,6 +84,7 @@ export default function GameOnboarding({ onFinish, isOpen }) {
             </button>
           </div>
         )}
+
       </div>
     </div>
   )

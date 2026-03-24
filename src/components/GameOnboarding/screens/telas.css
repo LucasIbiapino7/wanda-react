@@ -219,6 +219,12 @@
   justify-content: center;
   gap: 4px;
   font-size: 30px;
+  overflow: hidden;
+}
+
+.tela1__carta img {
+  width: 100%;
+
 }
 
 .tela1__carta--grande {
@@ -340,6 +346,10 @@
   transition: all 0.3s ease;
 }
 
+.tela2__carta img, .tela2__relacao-carta img, .tela2__val img {
+  width: 100%;
+}
+ 
 .tela2__carta--revelada {
   border-color: var(--amarelo);
   background: rgba(255, 204, 0, 0.1);

@@ -1,30 +1,23 @@
 import { useState, useEffect, useRef } from "react";
 import "./telas.css";
-import timmyImage from "../../../assets/timmy.png"
-import cardPaper from "../../../assets/papel.png"
-import cardStone from "../../../assets/pedra.png"
-import cardScissors from "../../../assets/tesoura.png"
-import cardSecret from "../../../assets/secret.png"
+import timmyImage from "../../../assets/timmy.png";
 
-const IMAGE = { pedra: cardStone, papel: cardPaper, tesoura: cardScissors};
-const EMOJI = {pedra: '🪨', papel: '📄', tesoura: '✂️'};
+// Cartas do BITS com emoji representativo
+const CARTAS_BITS = ["BIT8", "BIT16", "BIT32", "FIREWALL"];
+const EMOJI_BITS  = { BIT8: "🟦", BIT16: "🟩", BIT32: "🟥", FIREWALL: "🛡️" };
 
+// Cada jogador começa com 1 de cada carta (simplificado para a demonstração)
 function sortearMaos() {
-  const baralho = ["pedra", "pedra", "papel", "papel", "tesoura", "tesoura"];
-  for (let i = baralho.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [baralho[i], baralho[j]] = [baralho[j], baralho[i]];
-  }
   return {
-    jogador: baralho.slice(0, 3),
-    adversario: baralho.slice(3, 6),
+    jogador:    [...CARTAS_BITS],
+    adversario: [...CARTAS_BITS],
   };
 }
 
-export default function Tela2Funcao({ onPronto }) {
+export default function Tela2FuncaoBits({ onPronto }) {
   const [etapa, setEtapa] = useState(0);
-  const [maos, setMaos] = useState({ jogador: [], adversario: [] });
-  const iniciou = useRef(false);
+  const [maos, setMaos]   = useState({ jogador: [], adversario: [] });
+  const iniciou           = useRef(false);
 
   useEffect(() => {
     if (iniciou.current) return;
@@ -46,18 +39,18 @@ export default function Tela2Funcao({ onPronto }) {
   return (
     <div className="tela">
       <div className="tela__fala">
-        <div className="tela__avatar"><img src={timmyImage} alt="timmy-avatar"/></div>
+        <div className="tela__avatar"><img src={timmyImage} alt="timmy-avatar" /></div>
         <div className="tela__bubble">
-          Sou o <strong>Timmy</strong>! O baralho tem 2 pedras, 2 papéis e 2
-          tesouras — embaralhados e divididos entre vocês dois. 🃏
+          Sou o <strong>Timmy</strong>! No BITS, cada jogador começa com as
+          mesmas 4 cartas. Você usa cada uma uma única vez por partida. 🃏
         </div>
       </div>
 
-      {/* Etapa 1+: sorteio das mãos */}
+      {/* Etapa 1+: cartas disponíveis */}
       {etapa >= 1 && (
         <div className="tela2__secao tela2__fade">
           <p className="tela__subtitulo" style={{ marginBottom: 10 }}>
-            {etapa === 1 ? "🎲 Sorteando as mãos..." : "Mãos sorteadas!"}
+            {etapa === 1 ? "🎲 Preparando as cartas..." : "Suas cartas disponíveis"}
           </p>
           <div className="tela2__maos">
             <div className="tela2__lado">
@@ -68,13 +61,13 @@ export default function Tela2Funcao({ onPronto }) {
                     key={i}
                     className={[
                       "tela2__carta",
-                      etapa >= 2
-                        ? "tela2__carta--revelada"
-                        : "tela2__carta--virada",
+                      etapa >= 2 ? "tela2__carta--revelada" : "tela2__carta--virada",
                     ].join(" ")}
                     style={{ animationDelay: `${i * 0.12}s` }}
                   >
-                    <img src={etapa >= 2 ? IMAGE[carta] : cardSecret} alt="cards" />
+                    {etapa >= 2 ? (
+                      <span style={{ fontSize: 22 }}>{EMOJI_BITS[carta]}</span>
+                    ) : "🂠"}
                   </div>
                 ))}
               </div>
@@ -94,32 +87,24 @@ export default function Tela2Funcao({ onPronto }) {
             </div>
           </div>
 
-          {/* Relação entre as mãos */}
-          {etapa >= 2 && jogador.length === 3 && adversario.length === 3 && (
+          {etapa >= 2 && (
             <div className="tela2__relacao tela2__fade">
               <span className="tela2__relacao-txt">
-                Você tirou{" "}
+                Ambos começam com{" "}
                 {jogador.map((c, i) => (
                   <span key={i} className="tela2__relacao-carta">
-                    {EMOJI[c]}
+                    {EMOJI_BITS[c]}
                   </span>
                 ))}{" "}
-                então o adversário ficou com{" "}
-                {adversario.map((c, i) => (
-                  <span
-                    key={i}
-                    className="tela2__relacao-carta tela2__relacao-carta--oculta"
-                  >
-                    {EMOJI[c]}
-                  </span>
-                ))}
+                — mas as cartas do adversário ficam ocultas.
               </span>
             </div>
           )}
         </div>
       )}
 
-      {etapa >= 3 && jogador.length === 3 && (
+      {/* Etapa 3+: assinatura da função */}
+      {etapa >= 3 && (
         <div className="tela2__secao tela2__fade">
           <p className="tela__subtitulo" style={{ marginBottom: 10 }}>
             É isso que sua função recebe
@@ -127,38 +112,29 @@ export default function Tela2Funcao({ onPronto }) {
           <div className="tela2__codigo">
             <span className="tela2__kw">def</span>{" "}
             <span className="tela2__fn">strategy</span>(
-            <span className="tela2__param">card1</span>,{" "}
-            <span className="tela2__param">card2</span>,{" "}
-            <span className="tela2__param">card3</span>):
+            <span className="tela2__param">bit8</span>,{" "}
+            <span className="tela2__param">bit16</span>,{" "}
+            <span className="tela2__param">bit32</span>,{" "}
+            <span className="tela2__param">firewall</span>,{" "}
+            <span className="tela2__param">opp_last</span>):
             <br />
             <span className="tela2__indent">
-              <span className="tela2__cmt"># card1 = </span>
-              <span className="tela2__val">"{jogador[0]}"</span>
-              {"  "}
-              {EMOJI[jogador[0]]}
+              <span className="tela2__cmt"># bit8, bit16, bit32, firewall = </span>
+              <span className="tela2__val">1</span>
+              <span className="tela2__cmt"> se ainda tem a carta, </span>
+              <span className="tela2__val">0</span>
+              <span className="tela2__cmt"> se já usou</span>
             </span>
             <br />
             <span className="tela2__indent">
-              <span className="tela2__cmt"># card2 = </span>
-              <span className="tela2__val">"{jogador[1]}"</span>
-              {"  "}
-              {EMOJI[jogador[1]]}
-            </span>
-            <br />
-            <span className="tela2__indent">
-              <span className="tela2__cmt"># card3 = </span>
-              <span className="tela2__val">"{jogador[2]}"</span>
-              {"  "}
-              {EMOJI[jogador[2]]}
+              <span className="tela2__cmt"># opp_last = última carta jogada pelo adversário (ou </span>
+              <span className="tela2__val">None</span>
+              <span className="tela2__cmt">)</span>
             </span>
             <br />
             <span className="tela2__indent">
               <span className="tela2__kw">return</span>{" "}
-              <span
-                className={
-                  etapa >= 4 ? "tela2__return--destaque" : "tela2__str"
-                }
-              >
+              <span className={etapa >= 4 ? "tela2__return--destaque" : "tela2__str"}>
                 ???
               </span>
             </span>
@@ -167,9 +143,10 @@ export default function Tela2Funcao({ onPronto }) {
           {etapa >= 4 && (
             <div className="tela2__retorno-hint tela2__fade">
               Sua função deve retornar qual carta jogar:{" "}
-              <span className="tela2__tag">🪨 "pedra"</span>
-              <span className="tela2__tag">📄 "papel"</span>
-              <span className="tela2__tag">✂️ "tesoura"</span>
+              <span className="tela2__tag">🟦 "BIT8"</span>
+              <span className="tela2__tag">🟩 "BIT16"</span>
+              <span className="tela2__tag">🟥 "BIT32"</span>
+              <span className="tela2__tag">🛡️ "FIREWALL"</span>
             </div>
           )}
         </div>
