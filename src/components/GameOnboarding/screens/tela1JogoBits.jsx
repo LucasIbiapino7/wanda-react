@@ -1,65 +1,73 @@
 import { useState } from "react";
 import "./telas.css";
-import cosmoImage from "../../../assets/cosmo-avatar.png"
-import cardPaper from "../../../assets/papel.png"
-import cardStone from "../../../assets/pedra.png"
-import cardScissors from "../../../assets/tesoura.png"
-import cardSecret from "../../../assets/secret.png"
+import cosmoImage from "../../../assets/cosmo-avatar.png";
+import CardBit8 from "../../../assets/bits/bit8.png"
+import CardBit16 from "../../../assets/bits/bit16.png"
+import CardBit32 from "../../../assets/bits/bit32.png"
+import CardFirewall from "../../../assets/bits/firewall.png"
+import CardSecret from "../../../assets/secret.png"
 
 const CARTAS = [
-  { key: "pedra", image: cardStone, label: "Pedra" },
-  { key: "papel", image: cardPaper, label: "Papel" },
-  { key: "tesoura", image: cardScissors, label: "Tesoura" },
+  { key: "BIT8",     label: "BIT8",     image: CardBit8 },
+  { key: "BIT16",    label: "BIT16",    image: CardBit16 },
+  { key: "BIT32",    label: "BIT32",    image: CardBit32 },
+  { key: "FIREWALL", label: "FIREWALL", image: CardFirewall },
 ];
 
-const VENCE = { pedra: "tesoura", tesoura: "papel", papel: "pedra" };
+const VENCE = {
+  BIT8:     ["None"],
+  BIT16:    ["BIT8"],
+  BIT32:    ["BIT16", "BIT8"],
+  FIREWALL: ["BIT32","BIT16", "BIT8"],
+};
 
 function resultado(eu, opp) {
   if (eu === opp) return "empate";
-  return VENCE[eu] === opp ? "vitoria" : "derrota";
+  if (VENCE[eu].includes(opp)) {
+    return "vitoria"
+  }
+  return "derrota"
 }
 
 const PLACAR_LABEL = {
   vitoria: "Você ganhou! 🎉",
   derrota: "Adversário ganhou! 😤",
-  empate: "Empate! 🤝",
+  empate:  "Empate! 🤝",
 };
 const PLACAR_CLASSE = {
   vitoria: "tela1__badge--win",
   derrota: "tela1__badge--lose",
-  empate: "tela1__badge--draw",
+  empate:  "tela1__badge--draw",
 };
 
-export default function Tela1Jogo({ onPronto }) {
-  const [rounds, setRounds] = useState([]); // { eu, opp, res }
+export default function Tela1JogoBits({ onPronto }) {
+  const [rounds, setRounds]       = useState([]);
   const [esperando, setEsperando] = useState(true);
 
-  const pontos = (jogador) => rounds.filter((r) => r.res === jogador).length;
+  const pontos = (tipo) => rounds.filter((r) => r.res === tipo).length;
 
   const jogar = (carta) => {
     if (!esperando || rounds.length >= 3) return;
 
-    const oppIndex = Math.floor(Math.random() * 3);
-    const opp = CARTAS[oppIndex].key;
-    const res = resultado(carta, opp);
+    const oppIndex = Math.floor(Math.random() * CARTAS.length);
+    const opp      = CARTAS[oppIndex].key;
+    const res      = resultado(carta, opp);
 
     setRounds((prev) => {
       const novos = [...prev, { eu: carta, opp, res }];
-
       if (novos.length === 3) {
         setTimeout(() => onPronto(), 1200);
       } else {
         setTimeout(() => setEsperando(true), 1200);
       }
-
       return novos;
     });
 
     setEsperando(false);
   };
-  
-  const cartaEmoji = (key) => CARTAS.find((c) => c.key === key)?.image ?? "❓";
-  const ultimo = rounds[rounds.length - 1];
+
+  const emojiDe = (key) => CARTAS.find((c) => c.key === key)?.image ?? CardSecret;
+  const ultimo   = rounds[rounds.length - 1];
   const fimDeJogo = rounds.length === 3;
 
   return (
@@ -67,12 +75,11 @@ export default function Tela1Jogo({ onPronto }) {
       <div className="tela__fala">
         <div className="tela__avatar"><img src={cosmoImage} alt="cosmo-avatar" /></div>
         <div className="tela__bubble">
-          Sou o <strong>Cosmo</strong>! Vamos jogar um Jokenpo rápido. Clique em
-          uma carta pra jogar. Melhor de 3! 🃏
+          Sou o <strong>Cosmo</strong>! Vamos jogar um round rápido de BITS.
+          Cada jogador tem um conjunto de cartas — escolha a sua! 🃏
         </div>
       </div>
 
-      {/* Placar */}
       <div className="tela1__placar">
         <div className="tela1__placar-lado">
           <span className="tela1__placar-nome">Você</span>
@@ -109,26 +116,26 @@ export default function Tela1Jogo({ onPronto }) {
         <div className="tela1__slot">
           <span className="tela1__slot-label">Você</span>
           <div className="tela1__carta tela1__carta--grande">
-            <img src={ultimo ? cartaEmoji(ultimo.eu) : cardSecret} alt="my card"/>
+            <img src={ultimo ? emojiDe(ultimo.eu) : CardSecret}/>
+            {ultimo && <span className="tela1__carta-label">{ultimo.eu}</span>}
           </div>
         </div>
         <span className="tela1__vs">VS</span>
         <div className="tela1__slot">
           <span className="tela1__slot-label">Adversário</span>
           <div className="tela1__carta tela1__carta--grande">
-            <img src={ultimo ? cartaEmoji(ultimo.opp) : cardSecret} alt="opp card"/>
+            <img src={ultimo ? emojiDe(ultimo.opp) : CardSecret}/>
+            {ultimo && <span className="tela1__carta-label">{ultimo.opp}</span>}
           </div>
         </div>
       </div>
 
-      {/* Badge resultado */}
       {ultimo && (
         <div className={`tela1__badge ${PLACAR_CLASSE[ultimo.res]}`}>
           {PLACAR_LABEL[ultimo.res]}
         </div>
       )}
 
-      {/* Cartas para jogar */}
       {!fimDeJogo && (
         <div>
           <p className="tela__subtitulo" style={{ marginBottom: 10 }}>
@@ -144,7 +151,7 @@ export default function Tela1Jogo({ onPronto }) {
                 onClick={() => jogar(c.key)}
                 disabled={!esperando}
               >
-                <img src={c.image} alt="image-card" />
+                <span style={{ fontSize: 28 }}>{c.emoji}</span>
                 <span className="tela1__carta-label">{c.label}</span>
               </button>
             ))}
@@ -154,7 +161,7 @@ export default function Tela1Jogo({ onPronto }) {
 
       {fimDeJogo && (
         <div className="tela__aviso">
-          💡 Isso foi <strong>você jogando manualmente</strong>. No Wanda, sua{" "}
+          💡 Isso foi <strong>você jogando manualmente</strong>. No BITS, sua{" "}
           <strong>função Python</strong> vai tomar essas decisões sozinha!
         </div>
       )}

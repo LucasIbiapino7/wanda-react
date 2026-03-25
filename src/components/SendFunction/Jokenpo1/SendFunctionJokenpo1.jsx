@@ -4,7 +4,7 @@ import { dracula } from "@uiw/codemirror-theme-dracula";
 import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
 import axios from "axios";
-import "./SendFunctionJokenpo1.css";
+import "../SendFunction.css";
 import { Info } from 'lucide-react'
 
 import AuthContext from "../../../context/AuthContext";
@@ -14,15 +14,13 @@ import wanda from "../../../assets/wanda.png";
 import like from "../../../assets/like.svg";
 import dislike from "../../../assets/dislike.svg";
 
-import InstructionsModal from "../InstructionsModal";
 import SuccessModal from "../SuccessModal";
-import WelcomeModal from "../../WelcomeModal/WelcomeModal";
 import Joyride from "react-joyride";
 import { tourSteps } from "../../../constants/tourSteps.jsx";
 import FunctionService from "../../../services/FunctionService.js";
 import AppModal from "../../UI/AppModal.jsx";
 import HintBox from "../../UI/HintBox.jsx";
-import GameOnboarding from "../../GameOnboarding/GameOnboarding.jsx";
+import GameOnboardingJokenpo from "../../GameOnboarding/games/GameOnboardingJokenpo.jsx";
 
 const GAME = "JOKENPO";
 const FUNCTION = "jokenpo1";
@@ -391,7 +389,7 @@ export default function SendFunctionJokenpo1() {
       )}
 
       {showWelcome && (
-        <GameOnboarding 
+        <GameOnboardingJokenpo
           isOpen={showWelcome} 
           onFinish={() => {
             handleStartTour(showWelcome)
@@ -614,7 +612,7 @@ export default function SendFunctionJokenpo1() {
       </AppModal>
 
       
-      <GameOnboarding
+      <GameOnboardingJokenpo
         isOpen={helpModalOpen}
         onFinish={() => setHelpModalOpen(false)}
       />
