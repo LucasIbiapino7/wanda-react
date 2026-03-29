@@ -73,6 +73,9 @@ export default function SendFunctionBits() {
   const [hasSavedFunction, setHasSavedFunction] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
 
+  // boas vindas + tour
+  const [showWelcome, setShowWelcome] = useState(true);
+
   const [modal, setModal] = useState({
     open: false,
     title: "",
@@ -161,6 +164,11 @@ export default function SendFunctionBits() {
       return false;
     }
     return true;
+  };
+
+  const handleStartTour = (dontShowAgain) => {
+    setShowWelcome(false);
+    if (dontShowAgain) localStorage.setItem("wandaTourSeen", "true");
   };
 
   const commonBody = () => ({
@@ -321,7 +329,14 @@ export default function SendFunctionBits() {
   return (
     <div className="container-sendfunction">
 
-      {/* ── Topo ── */}
+      {showWelcome && (
+        <GameOnboardingBits
+          isOpen={showWelcome} 
+          onFinish={() => {
+            handleStartTour(showWelcome)
+          }}
+        />
+      )}
       <div className="top-section">
         <div className="informations-section">
           <h1>BITS — Estratégia</h1>
