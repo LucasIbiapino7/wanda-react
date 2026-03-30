@@ -5,55 +5,7 @@ export const tourSteps = [
       <div>
         Aqui está a área dos assistentes: <strong>Cosmo</strong>,{" "}
         <strong>Timmy</strong> ou <strong>Wanda</strong>, cada um com um estilo
-        diferente de respostas, que você pode ver nos próximos passos, para o
-        exemplo anterior.
-      </div>
-    ),
-    placement: "bottom",
-    disableBeacon: true,
-  },
-  {
-    target: ".agent-tab:nth-child(1)",
-    content: (
-      <div>
-        <h3>Cosmo</h3>
-        <p>
-          Oi! Eu percebi que você está enfrentando um probleminha no seu código.
-          O erro acontece na linha 2, onde você esqueceu de colocar o
-          &quot;:&quot; após a condição do &quot;if&quot;. Sempre que você cria
-          uma estrutura condicional em Python, precisa lembrar de colocar esse
-          caractere depois da condição. Experimente adicionar o &quot;:&quot; e
-          veja se resolve! Isso deve ajudar seu código a funcionar direitinho.
-          😊
-        </p>
-      </div>
-    ),
-    placement: "bottom",
-    disableBeacon: true,
-  },
-  {
-    target: ".agent-tab:nth-child(2)",
-    content: (
-      <div>
-        <h3>Timmy</h3>
-        <p>
-          O erro ocorre na linha 2: &apos;if card1 == &quot;pedra&quot;&apos;.
-          Adicione &quot;:&quot; ao final da linha para corrigir.
-        </p>
-      </div>
-    ),
-    placement: "bottom",
-    disableBeacon: true,
-  },
-  {
-    target: ".agent-tab:nth-child(3)",
-    content: (
-      <div>
-        <h3>Wanda</h3>
-        <p>
-          Para corrigir o erro, você deve adicionar &apos;:&apos; no final da linha 2.
-          Aqui está a correção: python if card1 == &quot;pedra&quot;:
-        </p>
+        diferente de respostas, como visto anteriormente.
       </div>
     ),
     placement: "bottom",

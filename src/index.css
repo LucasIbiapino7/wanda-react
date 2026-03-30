@@ -1,1 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root {
+  --roxo:        #9c27b0;
+  --roxo-escuro: #7b1fa2;
+  --amarelo:     #ffcc00;
+  --amarelo-2:   #ffb84d;
+  --verde:       #4dac4a;
+  --branco:      #ffffff;
+  --surface:     rgba(255, 255, 255, 0.12);
+  --surface-hover: rgba(255, 255, 255, 0.2);
+  --borda:       rgba(255, 255, 255, 0.2);
+  --texto:       #ffffff;
+  --texto-muted: rgba(255, 255, 255, 0.7);
+  --dark-surface: rgba(20, 10, 30, 0.55);
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --font-main:   'Nunito', sans-serif;
+  --font-fun:    'Comic Neue', cursive;
+}
 

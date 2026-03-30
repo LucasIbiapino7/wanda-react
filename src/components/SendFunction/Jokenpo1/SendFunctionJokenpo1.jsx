@@ -4,7 +4,8 @@ import { dracula } from "@uiw/codemirror-theme-dracula";
 import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
 import axios from "axios";
-import "./SendFunctionJokenpo1.css";
+import "../SendFunction.css";
+import { Info } from 'lucide-react'
 
 import AuthContext from "../../../context/AuthContext";
 import cosmo from "../../../assets/cosmo-avatar.png";
@@ -13,14 +14,11 @@ import wanda from "../../../assets/wanda.png";
 import like from "../../../assets/like.svg";
 import dislike from "../../../assets/dislike.svg";
 
-import InstructionsModal from "../InstructionsModal";
 import SuccessModal from "../SuccessModal";
-import WelcomeModal from "../../WelcomeModal/WelcomeModal";
-import Joyride from "react-joyride";
-import { tourSteps } from "../../../constants/tourSteps.jsx";
 import FunctionService from "../../../services/FunctionService.js";
 import AppModal from "../../UI/AppModal.jsx";
 import HintBox from "../../UI/HintBox.jsx";
+import GameOnboardingJokenpo from "../../GameOnboarding/games/GameOnboardingJokenpo.jsx";
 
 const GAME = "JOKENPO";
 const FUNCTION = "jokenpo1";
@@ -75,8 +73,7 @@ export default function SendFunctionJokenpo1() {
   const [feedbackSent, setFeedbackSent] = useState(false);
 
   // tour e welcome
-  const [showWelcome, setShowWelcome] = useState(false);
-  const [runTour, setRunTour] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
 
   // estado de função salva / sucesso
   const [hasSavedFunction, setHasSavedFunction] = useState(false);
@@ -107,7 +104,6 @@ export default function SendFunctionJokenpo1() {
 
   const handleStartTour = (dontShowAgain) => {
     setShowWelcome(false);
-    setRunTour(true);
     if (dontShowAgain) localStorage.setItem("wandaTourSeen", "true");
   };
 
@@ -354,82 +350,46 @@ export default function SendFunctionJokenpo1() {
 
   // ===== Ajuda (mesmo padrão do BITS): um modal com abas =====
   const [helpModalOpen, setHelpModalOpen] = useState(false);
-  const [helpTab, setHelpTab] = useState("instructions"); // "instructions" | "agents"
-
-  const openHelp = (tab = "instructions") => {
-    setHelpTab(tab);
-    setHelpModalOpen(true);
-  };
 
   return (
     <div className="container-sendfunction">
-      {runTour && (
-        <Joyride
-          steps={tourSteps}
-          run={true}
-          disableBeacon
-          continuous
-          showProgress
-          showSkipButton
-          locale={{
-            back: "Voltar",
-            close: "Fechar",
-            last: "Fim",
-            next: "Próximo",
-            skip: "Pular",
-          }}
-          styles={{
-            options: {
-              arrowColor: "#ffcc00",
-              backgroundColor: "#1e1e1e",
-              textColor: "#fff",
-              primaryColor: "#ffcc00",
-              spotlightPadding: 8,
-            },
-            tooltipContainer: { borderRadius: "8px", padding: "1rem" },
-          }}
-          callback={({ status }) => {
-            if (["finished", "skipped"].includes(status)) setRunTour(false);
-          }}
-        />
-      )}
 
       {showWelcome && (
-        <WelcomeModal onStart={handleStartTour} onSkip={handleSkipTour} />
+        <GameOnboardingJokenpo
+          isOpen={showWelcome} 
+          onFinish={() => {
+            handleStartTour(showWelcome)
+          }}/>
       )}
 
       <div className="top-section">
         <div className="informations-section">
           <h1>Função 1 – Round 1</h1>
+          <span className="progress-indicator">Passo 1 de 2</span>
+        </div>
+        <div className="informations-section-buttons">
+          <button
+            className="help-button"
+            type="button"
+            onClick={() => setHelpModalOpen(true)}
+            title="Abrir ajuda"
+            disabled={isProcessing}
+          >
+            <Info /> Ajuda
+          </button>
 
-          <div className="progress-indicator">
-            <span>Passo 1 de 2</span>
-          </div>
-
-          <div className="informations-section-buttons">
+          {hasSavedFunction && (
             <button
-              className="help-button"
-              type="button"
-              onClick={() => openHelp("instructions")}
-              title="Abrir ajuda"
+              className="next-function-button"
+              onClick={() => setSuccessModalOpen(true)}
+              title="Clique para ir para a função 2"
               disabled={isProcessing}
             >
-              Ajuda
+              Vá para função 2!
             </button>
-
-            {hasSavedFunction && (
-              <button
-                className="next-function-button"
-                onClick={() => setSuccessModalOpen(true)}
-                title="Clique para ir para a função 2"
-                disabled={isProcessing}
-              >
-                Vá para função 2!
-              </button>
-            )}
-          </div>
+          )}
         </div>
-
+      </div>
         <div className="editor-feedback-container">
           <div className="editor-section">
             <CodeMirror
@@ -603,7 +563,7 @@ export default function SendFunctionJokenpo1() {
             )}
           </div>
         </div>
-      </div>
+      
 
       {/* Modal padronizado */}
       <AppModal
@@ -617,87 +577,11 @@ export default function SendFunctionJokenpo1() {
         <p>{modal.message}</p>
       </AppModal>
 
-      {/* Ajuda (Instruções + Agentes) no MESMO modal */}
-      <InstructionsModal
+      
+      <GameOnboardingJokenpo
         isOpen={helpModalOpen}
-        onClose={() => setHelpModalOpen(false)}
-        title="Ajuda — Jokenpo (Função 1)"
-        footer={
-          <div className="help-footer-tabs">
-            <button
-              type="button"
-              className={`help-tab-btn ${
-                helpTab === "instructions" ? "active" : ""
-              }`}
-              onClick={() => setHelpTab("instructions")}
-            >
-              Instruções
-            </button>
-            <button
-              type="button"
-              className={`help-tab-btn ${helpTab === "agents" ? "active" : ""}`}
-              onClick={() => setHelpTab("agents")}
-            >
-              Agentes
-            </button>
-          </div>
-        }
-      >
-        {helpTab === "instructions" ? (
-          <div className="instructions">
-            <p>
-              Aqui você vai criar a sua lógica para a <b>função 1</b>, que é
-              responsável por escolher sua carta no primeiro round de uma
-              partida!
-            </p>
-            <ul>
-              <li>
-                Sua função deve se chamar <b>strategy</b>
-              </li>
-              <li>
-                <b>card1, card2, card3:</b> são os parâmetros que representam
-                suas cartas nesse round.
-              </li>
-              <li>Suas cartas podem ser: “pedra”, “papel” ou “tesoura”.</li>
-              <li>Você pode ter cartas repetidas na mão.</li>
-            </ul>
-            <p>
-              A função deve retornar uma string: “pedra”, “papel” ou “tesoura”.
-            </p>
-          </div>
-        ) : (
-          <div className="instructions">
-            <p>
-              Cada agente possui uma “personalidade” distinta na forma como
-              elabora suas respostas:
-            </p>
-            <ul>
-              <li>
-                <strong>Cosmo:</strong> mais detalhista.
-              </li>
-              <li>
-                <strong>Timmy:</strong> direto ao ponto.
-              </li>
-              <li>
-                <strong>Wanda:</strong> equilíbrio entre detalhes e
-                objetividade.
-              </li>
-            </ul>
-            <h3>Ações:</h3>
-            <ul>
-              <li>
-                <strong>Feedback:</strong> análise semântica do seu código.
-              </li>
-              <li>
-                <strong>Run:</strong> executa testes sem salvar.
-              </li>
-              <li>
-                <strong>Submeter:</strong> valida e salva sua função.
-              </li>
-            </ul>
-          </div>
-        )}
-      </InstructionsModal>
+        onFinish={() => setHelpModalOpen(false)}
+      />
     </div>
   );
 }
