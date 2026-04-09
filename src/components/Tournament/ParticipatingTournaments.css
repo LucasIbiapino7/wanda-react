@@ -228,3 +228,33 @@
   color: rgba(255, 255, 255, 0.4);
   font-weight: 600;
 }
+
+.tournament-card--error {
+  background: linear-gradient(135deg, #1f1f2e 80%, #2a1515 100%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 68, 68, 0.2);
+}
+
+.error-context {
+  background: rgba(255, 68, 68, 0.08);
+  border: 1px solid rgba(255, 68, 68, 0.2);
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-top: 0.5rem;
+}
+
+.error-context-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #ff6b6b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 4px;
+}
+
+.error-context-text {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  line-height: 1.4;
+  word-break: break-word;
+}

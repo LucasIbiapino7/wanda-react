@@ -4,7 +4,8 @@ import TournamentService from "../../services/TournamentService";
 import "./TournamentManagerModal.css";
 
 export default function TournamentManagerModal({ tournament, onClose }) {
-  const [tab, setTab] = useState("edit"); // "edit" | "participants"
+  const isError = tournament.status === "ERROR";
+  const [tab, setTab] = useState("edit");
 
   const [form, setForm] = useState({
     name: tournament.name,
@@ -114,6 +115,43 @@ export default function TournamentManagerModal({ tournament, onClose }) {
     }
   };
 
+  const renderCancelBlock = () => (
+    <>
+      <div className="tm-divider" />
+      {!confirmCancel ? (
+        <button
+          type="button"
+          className="tm-btn tm-btn--danger"
+          onClick={() => setConfirmCancel(true)}
+        >
+          Cancelar torneio
+        </button>
+      ) : (
+        <div className="tm-confirm-cancel">
+          <p>Tem certeza? Esta ação não pode ser desfeita.</p>
+          <div className="tm-confirm-actions">
+            <button
+              type="button"
+              className="tm-btn"
+              onClick={() => setConfirmCancel(false)}
+              disabled={cancelling}
+            >
+              Voltar
+            </button>
+            <button
+              type="button"
+              className="tm-btn tm-btn--danger"
+              onClick={handleCancel}
+              disabled={cancelling}
+            >
+              {cancelling ? "Cancelando..." : "Confirmar cancelamento"}
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  );
+
   return (
     <div className="tm-overlay" onClick={onClose}>
       <div className="tm-container" onClick={(e) => e.stopPropagation()}>
@@ -123,124 +161,109 @@ export default function TournamentManagerModal({ tournament, onClose }) {
         <h3 className="tm-title">{tournament.name}</h3>
         <p className="tm-subtitle">Gerenciamento do torneio</p>
 
-        {/* Abas */}
-        <div className="tm-tabs">
-          <button
-            className={`tm-tab ${tab === "edit" ? "tm-tab--active" : ""}`}
-            onClick={() => setTab("edit")}
-          >
-            ✏️ Editar
-          </button>
-          <button
-            className={`tm-tab ${tab === "participants" ? "tm-tab--active" : ""}`}
-            onClick={() => setTab("participants")}
-          >
-            👥 Participantes
-          </button>
-        </div>
-
-        {/* Aba Editar */}
-        {tab === "edit" && (
-          <form className="tm-form" onSubmit={handleSubmitEdit}>
-            <label>
-              Nome
-              <input
-                type="text"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                placeholder="Nome do torneio"
-              />
-              {fieldErrors.name && (
-                <small className="tm-field-error">{fieldErrors.name}</small>
-              )}
-            </label>
-
-            <label>
-              Descrição
-              <textarea
-                name="description"
-                value={form.description}
-                onChange={handleChange}
-                placeholder="Descrição do torneio"
-              />
-              {fieldErrors.description && (
-                <small className="tm-field-error">{fieldErrors.description}</small>
-              )}
-            </label>
-
-            <label>
-              Data de início
-              <input
-                type="datetime-local"
-                name="startTime"
-                value={form.startTime}
-                onChange={handleChange}
-              />
-            </label>
-
-            {formError && <p className="tm-error">⚠️ {formError}</p>}
-            {formSuccess && <p className="tm-success">✓ {formSuccess}</p>}
-
-            <button
-              type="submit"
-              className="tm-btn tm-btn--primary"
-              disabled={submitting}
-            >
-              {submitting ? "Salvando..." : "Salvar alterações"}
-            </button>
-
-            <div className="tm-divider" />
-
-            {!confirmCancel ? (
-              <button
-                type="button"
-                className="tm-btn tm-btn--danger"
-                onClick={() => setConfirmCancel(true)}
-              >
-                Cancelar torneio
-              </button>
-            ) : (
-              <div className="tm-confirm-cancel">
-                <p>Tem certeza? Esta ação não pode ser desfeita.</p>
-                <div className="tm-confirm-actions">
-                  <button
-                    type="button"
-                    className="tm-btn"
-                    onClick={() => setConfirmCancel(false)}
-                    disabled={cancelling}
-                  >
-                    Voltar
-                  </button>
-                  <button
-                    type="button"
-                    className="tm-btn tm-btn--danger"
-                    onClick={handleCancel}
-                    disabled={cancelling}
-                  >
-                    {cancelling ? "Cancelando..." : "Confirmar cancelamento"}
-                  </button>
-                </div>
-              </div>
+        {/* Modo ERROR — só cancelar */}
+        {isError && (
+          <div className="tm-error-block">
+            <p className="tm-error-block-title">⚠️ Este torneio encontrou um erro durante a execução.</p>
+            {tournament.errorContext && (
+              <p className="tm-error-block-context">{tournament.errorContext}</p>
             )}
-          </form>
+            <p className="tm-error-block-hint">
+              Você pode cancelar este torneio e criar um novo quando estiver pronto.
+            </p>
+            {formError && <p className="tm-error">⚠️ {formError}</p>}
+            {renderCancelBlock()}
+          </div>
         )}
 
-        {/* Aba Participantes */}
-        {tab === "participants" && (
-          <div className="tm-participants">
-            {loadingParticipants && <p className="tm-loading">Carregando...</p>}
-            {participantsError && <p className="tm-error">{participantsError}</p>}
-            {!loadingParticipants && participants.length === 0 && (
-              <p className="tm-empty">Nenhum participante inscrito ainda.</p>
+        {/* Modo OPEN — editar + participantes + cancelar */}
+        {!isError && (
+          <>
+            <div className="tm-tabs">
+              <button
+                className={`tm-tab ${tab === "edit" ? "tm-tab--active" : ""}`}
+                onClick={() => setTab("edit")}
+              >
+                ✏️ Editar
+              </button>
+              <button
+                className={`tm-tab ${tab === "participants" ? "tm-tab--active" : ""}`}
+                onClick={() => setTab("participants")}
+              >
+                👥 Participantes
+              </button>
+            </div>
+
+            {tab === "edit" && (
+              <form className="tm-form" onSubmit={handleSubmitEdit}>
+                <label>
+                  Nome
+                  <input
+                    type="text"
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    placeholder="Nome do torneio"
+                  />
+                  {fieldErrors.name && (
+                    <small className="tm-field-error">{fieldErrors.name}</small>
+                  )}
+                </label>
+
+                <label>
+                  Descrição
+                  <textarea
+                    name="description"
+                    value={form.description}
+                    onChange={handleChange}
+                    placeholder="Descrição do torneio"
+                  />
+                  {fieldErrors.description && (
+                    <small className="tm-field-error">{fieldErrors.description}</small>
+                  )}
+                </label>
+
+                <label>
+                  Data de início
+                  <input
+                    type="datetime-local"
+                    name="startTime"
+                    value={form.startTime}
+                    onChange={handleChange}
+                  />
+                </label>
+
+                {formError && <p className="tm-error">⚠️ {formError}</p>}
+                {formSuccess && <p className="tm-success">✓ {formSuccess}</p>}
+
+                <button
+                  type="submit"
+                  className="tm-btn tm-btn--primary"
+                  disabled={submitting}
+                >
+                  {submitting ? "Salvando..." : "Salvar alterações"}
+                </button>
+
+                {renderCancelBlock()}
+              </form>
             )}
-            {participants.map((p) => (
-              <div key={p.id} className="tm-participant-row">
-                <span className="tm-participant-name">{p.name}</span>
-                <span className="tm-participant-email">{p.email}</span>
+
+            {tab === "participants" && (
+              <div className="tm-participants">
+                {loadingParticipants && <p className="tm-loading">Carregando...</p>}
+                {participantsError && <p className="tm-error">{participantsError}</p>}
+                {!loadingParticipants && participants.length === 0 && (
+                  <p className="tm-empty">Nenhum participante inscrito ainda.</p>
+                )}
+                {participants.map((p) => (
+                  <div key={p.id} className="tm-participant-row">
+                    <span className="tm-participant-name">{p.name}</span>
+                    <span className="tm-participant-email">{p.email}</span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
 
       </div>
@@ -254,6 +277,8 @@ TournamentManagerModal.propTypes = {
     name: PropTypes.string.isRequired,
     description: PropTypes.string,
     startTime: PropTypes.string,
+    status: PropTypes.string,
+    errorContext: PropTypes.string,
   }).isRequired,
   onClose: PropTypes.func.isRequired,
 };

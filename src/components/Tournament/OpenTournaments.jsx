@@ -7,13 +7,14 @@ import PublicIcon from "../../assets/public.svg";
 import TournamentService from "../../services/TournamentService";
 import AppModal from "../UI/AppModal";
 import TournamentDetailsModal from "./TournamentDetailsModal";
+import PropTypes from "prop-types";
 
 const GAME_LOGOS = {
   jokenpo: "/assets/games/jokenpo-logo.png",
   bits: "/assets/games/bits-logo.png",
 };
 
-export default function OpenTournaments() {
+export default function OpenTournaments({ refreshKey = 0 }) {
   const { token } = useContext(AuthContext);
 
   const [tournaments, setTournaments] = useState([]);
@@ -21,7 +22,10 @@ export default function OpenTournaments() {
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [detailsModal, setDetailsModal] = useState({ open: false, tournament: null });
+  const [detailsModal, setDetailsModal] = useState({
+    open: false,
+    tournament: null,
+  });
   const [modal, setModal] = useState({
     open: false,
     title: "",
@@ -31,7 +35,11 @@ export default function OpenTournaments() {
 
   const extractApiError = (err) => {
     const data = err?.response?.data;
-    return data?.message || data?.error || "Ocorreu um erro ao processar sua solicitação.";
+    return (
+      data?.message ||
+      data?.error ||
+      "Ocorreu um erro ao processar sua solicitação."
+    );
   };
 
   const fetchTournaments = useCallback(
@@ -40,7 +48,10 @@ export default function OpenTournaments() {
       setLoading(true);
       setError(null);
       try {
-        const data = await TournamentService.getOpen({ page: pageNum, size: 5 });
+        const data = await TournamentService.getOpen({
+          page: pageNum,
+          size: 5,
+        });
         setTournaments(data?.content ?? []);
         setTotalPages(data?.totalPages ?? 0);
         setPage(pageNum);
@@ -51,12 +62,12 @@ export default function OpenTournaments() {
         setLoading(false);
       }
     },
-    [token]
+    [token],
   );
 
   useEffect(() => {
-    if (token) fetchTournaments(page);
-  }, [token, page, fetchTournaments]);
+    if (token) fetchTournaments(0);
+  }, [token, refreshKey, fetchTournaments]);
 
   const handleOpenDetails = (tournament) => {
     setDetailsModal({ open: true, tournament });
@@ -110,7 +121,9 @@ export default function OpenTournaments() {
       <div className="tournaments-grid">
         {tournaments.map((t) => {
           const full = t.currentParticipants >= t.maxParticipants;
-          const gameKey = String(t.game?.name || "").toLowerCase().trim();
+          const gameKey = String(t.game?.name || "")
+            .toLowerCase()
+            .trim();
           const gameLogo = GAME_LOGOS[gameKey] || null;
 
           return (
@@ -141,7 +154,9 @@ export default function OpenTournaments() {
                       src={gameLogo}
                       className="game-logo"
                       alt={`Logo ${t.game?.name ?? "jogo"}`}
-                      onError={(e) => { e.currentTarget.style.display = "none"; }}
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none";
+                      }}
                     />
                   ) : null}
                   <span className="game-name">
@@ -158,7 +173,9 @@ export default function OpenTournaments() {
               <div className="card-meta">
                 <span>Início: {new Date(t.startTime).toLocaleString()}</span>
                 <span>Começa em: {renderCountdown(t.startTime)}</span>
-                <span>Participantes: {t.currentParticipants}/{t.maxParticipants}</span>
+                <span>
+                  Participantes: {t.currentParticipants}/{t.maxParticipants}
+                </span>
               </div>
 
               <div className="progress-bar">
@@ -196,7 +213,11 @@ export default function OpenTournaments() {
       )}
 
       {!loading && totalPages > 1 && (
-        <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
+        />
       )}
 
       {detailsModal.open && (
@@ -224,3 +245,7 @@ export default function OpenTournaments() {
     </div>
   );
 }
+
+OpenTournaments.propTypes = {
+  refreshKey: PropTypes.number,
+};

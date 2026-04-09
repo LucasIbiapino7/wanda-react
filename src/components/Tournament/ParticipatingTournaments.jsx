@@ -16,6 +16,7 @@ const STATUS_LABEL = {
   RUNNING: "Em andamento",
   FINISHED: "Finalizado",
   CANCELLED: "Cancelado",
+  ERROR: "Erro",
 };
 
 const STATUS_COLOR = {
@@ -23,6 +24,7 @@ const STATUS_COLOR = {
   RUNNING: "#4da6ff",
   FINISHED: "#aaa",
   CANCELLED: "#ff6b6b",
+  ERROR: "#ff4444",
 };
 
 export default function ParticipatingTournaments() {
@@ -115,6 +117,7 @@ export default function ParticipatingTournaments() {
   );
   const finalizados = tournaments.filter((t) => t.status === "FINISHED");
   const cancelados = tournaments.filter((t) => t.status === "CANCELLED");
+  const comErro = tournaments.filter((t) => t.status === "ERROR");
 
   const renderCardCompleto = (t) => {
     const full = t.currentParticipants >= t.maxParticipants;
@@ -227,7 +230,7 @@ export default function ParticipatingTournaments() {
               </button>
             )}
 
-            {!t.canReady && t.status !== "FINISHED" && t.status !== "OPEN" && t.status !== "CANCELLED" && (
+            {!t.canReady && t.status !== "FINISHED" && t.status !== "OPEN" && t.status !== "CANCELLED" && t.status !== "ERROR" && (
               <span className="status-tag">
                 {full ? "Lotado" : STATUS_LABEL[t.status] ?? t.status}
               </span>
@@ -263,6 +266,57 @@ export default function ParticipatingTournaments() {
     </div>
   );
 
+  const renderCardErro = (t) => {
+    const isCreator = user?.id === t.creator?.id;
+
+    return (
+      <div
+        key={t.id}
+        className="tournament-card tournament-card--error"
+        style={{ borderLeft: "6px solid #ff4444" }}
+      >
+        <div className="card-header">
+          <h4 className="card-title">{t.name}</h4>
+          <span className="status-badge" style={{ backgroundColor: "#ff4444" }}>
+            ⚠️ Erro
+          </span>
+        </div>
+
+        <p className="creator-line">
+          Criado por: <strong>{creatorDisplay(t.creator)}</strong>
+        </p>
+
+        {t.game && (
+          <div className="game-row" style={{ marginTop: "0.5rem" }}>
+            <div className="game-name cancelled-game-name">
+              {String(t.game.name || "").toUpperCase()}
+            </div>
+          </div>
+        )}
+
+        {t.errorContext && (
+          <div className="error-context">
+            <p className="error-context-label">Detalhes do erro:</p>
+            <p className="error-context-text">{t.errorContext}</p>
+          </div>
+        )}
+
+        {isCreator && (
+          <div className="tournament-actions">
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <button
+                className="card-button manage-button"
+                onClick={() => handleOpenManager(t)}
+              >
+                ⚙ Gerenciar
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <section className="participating-section">
       <h2 className="section-title">Meus Torneios</h2>
@@ -288,6 +342,15 @@ export default function ParticipatingTournaments() {
           <p className="group-label">🏆 Finalizados</p>
           <div className="tournaments-list">
             {finalizados.map(renderCardCompleto)}
+          </div>
+        </div>
+      )}
+
+      {comErro.length > 0 && (
+        <div className="tournament-group">
+          <p className="group-label">⚠️ Com erro</p>
+          <div className="tournaments-list">
+            {comErro.map(renderCardErro)}
           </div>
         </div>
       )}
