@@ -6,6 +6,7 @@ import LockIcon from "../../assets/lock.svg";
 import PublicIcon from "../../assets/public.svg";
 import TournamentService from "../../services/TournamentService";
 import AppModal from "../UI/AppModal";
+import TournamentDetailsModal from "./TournamentDetailsModal";
 
 const GAME_LOGOS = {
   jokenpo: "/assets/games/jokenpo-logo.png",
@@ -18,10 +19,9 @@ export default function OpenTournaments() {
   const [tournaments, setTournaments] = useState([]);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const [detailsModal, setDetailsModal] = useState({ open: false, tournament: null });
   const [modal, setModal] = useState({
     open: false,
     title: "",
@@ -31,25 +31,18 @@ export default function OpenTournaments() {
 
   const extractApiError = (err) => {
     const data = err?.response?.data;
-    const backendMsg = data?.error || data?.message;
-    const normalizedMsg =
-      err?.normalized?.message || "Ocorreu um erro ao processar sua solicitação.";
-    return backendMsg || normalizedMsg;
+    return data?.message || data?.error || "Ocorreu um erro ao processar sua solicitação.";
   };
 
   const fetchTournaments = useCallback(
     async (pageNum = 0) => {
       if (!token) return;
-
       setLoading(true);
       setError(null);
-
       try {
         const data = await TournamentService.getOpen({ page: pageNum, size: 5 });
         setTournaments(data?.content ?? []);
         setTotalPages(data?.totalPages ?? 0);
-
-        // importante: a página do estado passa a ser "a fonte de verdade"
         setPage(pageNum);
       } catch (err) {
         console.error("Erro ao carregar torneios:", err);
@@ -61,23 +54,27 @@ export default function OpenTournaments() {
     [token]
   );
 
-  // carrega quando o token chega e quando a página muda
   useEffect(() => {
     if (token) fetchTournaments(page);
   }, [token, page, fetchTournaments]);
 
+  const handleOpenDetails = (tournament) => {
+    setDetailsModal({ open: true, tournament });
+  };
+
+  const handleCloseDetails = () => {
+    setDetailsModal({ open: false, tournament: null });
+  };
+
   const handleSubscribe = async (tournamentId) => {
     try {
       await TournamentService.subscribe(tournamentId);
-
       setModal({
         open: true,
         title: "Inscrição confirmada",
         message: "Você entrou no torneio com sucesso!",
         variant: "success",
       });
-
-      // atualiza a lista na mesma página
       fetchTournaments(page);
     } catch (err) {
       const msg = extractApiError(err);
@@ -97,11 +94,9 @@ export default function OpenTournaments() {
     const start = new Date(startTime);
     const diffMs = start - now;
     if (diffMs <= 0) return "Já começou";
-
     const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
     const hrs = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
     const mins = Math.floor((diffMs / (1000 * 60)) % 60);
-
     return `${days}d ${hrs}h ${mins}m`;
   };
 
@@ -115,13 +110,11 @@ export default function OpenTournaments() {
       <div className="tournaments-grid">
         {tournaments.map((t) => {
           const full = t.currentParticipants >= t.maxParticipants;
-
           const gameKey = String(t.game?.name || "").toLowerCase().trim();
           const gameLogo = GAME_LOGOS[gameKey] || null;
 
           return (
             <div key={t.id} className="tournament-card">
-              {/* ===== Cabeçalho ===== */}
               <div className="card-header">
                 <div className="card-header-info">
                   <h4 className="card-title">{t.name}</h4>
@@ -129,9 +122,10 @@ export default function OpenTournaments() {
                     Criado por: <strong>{t.creator?.name}</strong>
                   </p>
                 </div>
-
                 <div className="card-badges">
-                  <span className="badge-status">{t.status}</span>
+                  <span className="badge-status">
+                    {full ? "Lotado" : "Aberto"}
+                  </span>
                   <img
                     src={t.asPrivate ? LockIcon : PublicIcon}
                     alt={t.asPrivate ? "Privado" : "Público"}
@@ -140,7 +134,6 @@ export default function OpenTournaments() {
                 </div>
               </div>
 
-              {/* ===== Jogo (com logo) ===== */}
               <div className="game-info">
                 <div className="game-row">
                   {gameLogo ? (
@@ -148,46 +141,43 @@ export default function OpenTournaments() {
                       src={gameLogo}
                       className="game-logo"
                       alt={`Logo ${t.game?.name ?? "jogo"}`}
-                      onError={(e) => {
-                        e.currentTarget.style.display = "none";
-                      }}
+                      onError={(e) => { e.currentTarget.style.display = "none"; }}
                     />
                   ) : null}
-
                   <span className="game-name">
                     {t.game?.name?.toUpperCase() || "Jogo não especificado"}
                   </span>
                 </div>
-
                 {t.game?.description && (
                   <p className="game-description">{t.game.description}</p>
                 )}
               </div>
 
-              {/* ===== Descrição ===== */}
               <p className="card-description">{t.description}</p>
 
-              {/* ===== Metadados ===== */}
               <div className="card-meta">
                 <span>Início: {new Date(t.startTime).toLocaleString()}</span>
                 <span>Começa em: {renderCountdown(t.startTime)}</span>
-                <span>
-                  Participantes: {t.currentParticipants}/{t.maxParticipants}
-                </span>
+                <span>Participantes: {t.currentParticipants}/{t.maxParticipants}</span>
               </div>
 
-              {/* ===== Barra de progresso ===== */}
               <div className="progress-bar">
                 <div
                   className="progress-fill"
                   style={{
                     width: `${(t.currentParticipants / t.maxParticipants) * 100}%`,
+                    background: full ? "#ff6b6b" : "#ffb84d",
                   }}
                 />
               </div>
 
-              {/* ===== Ações ===== */}
               <div className="card-actions">
+                <button
+                  className="card-button card-button--secondary"
+                  onClick={() => handleOpenDetails(t)}
+                >
+                  Ver detalhes
+                </button>
                 <button
                   className="card-button"
                   disabled={full || t.status !== "OPEN"}
@@ -205,10 +195,18 @@ export default function OpenTournaments() {
         <p className="empty-message">Não há torneios abertos no momento.</p>
       )}
 
-      {/* Paginação agora no padrão: controla só o page */}
-      <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
+      {!loading && totalPages > 1 && (
+        <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
+      )}
 
-      {/* ===== Modal ===== */}
+      {detailsModal.open && (
+        <TournamentDetailsModal
+          tournament={detailsModal.tournament}
+          onClose={handleCloseDetails}
+          onSubscribe={handleSubscribe}
+        />
+      )}
+
       <AppModal
         open={modal.open}
         onClose={closeModal}
