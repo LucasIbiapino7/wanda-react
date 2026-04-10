@@ -11,6 +11,7 @@ export default function Tournament() {
   const { isAdmin, isInstructor } = useContext(AuthContext);
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
   const [successModal, setSuccessModal] = useState({
     open: false,
     message: "",
@@ -37,14 +38,14 @@ export default function Tournament() {
         gameName,
       });
       setModalOpen(false);
-
+      setRefreshKey((k) => k + 1);
       setSuccessModal({
         open: true,
         message: `O torneio "${name}" foi criado com sucesso! 🎉`,
       });
     } catch (err) {
-      console.log(err)
-      throw err; 
+      console.log(err);
+      throw err;
     }
   };
 
@@ -71,10 +72,9 @@ export default function Tournament() {
         onCreate={handleCreateTournament}
       />
 
-      <OpenTournaments />
+      <OpenTournaments refreshKey={refreshKey} />
       <ParticipatingTournaments />
 
-      {/* Modal de sucesso */}
       <AppModal
         open={successModal.open}
         onClose={handleCloseSuccess}

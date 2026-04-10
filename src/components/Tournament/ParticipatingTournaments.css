@@ -16,12 +16,27 @@
   margin: 20px 0;
 }
 
+/* Grupos */
+.tournament-group {
+  margin-bottom: 2rem;
+}
+
+.group-label {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.75rem;
+}
+
 .tournaments-list {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
+/* Card base */
 .tournament-card {
   background: #1f1f2e;
   padding: 1.2rem;
@@ -30,7 +45,7 @@
   color: #fff;
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
 }
 
 .tournament-card:hover {
@@ -38,9 +53,64 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
+/* Finalizado — borda dourada sutil */
+.tournament-card--finished {
+  background: linear-gradient(135deg, #1f1f2e 80%, #2a2410 100%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(240, 180, 41, 0.15);
+}
+
+/* Cancelado — opacidade reduzida */
+.tournament-card--cancelled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.tournament-card--cancelled:hover {
+  transform: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  opacity: 0.65;
+}
+
+/* Header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
 .card-title {
   font-size: 1.3rem;
+  margin: 0;
+}
+
+.card-title--muted {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.1rem;
+}
+
+.status-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* Vencedor */
+.winner-line {
+  font-size: 0.95rem;
   margin: 0 0 0.75rem;
+  color: #f0b429;
+}
+
+.creator-line {
+  font-size: 0.9rem;
+  margin: 0 0 0.5rem;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .card-description {
@@ -49,6 +119,7 @@
   flex-grow: 1;
 }
 
+/* Meta */
 .tournament-meta {
   font-size: 0.9rem;
   margin-bottom: 1rem;
@@ -63,6 +134,22 @@
   border-radius: 4px;
 }
 
+/* Progresso */
+.progress-bar {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  height: 8px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.progress-fill {
+  background: #ffb84d;
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+/* Ações */
 .tournament-actions {
   text-align: right;
 }
@@ -85,13 +172,26 @@
   transform: translateY(-2px);
 }
 
-.play-button {
-  background-color: #4dac4a;
+.result-button {
+  background: linear-gradient(135deg, #f0b429, #e08c00);
+  color: #1b1b2a;
+  font-weight: 800;
+  box-shadow: 0 2px 8px rgba(240, 180, 41, 0.35);
+}
+
+.result-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(240, 180, 41, 0.5);
+}
+
+.manage-button {
+  background-color: #9c6fde;
   color: #fff;
 }
 
-.play-button:hover {
-  background-color: #409640;
+.manage-button:hover {
+  background-color: #8558c8;
+  transform: translateY(-2px);
 }
 
 .card-button:disabled {
@@ -121,4 +221,40 @@
   width: 28px;
   height: 28px;
   object-fit: contain;
+}
+
+.cancelled-game-name {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 600;
+}
+
+.tournament-card--error {
+  background: linear-gradient(135deg, #1f1f2e 80%, #2a1515 100%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 68, 68, 0.2);
+}
+
+.error-context {
+  background: rgba(255, 68, 68, 0.08);
+  border: 1px solid rgba(255, 68, 68, 0.2);
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-top: 0.5rem;
+}
+
+.error-context-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #ff6b6b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 4px;
+}
+
+.error-context-text {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  line-height: 1.4;
+  word-break: break-word;
 }

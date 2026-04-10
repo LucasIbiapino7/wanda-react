@@ -14,6 +14,7 @@
     "@uiw/codemirror-theme-dracula": "^4.23.7",
     "@uiw/react-codemirror": "^4.23.7",
     "axios": "^1.7.9",
+    "canvas-confetti": "^1.9.4",
     "framer-motion": "^12.0.6",
     "gsap": "^3.12.7",
     "jwt-decode": "^4.0.0",

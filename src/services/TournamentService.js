@@ -28,6 +28,22 @@ const TournamentService = {
     const payload = { tournamentId, password };
     return await api.post("/tournament/subscribe", payload);
   },
+
+  async getParticipants(tournamentId) {
+    const response = await api.get(`/tournament/${tournamentId}/participants`);
+    return response.data;
+  },
+
+  async update(tournamentId, payload) {
+    const response = await api.patch(`/tournament/${tournamentId}`, payload, {
+      headers: { "Content-Type": "application/json" },
+    });
+    return response.data;
+  },
+
+  async cancel(tournamentId) {
+    await api.delete(`/tournament/${tournamentId}`);
+  },
 };
 
 export default TournamentService;
