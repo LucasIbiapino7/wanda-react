@@ -12,6 +12,7 @@ const ABAS = [
   { key: "usuarios", label: "Usuários" },
   { key: "funcoes", label: "Funções" },
   { key: "partidas", label: "Partidas" },
+  { key: "funcoes-usuario", label: "Funções por usuário" },
 ];
 
 function formatDate(raw) {
@@ -124,6 +125,74 @@ function Pagination({ data, onPageChange, loading }) {
   );
 }
 
+function FuncoesUsuario({ showError }) {
+  const [email, setEmail] = useState("");
+  const [funcoes, setFuncoes] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [buscou, setBuscou] = useState(false);
+
+  const handleBuscar = async () => {
+    if (!email.trim()) return;
+    setLoading(true);
+    setBuscou(false);
+    try {
+      const res = await AuditoriaService.findFuncoesPorUsuario(email.trim());
+      setFuncoes(res);
+      setBuscou(true);
+    } catch {
+      showError("Usuário não encontrado ou erro ao buscar funções.");
+      setFuncoes([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") handleBuscar();
+  };
+
+  return (
+    <div className="audit-funcoes-usuario">
+      <div className="audit-funcoes-usuario__search">
+        <input
+          type="email"
+          className="audit-input"
+          placeholder="E-mail do usuário"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <button
+          className="audit-btn-primary"
+          onClick={handleBuscar}
+          disabled={loading || !email.trim()}
+        >
+          {loading ? "Buscando..." : "Buscar"}
+        </button>
+      </div>
+
+      {buscou && funcoes.length === 0 && (
+        <p className="audit-empty">
+          Nenhuma função cadastrada para este usuário.
+        </p>
+      )}
+
+      {funcoes.map((f) => (
+        <div key={f.id} className="audit-funcao-card">
+          <div className="audit-funcao-card__header">
+            <span className="audit-tag audit-tag--jogo">{f.gameName}</span>
+            <code className="audit-funcao-card__nome">{f.functionName}</code>
+            <span className="audit-funcao-card__data">
+              {f.updatedAt ? formatDate(f.updatedAt) : "—"}
+            </span>
+          </div>
+          <pre className="audit-funcao-card__code">{f.code}</pre>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function AuditPage() {
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState(null);
@@ -231,12 +300,15 @@ export default function AuditPage() {
       : abaAtiva === "funcoes"
         ? funcoes
         : partidas;
+
   const activeLoading =
     abaAtiva === "usuarios"
       ? loadingU
       : abaAtiva === "funcoes"
         ? loadingF
         : loadingP;
+
+  const isCustomAba = abaAtiva === "funcoes-usuario";
 
   return (
     <div className="audit-page">
@@ -246,30 +318,33 @@ export default function AuditPage() {
           <p className="audit-page__subtitle">Registros de uso por período</p>
         </div>
 
-        <AuditFilters
-          from={from}
-          to={to}
-          onFromChange={setFrom}
-          onToChange={setTo}
-        />
-
-        <div className="audit-counts">
-          <CountCard
-            label="Usuários cadastrados"
-            value={usuarios.totalElements}
-            loading={loadingU}
-          />
-          <CountCard
-            label="Funções submetidas"
-            value={funcoes.totalElements}
-            loading={loadingF}
-          />
-          <CountCard
-            label="Partidas realizadas"
-            value={partidas.totalElements}
-            loading={loadingP}
-          />
-        </div>
+        {!isCustomAba && (
+          <>
+            <AuditFilters
+              from={from}
+              to={to}
+              onFromChange={setFrom}
+              onToChange={setTo}
+            />
+            <div className="audit-counts">
+              <CountCard
+                label="Usuários cadastrados"
+                value={usuarios.totalElements}
+                loading={loadingU}
+              />
+              <CountCard
+                label="Funções submetidas"
+                value={funcoes.totalElements}
+                loading={loadingF}
+              />
+              <CountCard
+                label="Partidas realizadas"
+                value={partidas.totalElements}
+                loading={loadingP}
+              />
+            </div>
+          </>
+        )}
 
         <div className="audit-tabs">
           {ABAS.map((a) => (
@@ -283,17 +358,22 @@ export default function AuditPage() {
           ))}
         </div>
 
-        <AuditTable
-          columns={ABA_CONFIG[abaAtiva].columns}
-          data={activeData}
-          loading={activeLoading}
-        />
-
-        <Pagination
-          data={activeData}
-          onPageChange={handlePageChange}
-          loading={activeLoading}
-        />
+        {isCustomAba ? (
+          <FuncoesUsuario showError={showError} />
+        ) : (
+          <>
+            <AuditTable
+              columns={ABA_CONFIG[abaAtiva]?.columns ?? []}
+              data={activeData}
+              loading={activeLoading}
+            />
+            <Pagination
+              data={activeData}
+              onPageChange={handlePageChange}
+              loading={activeLoading}
+            />
+          </>
+        )}
 
         <AppModal
           open={modal.open}
@@ -323,4 +403,8 @@ Pagination.propTypes = {
   }).isRequired,
   onPageChange: PropTypes.func.isRequired,
   loading: PropTypes.bool,
+};
+
+FuncoesUsuario.propTypes = {
+  showError: PropTypes.func.isRequired,
 };
