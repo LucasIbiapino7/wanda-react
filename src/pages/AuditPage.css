@@ -7,8 +7,8 @@
   --audit-bg: #fff;
   --audit-bg-table: #fafafa;
   --audit-radius: 12px;
-  --audit-shadow-sm: 0 2px 6px rgba(0,0,0,0.08);
-  --audit-shadow-md: 0 6px 18px rgba(0,0,0,0.10);
+  --audit-shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.08);
+  --audit-shadow-md: 0 6px 18px rgba(0, 0, 0, 0.1);
 }
 
 .audit-page {
@@ -93,7 +93,9 @@
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
   margin-bottom: -1px;
 }
 
@@ -128,7 +130,10 @@
   font-size: 0.88rem;
   font-weight: 700;
   cursor: pointer;
-  transition: background 0.15s, box-shadow 0.15s, transform 0.12s;
+  transition:
+    background 0.15s,
+    box-shadow 0.15s,
+    transform 0.12s;
 }
 
 .audit-btn-outline:hover:not(:disabled) {
@@ -141,4 +146,97 @@
   opacity: 0.4;
   cursor: default;
   transform: none;
+}
+
+.audit-funcoes-usuario__search {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.audit-input {
+  flex: 1;
+  padding: 10px 16px;
+  border: 1px solid var(--audit-border);
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--audit-ink);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.audit-input:focus {
+  border-color: var(--audit-primary);
+}
+
+.audit-btn-primary {
+  padding: 10px 24px;
+  border-radius: 999px;
+  border: none;
+  background: var(--audit-primary);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    opacity 0.15s,
+    transform 0.12s;
+}
+
+.audit-btn-primary:hover:not(:disabled) {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.audit-btn-primary:disabled {
+  opacity: 0.45;
+  cursor: default;
+  transform: none;
+}
+
+.audit-funcao-card {
+  border: 1px solid var(--audit-border);
+  border-radius: 10px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.audit-funcao-card__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--audit-bg-table);
+  border-bottom: 1px solid var(--audit-border);
+}
+
+.audit-funcao-card__nome {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--audit-ink);
+}
+
+.audit-funcao-card__data {
+  margin-left: auto;
+  font-size: 0.82rem;
+  color: var(--audit-muted);
+}
+
+.audit-funcao-card__code {
+  margin: 0;
+  padding: 16px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  background: #fff;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.audit-empty {
+  color: var(--audit-muted);
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 32px 0;
 }
