@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import AuthContext from "../context/AuthContext"
 import ClassroomService from "../services/ClassroomService"
 import ClassroomCard from "../components/Classrooms/ClassroomCard"
+import CreateClassroomModal from "../components/Classrooms/CreateClassroomModal"
+import AppModal from "../components/UI/AppModal"
 import "./ClassroomPage.css"
 
 const STATUS = {
@@ -31,6 +33,25 @@ export default function ClassroomPage(){
     const [totalPages, setTotalPages] = useState(0)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
+
+    // Estados de criação de turma
+    const [createModalOpen, setCreateModalOpen] = useState(false)
+    const [accessCode, setAccessCode] = useState("")
+    const [joining, setJoining] = useState(false)
+
+    const[feedbackModal, setFeedbackModal] = useState({
+        open: false,
+        title: "",
+        message: "",
+        variant: "default"
+    })
+
+    const closeFeedbackModal = () => {
+        setFeedbackModal((current) => ({
+            ...current,
+            open: false
+        }))
+    }
 
     // Busca das turmas
     const fetchClassrooms = useCallback(
@@ -83,6 +104,76 @@ export default function ClassroomPage(){
         navigate(`/classrooms/${classroom.id}`)
     }
 
+    // Criar turma
+    const handleCreateClassroom = async (payload) => {
+        try{
+            await ClassroomService.create(payload)
+
+            setCreateModalOpen(false)
+            setStatus(STATUS.ACTIVE)
+            await fetchClassrooms(0, STATUS.ACTIVE)
+
+            setFeedbackModal({
+                open: true,
+                title: "Turma criada",
+                message: "A turma foi criada com sucesso",
+                variant: "success"
+            })
+        } catch(error){
+            setFeedbackModal({
+                open: true,
+                title: "Erro ao criar turma",
+                message: getApiError(error),
+                variant: "error"
+            })
+
+            throw error
+        }
+    }
+
+    // Entrar na turma
+      const handleJoinClassroom = async (event) => {
+        event.preventDefault();
+
+        const normalizedCode = accessCode.trim().toUpperCase();
+
+        if (!normalizedCode) {
+        setFeedbackModal({
+            open: true,
+            title: "Código obrigatório",
+            message: "Informe o código da turma para continuar.",
+            variant: "error",
+        });
+        return;
+        }
+
+        setJoining(true);
+
+        try {
+        await ClassroomService.joinByAccessCode(normalizedCode);
+
+        setAccessCode("");
+        setStatus(STATUS.ACTIVE);
+        await fetchClassrooms(0, STATUS.ACTIVE);
+
+        setFeedbackModal({
+            open: true,
+            title: "Entrada confirmada",
+            message: "Você entrou na turma com sucesso.",
+            variant: "success",
+        });
+        } catch (err) {
+        setFeedbackModal({
+            open: true,
+            title: "Erro ao entrar na turma",
+            message: getApiError(err),
+            variant: "error",
+        });
+        } finally {
+        setJoining(false);
+        }
+    };
+
     const title = mode === "instructor" ? "Instructor" : "Aluno";
 
     return(
@@ -99,7 +190,11 @@ export default function ClassroomPage(){
                 </div>
 
                 {mode === "instructor" && (
-                <button type="button" className="classrooms-page__primary-button">
+                <button
+                    type="button"
+                    className="classrooms-page__primary-button"
+                    onClick={() => setCreateModalOpen(true)}
+                >
                     Nova Turma
                 </button>
                 )}
@@ -112,14 +207,23 @@ export default function ClassroomPage(){
                     <p>Use o código enviado pelo professor.</p>
                 </div>
 
-                <form className="classrooms-page__join-form">
+                <form
+                    className="classrooms-page__join-form"
+                    onSubmit={handleJoinClassroom}
+                >
                     <input
                     type="text"
                     maxLength={6}
                     placeholder="A3F9K2"
                     aria-label="Código da turma"
+                    value={accessCode}
+                    onChange={(event) => setAccessCode(event.target.value.toUpperCase())}
+                    disabled={joining}
                     />
-                    <button type="submit">Entrar</button>
+
+                    <button type="submit" disabled={joining}>
+                    {joining ? "Entrando..." : "Entrar"}
+                    </button>
                 </form>
                 </section>
             )}
@@ -142,14 +246,14 @@ export default function ClassroomPage(){
                 </button>
             </div>
 
-            {loading && <p className="classrooms-page__message">Carregando turmas...</p>}
+            {loading && (
+                <p className="classrooms-page__message">Carregando turmas...</p>
+            )}
 
             {error && <p className="classrooms-page__error">{error}</p>}
 
             {!loading && !error && classrooms.length === 0 && (
-                <p className="classrooms-page__message">
-                    Nenhuma turma encontrada.
-                </p>
+                <p className="classrooms-page__message">Nenhuma turma encontrada.</p>
             )}
 
             <section className="classrooms-page__grid">
@@ -186,6 +290,27 @@ export default function ClassroomPage(){
                 </button>
                 </div>
             )}
+
+            <CreateClassroomModal
+                open={createModalOpen}
+                onClose={() => setCreateModalOpen(false)}
+                onCreate={handleCreateClassroom}
+            />
+
+            <AppModal
+                open={feedbackModal.open}
+                onClose={closeFeedbackModal}
+                title={feedbackModal.title}
+                variant={feedbackModal.variant}
+                primaryAction={{
+                id: "classroom-feedback-ok",
+                label: "Ok",
+                onClick: closeFeedbackModal,
+                }}
+                initialFocus="classroom-feedback-ok"
+            >
+                <p>{feedbackModal.message}</p>
+            </AppModal>
         </main>
     )
 }

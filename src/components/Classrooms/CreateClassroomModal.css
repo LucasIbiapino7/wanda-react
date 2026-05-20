@@ -1,0 +1,132 @@
+.create-classroom-modal__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.62);
+}
+
+.create-classroom-modal {
+  width: min(680px, 100%);
+  max-height: calc(100vh - 40px);
+  overflow: auto;
+  border-radius: 10px;
+  background: #151118;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+.create-classroom-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.create-classroom-modal__header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.create-classroom-modal__close {
+  border: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  font-size: 1.25rem;
+}
+
+.create-classroom-modal__form {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+}
+
+.create-classroom-modal__form label {
+  display: grid;
+  gap: 6px;
+  font-weight: 800;
+  font-size: 0.88rem;
+}
+
+.create-classroom-modal__form label span {
+  color: #ffcc00;
+}
+
+.create-classroom-modal__form input,
+.create-classroom-modal__form select,
+.create-classroom-modal__form textarea {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  font: inherit;
+}
+
+.create-classroom-modal__form textarea {
+  min-height: 92px;
+  resize: vertical;
+}
+
+.create-classroom-modal__row {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  gap: 12px;
+}
+
+.create-classroom-modal__divider {
+  height: 1px;
+  margin: 4px 0;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.create-classroom-modal__error {
+  color: #ffb4b4;
+  font-weight: 700;
+}
+
+.create-classroom-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 8px;
+}
+
+.create-classroom-modal__actions button {
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.create-classroom-modal__actions button:first-child {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.create-classroom-modal__actions button:last-child {
+  color: #231300;
+  background: #ffcc00;
+}
+
+.create-classroom-modal__actions button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .create-classroom-modal__row {
+    grid-template-columns: 1fr;
+  }
+}
