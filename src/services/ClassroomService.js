@@ -8,8 +8,8 @@ const ClassroomService = {
     },
 
     // Entrar em turma
-    async join(acessCode){
-        const response = await api.post("/classroom/join", {acessCode})
+    async join(accessCode){
+        const response = await api.post("/classroom/join", {accessCode})
         return response.data
     },
 
@@ -34,6 +34,48 @@ const ClassroomService = {
                 size
             }
         })
+        return response.data
+    },
+
+    // Buscar sala específica por ID
+    async findById(classroomId){
+        const response = await api.get(`/classroom/${classroomId}`)
+        return response.data
+    },
+
+    // Atualizar sala
+    async update(classroomId, payload){
+        const response = await api.patch(`/classroom/${classroomId}`, payload)
+        return response.data
+    },
+
+    // Arquivar sala
+    async archive(classroomId){
+        await api.patch(`/classroom/${classroomId}/archive`)
+    },
+
+    // Gerar novo código de acesso pra turma
+    async regenerateAccessCode(classroomId){
+        const response = await api.post(`/classroom/${classroomId}/access-code`)
+        return response.data
+    },
+
+    // Adicionar estudante por email
+    async addStudentByEmail(classroomId, email){
+        await api.post(`/classroom/${classroomId}/students`, { email })
+    },
+
+    // Remover estudante
+    async removeStudent(classroomId, studentId){
+        await api.delete(`/classroom/${classroomId}/students/${studentId}`)
+    },
+
+    // Listar membros
+    async listMembers(classroomId, { page = 0, size = 20} = {}){
+        const response = await api.get(`/classroom/${classroomId}/members`, {
+            params: {page, size}
+        })
+
         return response.data
     }
 }

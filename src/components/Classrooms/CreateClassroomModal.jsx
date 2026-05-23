@@ -1,247 +1,268 @@
 import { useState } from "react"
+import { createPortal } from "react-dom"
 import PropTypes from "prop-types"
 import "./CreateClassroomModal.css"
 
-
 const INITIAL_FORM = {
-  name: "",
-  gameId: "",
-  course: "",
-  description: "",
-  institution: "",
-  city: "",
-  state: "",
-  mural: "",
+   name: "",
+   gameId: "",
+   course: "",
+   description: "",
+   institution: "",
+   city: "",
+   state: ""
 }
 
-// A confirmar com o backend
+// Enquanto a API nao expuser um catalogo de jogos, o front usa esta lista para montar as opcoes.
 const GAME_OPTIONS = [
-  { id: 1, label: "Jokenpô"},
-  { id: 2, label: "BITS"}
+   { id: 1, key: "jokenpo", label: "Jokempô", icon: "✊" },
+   { id: 2, key: "bits", label: "BITS", icon: "⚡" }
 ]
 
 const STATE_OPTIONS = [
-  "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS",
-  "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC",
-  "SP", "SE", "TO",
+   "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS",
+   "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC",
+   "SP", "SE", "TO"
 ]
 
-function validarForm(form){
-  const errors = {}
+function validateForm(form) {
+   const errors = {}
 
-  if (!form.name.trim()){
-    errors.name = "Nome da turma é obrigatório."
-  }
+   if (!form.name.trim()) {
+      errors.name = "Nome da turma é obrigatório."
+   }
 
-  if(!form.gameId){
-    errors.gameId = "Selecione o jogo da turma."
-  }
+   if (!form.gameId) {
+      errors.gameId = "Selecione o jogo da turma."
+   }
 
-  return errors
+   return errors
 }
 
-export default function CreateClassroomModal({ open, onClose, onCreate}){
-  const [form, setForm] = useState(INITIAL_FORM)
-  const [fieldErrors, setFieldErrors] = useState({})
-  const [submitting, setSubmitting] = useState(false)
+export default function CreateClassroomModal({ open, onClose, onCreate }) {
+   const [form, setForm] = useState(INITIAL_FORM)
+   const [fieldErrors, setFieldErrors] = useState({})
+   const [submitting, setSubmitting] = useState(false)
 
-  if (!open){
-    return null
-  }
+   if (!open) {
+      return null
+   }
 
-  // Atualiza campos de input durante uso e erros
-  const handleChange = (e) => {
-    const {name, value} = e.target
+   const handleChange = (event) => {
+      const { name, value } = event.target
 
-    setForm((current) => ({
-      ...current,
-      [name]: value
-    }))
+      setForm((current) => ({
+         ...current,
+         [name]: value
+      }))
 
-    setFieldErrors((current) => ({
-      ...current,
-      [name]: ""
-    }))
-  }
+      setFieldErrors((current) => ({
+         ...current,
+         [name]: ""
+      }))
+   }
 
-  const handleSubmit = async(event) => {
-    event.preventDefault()
+   const handleSelectGame = (gameId) => {
+      setForm((current) => ({
+         ...current,
+         gameId: String(gameId)
+      }))
 
-    const errors = validarForm(form)
+      setFieldErrors((current) => ({
+         ...current,
+         gameId: ""
+      }))
+   }
 
-    if(Object.keys(errors).length > 0){
-      setFieldErrors(errors)
-      return
-    }
+   const handleSubmit = async (event) => {
+      event.preventDefault()
 
-    setSubmitting(true)
+      const errors = validateForm(form)
 
-    try{
-      await onCreate({
-        name: form.name.trim(),
-        gameId: Number(form.gameId),
-        course: form.course.trim() || null,
-        description: form.description.trim() || null,
-        institution: form.institution.trim() || null,
-        city: form.city.trim() || null,
-        state: form.state || null,
-        mural: form.mural.trim() || null,
-      })
+      if (Object.keys(errors).length > 0) {
+         setFieldErrors(errors)
+         return
+      }
 
-      setForm(INITIAL_FORM)
-    } finally{
-      setSubmitting(false)
-    }
-  }
+      setSubmitting(true)
 
-  return (
-    <div className="create-classroom-modal__overlay" onMouseDown={onClose}>
-      <div
-        className="create-classroom-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="create-classroom-title"
-        onMouseDown={(event) => event.stopPropagation()}
-      >
-        <div className="create-classroom-modal__header">
-          <h2 id="create-classroom-title">Nova Turma</h2>
+      try {
+         await onCreate({
+            name: form.name.trim(),
+            gameId: Number(form.gameId),
+            course: form.course.trim() || null,
+            description: form.description.trim() || null,
+            institution: form.institution.trim() || null,
+            city: form.city.trim() || null,
+            state: form.state || null
+         })
 
-          <button
-            type="button"
-            className="create-classroom-modal__close"
-            onClick={onClose}
-            aria-label="Fechar modal"
-          >
-            ×
-          </button>
-        </div>
+         setForm(INITIAL_FORM)
+      } finally {
+         setSubmitting(false)
+      }
+   }
 
-        <form className="create-classroom-modal__form" onSubmit={handleSubmit}>
-          <label>
-            Nome da turma <span>*</span>
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              placeholder="Ex: Turma A - Manhã"
-              maxLength={255}
-            />
-            {fieldErrors.name && (
-              <small className="create-classroom-modal__error">
-                {fieldErrors.name}
-              </small>
-            )}
-          </label>
+   return createPortal(
+      <div className="create-classroom-modal__overlay" onMouseDown={onClose}>
+         <div
+            className="create-classroom-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="create-classroom-title"
+            onMouseDown={(event) => event.stopPropagation()}
+         >
+            <div className="create-classroom-modal__header">
+               <h2 id="create-classroom-title">Nova Turma</h2>
 
-          <label>
-            Jogo <span>*</span>
-            <select name="gameId" value={form.gameId} onChange={handleChange}>
-              <option value="">Selecione o jogo</option>
-              {GAME_OPTIONS.map((game) => (
-                <option key={game.id} value={game.id}>
-                  {game.label}
-                </option>
-              ))}
-            </select>
-            {fieldErrors.gameId && (
-              <small className="create-classroom-modal__error">
-                {fieldErrors.gameId}
-              </small>
-            )}
-          </label>
+               <button
+                  type="button"
+                  className="create-classroom-modal__close"
+                  onClick={onClose}
+                  aria-label="Fechar modal"
+               >
+                  ×
+               </button>
+            </div>
 
-          <label>
-            Curso / Disciplina
-            <input
-              type="text"
-              name="course"
-              value={form.course}
-              onChange={handleChange}
-              placeholder="Ex: Engenharia de Computação"
-              maxLength={100}
-            />
-          </label>
+            <form className="create-classroom-modal__form" onSubmit={handleSubmit}>
+               <label>
+                  Nome da turma <span>*</span>
+                  <input
+                     type="text"
+                     name="name"
+                     value={form.name}
+                     onChange={handleChange}
+                     placeholder="Ex: Turma A - Manhã"
+                     maxLength={255}
+                  />
+                  {fieldErrors.name && (
+                     <small className="create-classroom-modal__error">
+                        {fieldErrors.name}
+                     </small>
+                  )}
+               </label>
 
-          <label>
-            Descrição
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-              placeholder="Descreva o objetivo da turma..."
-              maxLength={1500}
-            />
-          </label>
+               <div className="create-classroom-modal__field">
+                  <span className="create-classroom-modal__label">
+                     Jogo <strong>*</strong>
+                  </span>
 
-          <div className="create-classroom-modal__divider" />
+                  <div className="create-classroom-modal__games">
+                     {GAME_OPTIONS.map((game) => {
+                        const selected = String(form.gameId) === String(game.id)
 
-          <label>
-            Instituição
-            <input
-              type="text"
-              name="institution"
-              value={form.institution}
-              onChange={handleChange}
-              placeholder="Ex: UFMA"
-              maxLength={100}
-            />
-          </label>
+                        return (
+                           <button
+                              key={game.id}
+                              type="button"
+                              className={`create-classroom-modal__game ${
+                                 selected ? "create-classroom-modal__game--selected" : ""
+                              } create-classroom-modal__game--${game.key}`}
+                              onClick={() => handleSelectGame(game.id)}
+                           >
+                              <span aria-hidden="true">{game.icon}</span>
+                              {game.label}
+                           </button>
+                        )
+                     })}
+                  </div>
 
-          <div className="create-classroom-modal__row">
-            <label>
-              Cidade
-              <input
-                type="text"
-                name="city"
-                value={form.city}
-                onChange={handleChange}
-                placeholder="Ex: São Luís"
-                maxLength={50}
-              />
-            </label>
+                  <small className="create-classroom-modal__hint">
+                     O jogo não pode ser alterado depois que a turma for criada.
+                  </small>
 
-            <label>
-              Estado
-              <select name="state" value={form.state} onChange={handleChange}>
-                <option value="">UF</option>
-                {STATE_OPTIONS.map((state) => (
-                  <option key={state} value={state}>
-                    {state}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
+                  {fieldErrors.gameId && (
+                     <small className="create-classroom-modal__error">
+                        {fieldErrors.gameId}
+                     </small>
+                  )}
+               </div>
 
-          <label>
-            Mural
-            <textarea
-              name="mural"
-              value={form.mural}
-              onChange={handleChange}
-              placeholder="Mensagem inicial para os alunos..."
-              maxLength={1500}
-            />
-          </label>
+               <label>
+                  Curso / Disciplina
+                  <input
+                     type="text"
+                     name="course"
+                     value={form.course}
+                     onChange={handleChange}
+                     placeholder="Ex: Engenharia de Computação"
+                     maxLength={100}
+                  />
+               </label>
 
-          <div className="create-classroom-modal__actions">
-            <button type="button" onClick={onClose} disabled={submitting}>
-              Cancelar
-            </button>
+               <label>
+                  Descrição
+                  <textarea
+                     name="description"
+                     value={form.description}
+                     onChange={handleChange}
+                     placeholder="Descreva o objetivo da turma..."
+                     maxLength={1500}
+                  />
+               </label>
 
-            <button type="submit" disabled={submitting}>
-              {submitting ? "Criando..." : "Criar Turma"}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  )
+               <div className="create-classroom-modal__divider" />
+               <span className="create-classroom-modal__section-label">
+                  Dados institucionais
+               </span>
+
+               <label>
+                  Instituição
+                  <input
+                     type="text"
+                     name="institution"
+                     value={form.institution}
+                     onChange={handleChange}
+                     placeholder="Ex: UFMA"
+                     maxLength={100}
+                  />
+               </label>
+
+               <div className="create-classroom-modal__row">
+                  <label>
+                     Cidade
+                     <input
+                        type="text"
+                        name="city"
+                        value={form.city}
+                        onChange={handleChange}
+                        placeholder="Ex: São Luís"
+                        maxLength={50}
+                     />
+                  </label>
+
+                  <label>
+                     Estado
+                     <select name="state" value={form.state} onChange={handleChange}>
+                        <option value="">UF</option>
+                        {STATE_OPTIONS.map((state) => (
+                           <option key={state} value={state}>
+                              {state}
+                           </option>
+                        ))}
+                     </select>
+                  </label>
+               </div>
+
+               <div className="create-classroom-modal__actions">
+                  <button type="button" onClick={onClose} disabled={submitting}>
+                     Cancelar
+                  </button>
+
+                  <button type="submit" disabled={submitting}>
+                     {submitting ? "Criando..." : "Criar Turma"}
+                  </button>
+               </div>
+            </form>
+         </div>
+      </div>,
+      document.body
+   )
 }
 
 CreateClassroomModal.propTypes = {
-  open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  onCreate: PropTypes.func.isRequired,
+   open: PropTypes.bool.isRequired,
+   onClose: PropTypes.func.isRequired,
+   onCreate: PropTypes.func.isRequired
 }
