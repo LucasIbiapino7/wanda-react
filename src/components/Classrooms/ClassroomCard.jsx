@@ -2,17 +2,10 @@ import { useState } from "react"
 import PropTypes from "prop-types"
 import "./ClassroomCard.css"
 
-// Lista temporaria ate a API expor um catalogo de jogos.
+// Editar se for adicionar mais jogos
 const GAME_LABELS = {
-   jokenpo: "Jokempô",
-   jokempo: "Jokempô",
+   jokenpo: "Jokenpô",
    bits: "BITS"
-}
-
-const GAME_ICONS = {
-   jokenpo: "✊",
-   jokempo: "✊",
-   bits: "⚡"
 }
 
 function normalizeGameKey(gameName) {
@@ -43,11 +36,6 @@ function formatLocation(classroom) {
 function getGameLabel(gameName) {
    const gameKey = normalizeGameKey(gameName)
    return GAME_LABELS[gameKey] || gameName || "Jogo não informado"
-}
-
-function getGameIcon(gameName) {
-   const gameKey = normalizeGameKey(gameName)
-   return GAME_ICONS[gameKey] || "🎮"
 }
 
 function getMembersCount(classroom) {
@@ -113,14 +101,13 @@ export default function ClassroomCard({ classroom, mode, onOpen }) {
     }
   }
 
-  return (
-    <article    
-      className={`classroom-card ${isArchived ? "classroom-card--archived" : ""}`}
-      tabIndex={0}
-      role="button"
-      onClick={openCard}
-    >
-    <div className={`classroom-card__accent classroom-card__accent--${gameKey}`} />
+   return (
+      <article    
+         className={`classroom-card ${isArchived ? "classroom-card--archived" : ""}`}
+         tabIndex={0}
+         onClick={openCard}
+      >
+         <div className={`classroom-card__accent classroom-card__accent--${gameKey}`} />
 
          <div className="classroom-card__body">
             <div className="classroom-card__header">
@@ -157,14 +144,13 @@ export default function ClassroomCard({ classroom, mode, onOpen }) {
                <div className="classroom-card__meta-row">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                   <span className={`classroom-card__game classroom-card__game--${gameKey}`}>
-                     <span aria-hidden="true">{getGameIcon(classroom.gameName)}</span>
                      {getGameLabel(classroom.gameName)}
                   </span>
                </div>
 
                {mode === "student" && classroom.instructorName && (
                   <div className="classroom-card__meta-row">
-                     <span aria-hidden="true">↳</span>
+                     <span aria-hidden="true"></span>
                      <span>Prof. {classroom.instructorName}</span>
                   </div>
                )}

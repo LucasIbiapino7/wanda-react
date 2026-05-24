@@ -166,25 +166,27 @@ export default function ClassroomPage() {
    const showInitialLoading = loading && classrooms.length === 0
    const showEmptyState = !loading && !error && classrooms.length === 0
 
-    return (
-        <main className="classrooms-page">
-            <div className="classrooms-page__header">
-                <div className="classrooms-page__title-group">
-                    <span className="classrooms-page__eyebrow">{title}</span>
-                    <h1>Minhas Turmas</h1>
-                    <p>{subtitle}</p>
-                </div>
-
-                {mode === "instructor" && (
-                    <button
-                        type="button"
-                        className="classrooms-page__primary-button"
-                        onClick={() => setCreateModalOpen(true)}
-                    >
-                        <span>+ Nova Turma</span>     
-                    </button>
-                )}
+   return (
+      <main className="classrooms-page">
+         <div className="classrooms-page__header">
+            <div className="classrooms-page__title-group">
+               <span className="classrooms-page__eyebrow">
+                  {title}
+               </span>
+               <h1>Minhas Turmas</h1>
+               <p>{subtitle}</p>
             </div>
+
+            {mode === "instructor" && (
+               <button
+                  type="button"
+                  className="classrooms-page__primary-button"
+                  onClick={() => setCreateModalOpen(true)}
+               >
+                  <span>+ Nova Turma</span>     
+               </button>
+            )}
+         </div>
 
          {mode === "student" && (
             <section className="classrooms-page__join-card">

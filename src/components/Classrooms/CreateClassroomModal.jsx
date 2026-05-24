@@ -13,10 +13,9 @@ const INITIAL_FORM = {
    state: ""
 }
 
-// Enquanto a API nao expuser um catalogo de jogos, o front usa esta lista para montar as opcoes.
 const GAME_OPTIONS = [
-   { id: 1, key: "jokenpo", label: "Jokempô", icon: "✊" },
-   { id: 2, key: "bits", label: "BITS", icon: "⚡" }
+   { id: 1, key: "jokenpo", label: "Jokempô"},
+   { id: 2, key: "bits", label: "BITS"}
 ]
 
 const STATE_OPTIONS = [
@@ -103,15 +102,14 @@ export default function CreateClassroomModal({ open, onClose, onCreate }) {
       }
    }
 
+   // Precisa do CreatePortal pra não aparecer o Header
+   // CreatePortal mexe diretamente no body
+   // Não é a forma ideal mas resolve
+   // Isso acontece pq o componente Header é chamado no App.jsx e
+   // aparece em todas as páginas
    return createPortal(
-      <div className="create-classroom-modal__overlay" onMouseDown={onClose}>
-         <div
-            className="create-classroom-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="create-classroom-title"
-            onMouseDown={(event) => event.stopPropagation()}
-         >
+      <div className="create-classroom-modal__overlay" >
+         <div className="create-classroom-modal">
             <div className="create-classroom-modal__header">
                <h2 id="create-classroom-title">Nova Turma</h2>
 
@@ -121,13 +119,18 @@ export default function CreateClassroomModal({ open, onClose, onCreate }) {
                   onClick={onClose}
                   aria-label="Fechar modal"
                >
-                  ×
+                  x
                </button>
             </div>
 
             <form className="create-classroom-modal__form" onSubmit={handleSubmit}>
                <label>
-                  Nome da turma <span>*</span>
+
+                  <div className="create-classroom-modal__field">
+                     <span className="create-classroom-modal__label">
+                        Nome da turma <strong>*</strong>
+                     </span>
+                  </div>
                   <input
                      type="text"
                      name="name"

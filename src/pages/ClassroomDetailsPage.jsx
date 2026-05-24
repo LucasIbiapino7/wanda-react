@@ -24,7 +24,6 @@ const GAME_LABELS = {
     bits: "BITS"
 }
 
-// Retorna nome do jogo
 // Editar aqui após implementação de escalabilidade
 function getGameLabel(gameName){
     const pos = String(gameName || "").toLocaleLowerCase()
@@ -383,6 +382,7 @@ export default function ClassroomDetailsPage() {
     // Copiar acess code
     const copyAccessCode = async () => {
         try {
+            // Copia código de acesso pra área de transferência
             await navigator.clipboard.writeText(classroom.accessCode)
             showModal({
                 title: "Código copiado",
@@ -430,14 +430,18 @@ export default function ClassroomDetailsPage() {
     return (
         <main className="classroom-details-page">
             <nav className="classroom-details-breadcrumb" aria-label="Navegação da turma">
-               <button
-                  type="button"
-                  onClick={() => navigate("/classrooms")}
-               >
-                  Turmas
-               </button>
-               <span className="classroom-details-breadcrumb__sep">›</span>
-               <span className="classroom-details-breadcrumb__current">{classroom.name}</span>
+                <button
+                    type="button"
+                    onClick={() => navigate("/classrooms")}
+                >
+                    Turmas
+                </button>
+                <span className="classroom-details-breadcrumb__sep">
+                    {">"}
+                </span>
+                <span className="classroom-details-breadcrumb__current">
+                    {classroom.name}
+                </span>
             </nav>
 
             <section className="classroom-details-hero">
@@ -470,49 +474,59 @@ export default function ClassroomDetailsPage() {
                         </p>
 
                         <div className="classroom-details-hero__info-row">
-                           <span>👥 {members.length} alunos</span>
-                           <span>
-                              🏠 {classroom.institution || "Instituição não informada"}
-                              {classroom.city ? ` · ${classroom.city}` : ""}
-                              {classroom.state ? `, ${classroom.state}` : ""}
-                           </span>
-                           <span>▣ Criada em {formatDate(classroom.createdAt)}</span>
-                           {classroom.instructorName && (
-                              <span>Prof. {classroom.instructorName}</span>
+                            <span>              
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                {members.length} aluno{members.length === 1 ? "" : "s"}
+                            </span>
+                            <span>
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                                {classroom.institution || "Instituição não informada"}
+                                {classroom.city ? ` · ${classroom.city}` : ""}
+                                {classroom.state ? `, ${classroom.state}` : ""}
+                            </span>
+                            <span>
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                Criada em {formatDate(classroom.createdAt)}
+                            </span>
+                            {classroom.instructorName && (
+                                <span>
+                                    Prof. {classroom.instructorName}
+                                </span>
                            )}
                         </div>
 
                         {canManage && (
-                           <div className="classroom-details-hero__actions">
-                              <button type="button" className="classroom-details-hero__dashboard">
-                                 <span >▦ Ver Dashboard</span>
-                              </button>
+                            <div className="classroom-details-hero__actions">
+                                <button type="button" className="classroom-details-hero__dashboard">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                    Ver Dashboard
+                                </button>
 
-                              <button
-                                 type="button"
-                                 className="classroom-details-hero__edit"
-                                 onClick={() => setEditing((current) => !current)}
-                                 disabled={isArchived}
-                              >
-                                 <span aria-hidden="true">↗</span>
-                                 {editing ? "Cancelar edição" : "Editar"}
-                              </button>
+                                <button
+                                    type="button"
+                                    className="classroom-details-hero__edit"
+                                    onClick={() => setEditing((current) => !current)}
+                                    disabled={isArchived}
+                                >
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                    {editing ? "Cancelar edição" : "Editar"}
+                                </button>
 
-                              <button
-                                 type="button"
-                                 className="classroom-details-hero__archive"
-                                 onClick={handleArchive}
-                                 disabled={archiving || isArchived}
-                              >
-                                 <span aria-hidden="true">▱</span>
-                                 {archiving ? "Arquivando..." : "Arquivar"}
-                              </button>
-                           </div>
+                                <button
+                                    type="button"
+                                    className="classroom-details-hero__archive"
+                                    onClick={handleArchive}
+                                    disabled={archiving || isArchived}
+                                >
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                    {archiving ? "Arquivando..." : "Arquivar"}
+                                </button>
+                            </div>
                         )}
 
                         <p className="classroom-details-hero__meta">
                             Criada em {formatDate(classroom.createdAt)}
-                            {classroom.instructorName ? ` · Prof. ${classroom.instructorName}` : ""}
+                            {classroom.instructorName ? `Prof. ${classroom.instructorName}` : ""}
                         </p>
                     </div>
 
@@ -523,7 +537,8 @@ export default function ClassroomDetailsPage() {
 
                             <div className="classroom-details-hero__code-actions">
                                 <button type="button" onClick={copyAccessCode}>
-                                    ▣ Copiar
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    {" "}Copiar
                                 </button>
 
                                 <button
@@ -683,26 +698,29 @@ export default function ClassroomDetailsPage() {
                     </div>
 
                     {canManage && !isArchived && (
-                       <aside className="add-member-card">
-                          <span className="add-member-title">Adicionar Aluno</span>
-                          <form className="classroom-add-student" onSubmit={handleAddStudent}>
-                             <label className="form-label">Email</label>
-                             <input
-                                 className="form-input"
-                                 type="email"
-                                 placeholder="email@discente.ufma.br"
-                                 value={studentEmail}
-                                 onChange={(event) => setStudentEmail(event.target.value)}
-                                 disabled={addingStudent}
-                             />
-                             <span className="form-hint">O aluno precisa ter uma conta no Wanda.</span>
-                             <button className="btn-add" type="submit" disabled={addingStudent}>
-                                 {addingStudent ? "Adicionando..." : "Adicionar"}
-                             </button>
-                          </form>
-                          <div className="add-member-divider"></div>
-                        <p className="add-member-hint">Você também pode compartilhar o código de acesso e deixar os alunos entrarem por conta própria.</p>
-                       </aside>
+                        <aside className="add-member-card">
+                            <span className="add-member-title">Adicionar Aluno</span>
+                            <form className="classroom-add-student" onSubmit={handleAddStudent}>
+                                <label htmlFor="student-email" className="form-label">
+                                    Email
+                                </label>
+                                <input
+                                    id="student-email"
+                                    className="form-input"
+                                    type="email"
+                                    placeholder="email@discente.ufma.br"
+                                    value={studentEmail}
+                                    onChange={(event) => setStudentEmail(event.target.value)}
+                                    disabled={addingStudent}
+                                />
+                                <span className="form-hint">O aluno precisa ter uma conta no Wanda.</span>
+                                <button className="btn-add" type="submit" disabled={addingStudent}>
+                                    {addingStudent ? "Adicionando..." : "Adicionar"}
+                                </button>
+                            </form>
+                            <div className="add-member-divider"/>
+                            <p className="add-member-hint">Você também pode compartilhar o código de acesso e deixar os alunos entrarem por conta própria.</p>
+                        </aside>
                     )}
 
                     {membersLoading ? (

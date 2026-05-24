@@ -230,6 +230,11 @@
    font-weight: 700;
 }
 
+.classroom-details-hero__info-row span{
+   display: flex;
+   gap: 6px;
+}
+
 .classroom-details-hero__code {
    display: flex;
    flex-direction: column;
@@ -311,7 +316,7 @@
    display: inline-flex;
    align-items: center;
    gap: 8px;
-   padding: 1.2rem 1.8rem;
+   padding: 16px 22px;
    border-radius: 999px;
    color: #2b2b44;
    background: linear-gradient(135deg, var(--details-yellow-2), var(--details-orange));
@@ -327,7 +332,7 @@
    color: rgba(255, 255, 255, 0.7) !important;
    background: transparent !important;
    box-shadow: none !important;
-   font-size: 0.88rem !important;
+   font-size: 18px !important;
    font-weight: 600 !important;
 }
 
@@ -336,7 +341,7 @@
    color: rgba(239, 83, 80, 0.8) !important;
    background: transparent !important;
    box-shadow: none !important;
-   font-size: 0.85rem !important;
+   font-size: 18px !important;
    font-weight: 700 !important;
 }
 
