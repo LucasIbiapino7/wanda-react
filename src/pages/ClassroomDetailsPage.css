@@ -1,0 +1,813 @@
+.classroom-details-page {
+   --details-yellow: #ffcc00;
+   --details-yellow-2: #ffb84d;
+   --details-orange: #ff9933;
+   --details-blue: #4fc3f7;
+   --details-green: #7dde7a;
+   --details-red: #ef5350;
+   --details-card-bg: rgba(18, 22, 40, 0.92);
+   --details-border: rgba(255, 255, 255, 0.16);
+   --details-muted: rgba(255, 255, 255, 0.62);
+   width: 90%;
+   margin: 0 auto;
+   padding: 100px 24px 64px;
+   color: #fff;
+   font-family: var(--font-main, "Nunito", sans-serif);
+}
+
+.classroom-details-page__back {
+   display: inline-flex;
+   align-items: center;
+   gap: 8px;
+   border: none;
+   margin-bottom: 26px;
+   padding: 0;
+   color: rgba(17, 17, 17, 0.92);
+   background: transparent;
+   font: inherit;
+   font-size: 1.12rem;
+   font-weight: 900;
+   cursor: pointer;
+}
+
+.classroom-details-page__back::after {
+   content: "›";
+   color: rgba(255, 255, 255, 0.48);
+   font-size: 1.25rem;
+}
+
+.classroom-details-page__back:hover {
+   color: var(--details-yellow);
+}
+
+.classroom-details-breadcrumb {
+   display: inline-flex;
+   align-items: center;
+   gap: 8px;
+   margin-bottom: 26px;
+   font-family: var(--font-display, "Montserrat", sans-serif);
+   font-size: 1.2rem;
+   font-weight: 800;
+   color: rgba(17, 17, 17, 0.92);
+}
+
+.classroom-details-breadcrumb button {
+   border: none;
+   padding: 0;
+   color: inherit;
+   background: transparent;
+   font: inherit;
+   cursor: pointer;
+}
+
+.classroom-details-breadcrumb button:hover {
+   color: var(--details-yellow);
+}
+
+.classroom-details-breadcrumb__sep {
+   color: rgba(255, 255, 255, 0.48);
+   font-weight: 900;
+}
+
+.classroom-details-breadcrumb__current {
+   color: rgba(255, 255, 255, 0.9);
+   font-weight: 700;
+}
+
+.classroom-details-page__error,
+.classroom-details-error-panel {
+   border: 1px solid rgba(239, 83, 80, 0.42);
+   border-radius: 16px;
+   padding: 22px;
+   color: #ffd1d1;
+   background: rgba(40, 10, 20, 0.52);
+   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+}
+
+.classroom-details-error-panel p {
+   margin: 0 0 16px;
+   color: #fff;
+   font-weight: 900;
+}
+
+.classroom-details-error-panel__button {
+   border: none;
+   border-radius: 999px;
+   padding: 11px 18px;
+   color: #2b2b44;
+   background: linear-gradient(135deg, var(--details-yellow-2), var(--details-orange));
+   font: inherit;
+   font-weight: 900;
+   cursor: pointer;
+   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
+.classroom-details-hero {
+   overflow: hidden;
+   margin-bottom: 28px;
+   border: 1px solid var(--details-border);
+   border-radius: 16px;
+   background: var(--details-card-bg);
+   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.75);
+   animation: classroom-details-enter 0.28s ease both;
+}
+
+.classroom-details-hero__accent {
+   height: 5px;
+   background: linear-gradient(90deg, #ff6b6b, var(--details-orange));
+}
+
+.classroom-details-hero__accent--bits {
+   background: linear-gradient(90deg, var(--details-blue), #7c4dff);
+}
+
+.classroom-details-hero__accent--jokenpo,
+.classroom-details-hero__accent--jokempo {
+   background: linear-gradient(90deg, #ff6b6b, var(--details-orange));
+}
+
+.classroom-details-hero__content {
+   display: flex;
+   align-items: flex-start;
+   justify-content: space-between;
+   gap: 24px;
+   padding: 24px 28px 28px;
+   flex-wrap: wrap;
+}
+
+.classroom-details-hero__main {
+   display: flex;
+   flex: 1;
+   flex-direction: column;
+   gap: 8px;
+   min-width: 260px;
+}
+
+.classroom-details-hero__badges {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 10px;
+   margin-bottom: 4px;
+}
+
+.status-badge,
+.game-badge {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   border-radius: 999px;
+   padding: 4px 11px;
+   font-size: 0.72rem;
+   font-weight: 800;
+   letter-spacing: 0.08em;
+   text-transform: uppercase;
+   white-space: nowrap;
+}
+
+.status-badge.active {
+   color: var(--details-green);
+   border: 1px solid rgba(77, 172, 74, 0.4);
+   background: rgba(77, 172, 74, 0.18);
+}
+
+.status-badge.active::before {
+   content: "";
+   width: 6px;
+   height: 6px;
+   border-radius: 50%;
+   background: currentColor;
+}
+
+.status-badge.archived {
+   color: rgba(255, 255, 255, 0.48);
+   border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.game-badge {
+   color: #ff9b9b;
+   border: 1px solid rgba(255, 107, 107, 0.38);
+}
+
+.game-badge--bits {
+   color: #81d4fa;
+   border-color: rgba(79, 195, 247, 0.38);
+}
+
+.game-badge--jokenpo,
+.game-badge--jokempo {
+   color: #ff9b9b;
+}
+
+.classroom-details-hero h1 {
+   margin: 0;
+   color: var(--details-yellow);
+   font-family: var(--font-display, "Montserrat", sans-serif);
+   font-size: 2rem;
+   font-weight: 800;
+   line-height: 1.2;
+   display: flex;
+}
+
+.classroom-details-hero__course {
+   margin: 0;
+   color: rgba(255, 204, 0, 0.65);
+   font-size: 0.88rem;
+   font-weight: 600;
+}
+
+.classroom-details-hero__meta {
+   display: none;
+   margin: 0;
+}
+
+.classroom-details-hero__info-row {
+   display: flex;
+   align-items: center;
+   flex-wrap: wrap;
+   gap: 16px;
+   color: var(--details-muted);
+   font-size: 0.82rem;
+   font-weight: 700;
+}
+
+.classroom-details-hero__info-row span{
+   display: flex;
+   gap: 6px;
+}
+
+.classroom-details-hero__code {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 6px;
+   min-width: 160px;
+   border: 1px solid rgba(255, 204, 0, 0.22);
+   border-radius: 10px;
+   padding: 12px 16px;
+   background: rgba(0, 0, 0, 0.38);
+}
+
+.classroom-details-hero__code span {
+   color: rgba(255, 204, 0, 0.68);
+   font-size: 0.7rem;
+   font-weight: 800;
+   letter-spacing: 0.16em;
+   text-transform: uppercase;
+}
+
+.classroom-details-hero__code strong {
+   color: var(--details-yellow);
+   font-family: "Courier New", monospace;
+   font-size: 1.5rem;
+   font-weight: 700;
+   letter-spacing: 0.2em;
+}
+
+.classroom-details-hero__code-actions {
+   display: flex;
+   gap: 7px;
+   width: 100%;
+}
+
+.classroom-details-hero__code-actions button,
+.classroom-details-hero__actions button,
+.classroom-edit-form button,
+.classroom-add-student button,
+.classroom-members-pagination button {
+   border-radius: 999px;
+   font: inherit;
+   font-weight: 900;
+   cursor: pointer;
+   transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.classroom-details-hero__code-actions button {
+   flex: 1;
+   border: 1px solid rgba(255, 204, 0, 0.3);
+   padding: 5px 10px;
+   color: rgba(255, 204, 0, 0.88);
+   background: transparent;
+   font-size: 0.75rem;
+}
+
+.classroom-details-hero__code-actions button:hover {
+   color: var(--details-yellow);
+   border-color: rgba(255, 204, 0, 0.5);
+   background: rgba(255, 204, 0, 0.12);
+}
+
+.classroom-details-hero__actions {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 8px;
+   margin-top: 10px;
+   padding: 0;
+}
+
+.classroom-details-hero > .classroom-details-hero__actions {
+   display: none;
+}
+
+.classroom-details-hero__dashboard,
+.classroom-details-hero__actions button,
+.classroom-edit-form button,
+.classroom-add-student button {
+   border: none;
+   display: inline-flex;
+   align-items: center;
+   gap: 8px;
+   padding: 16px 22px;
+   border-radius: 999px;
+   color: #2b2b44;
+   background: linear-gradient(135deg, var(--details-yellow-2), var(--details-orange));
+   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+   font-family: var(--font-main, "Nunito", sans-serif);
+   font-size: 1.2rem;
+   font-weight: 900;
+   white-space: nowrap;
+}
+
+.classroom-details-hero__edit {
+   border: 1px solid rgba(255, 255, 255, 0.2) !important;
+   color: rgba(255, 255, 255, 0.7) !important;
+   background: transparent !important;
+   box-shadow: none !important;
+   font-size: 18px !important;
+   font-weight: 600 !important;
+}
+
+.classroom-details-hero__archive {
+   border: 1px solid rgba(239, 83, 80, 0.3) !important;
+   color: rgba(239, 83, 80, 0.8) !important;
+   background: transparent !important;
+   box-shadow: none !important;
+   font-size: 18px !important;
+   font-weight: 700 !important;
+}
+
+.classroom-details-hero__actions button:hover,
+.classroom-edit-form button:hover,
+.classroom-add-student button:hover {
+   transform: translateY(-1px);
+}
+
+.classroom-details-page button:disabled {
+   opacity: 0.58;
+   cursor: not-allowed;
+   transform: none;
+}
+
+.classroom-details-tabs {
+   display: flex;
+   gap: 4px;
+   margin: 28px 0;
+   border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.classroom-details-tabs button {
+   border: none;
+   border-bottom: 2px solid transparent;
+   margin-bottom: -1px;
+   padding: 0.65rem 1.2rem 0.78rem;
+   color: rgba(17, 17, 17, 0.92);
+   background: transparent;
+   font-family: var(--font-main, "Nunito", sans-serif);
+   font-size: 1.2rem;
+   font-weight: 700;
+   cursor: pointer;
+}
+
+.classroom-details-tabs button:hover,
+.classroom-details-tabs button.active {
+   color: var(--details-yellow);
+}
+
+.classroom-details-tabs button.active {
+   border-bottom-color: var(--details-yellow);
+}
+
+.classroom-details-card {
+   border: 1px solid var(--details-border);
+   border-radius: 16px;
+   padding: 22px 24px;
+   background: var(--details-card-bg);
+   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
+   animation: classroom-details-enter 0.28s ease both;
+}
+
+.classroom-details-card h2 {
+   margin: 0 0 16px;
+   color: rgba(255, 255, 255, 0.88);
+   font-family: var(--font-main, "Nunito", sans-serif);
+   font-size: 0.94rem;
+   font-weight: 900;
+   letter-spacing: 0.12em;
+   text-transform: uppercase;
+}
+
+.classroom-mural-text,
+.classroom-empty-text {
+   margin: 0;
+   color: rgba(255, 255, 255, 0.84);
+   font-family: var(--font-main, "Nunito", sans-serif);
+   font-size: 0.92rem;
+   font-weight: 600;
+   line-height: 1.7;
+   white-space: pre-wrap;
+}
+
+.classroom-empty-text {
+   color: var(--details-muted);
+   font-style: italic;
+}
+
+.classroom-edit-form {
+   display: grid;
+   gap: 15px;
+}
+
+.classroom-edit-form label {
+   display: grid;
+   gap: 7px;
+   color: rgba(255, 255, 255, 0.9);
+   font-size: 0.88rem;
+   font-weight: 900;
+}
+
+.classroom-edit-form input,
+.classroom-edit-form textarea,
+.classroom-add-student input {
+   width: 100%;
+   border: 1px solid var(--details-border);
+   border-radius: 10px;
+   padding: 11px 13px;
+   color: #fff;
+   background: rgba(0, 0, 0, 0.34);
+   font: inherit;
+   font-weight: 700;
+   outline: none;
+   transition: border-color 0.16s ease, background 0.16s ease;
+}
+
+.classroom-edit-form input:focus,
+.classroom-edit-form textarea:focus,
+.classroom-add-student input:focus {
+   border-color: rgba(255, 204, 0, 0.48);
+   background: rgba(0, 0, 0, 0.48);
+}
+
+.classroom-edit-form textarea {
+   min-height: 104px;
+   resize: vertical;
+}
+
+.classroom-edit-form__row {
+   display: grid;
+   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 100px;
+   gap: 12px;
+}
+
+.classroom-edit-form button,
+.classroom-add-student button {
+   justify-self: flex-start;
+}
+
+.classroom-members-header {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 16px;
+   margin-bottom: 18px;
+}
+
+.classroom-details-card:has(.add-member-card) {
+   display: grid;
+   grid-template-columns: minmax(0, 1fr) 340px;
+   gap: 24px;
+   align-items: start;
+   border: none;
+   padding: 0;
+   background: transparent;
+   box-shadow: none;
+}
+
+.classroom-details-card:has(.add-member-card) .classroom-members-header {
+   grid-column: 1;
+   margin: 0;
+   border: 1px solid var(--details-border);
+   border-bottom: none;
+   border-radius: 16px 16px 0 0;
+   padding: 20px 24px;
+   background: rgba(18, 22, 40, 0.92);
+}
+
+.classroom-details-card:has(.add-member-card) .classroom-members-table-wrapper,
+.classroom-details-card:has(.add-member-card) > .classroom-empty-text {
+   grid-column: 1;
+}
+
+.classroom-details-card:has(.add-member-card) .classroom-members-table-wrapper {
+   border-radius: 0 0 16px 16px;
+   border-top: none;
+   background: rgba(18, 22, 40, 0.92);
+}
+
+.classroom-details-card:has(.add-member-card) .classroom-members-pagination {
+   grid-column: 1;
+}
+
+.classroom-members-header p {
+   margin: 5px 0 0;
+   color: var(--details-muted);
+   font-size: 0.86rem;
+}
+
+.add-member-card {
+   grid-column: 2;
+   grid-row: 1 / span 4;
+   border: 1px solid var(--details-border);
+   border-radius: 16px;
+   padding: 24px;
+   background: rgba(27, 26, 48, 0.94);
+   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
+}
+
+.add-member-title {
+   display: block;
+   margin-bottom: 18px;
+   color: rgba(255, 255, 255, 0.86);
+   font-family: var(--font-main, "Nunito", sans-serif);
+   font-size: 1rem;
+   font-weight: 900;
+   letter-spacing: 0.18em;
+   text-transform: uppercase;
+}
+
+.classroom-add-student {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   margin-bottom: 18px;
+}
+
+.add-member-card .classroom-add-student {
+   display: grid;
+   align-items: stretch;
+   gap: 10px;
+   margin: 0;
+}
+
+.add-member-card .form-label {
+   color: rgba(255, 255, 255, 0.72);
+   font-size: 0.86rem;
+   font-weight: 900;
+   letter-spacing: 0.12em;
+   text-transform: uppercase;
+}
+
+.add-member-card .form-hint,
+.add-member-hint {
+   color: var(--details-muted);
+   font-size: 0.86rem;
+   font-weight: 700;
+   line-height: 1.55;
+}
+
+.classroom-add-student input {
+   max-width: 360px;
+}
+
+.add-member-card .classroom-add-student input {
+   max-width: none;
+   border-radius: 10px;
+   padding: 14px 16px;
+   background: rgba(0, 0, 0, 0.42);
+}
+
+.add-member-card .btn-add {
+   width: 100%;
+   justify-content: center;
+   margin-top: 10px;
+   border: none;
+   border-radius: 10px;
+   padding: 13px 18px;
+   color: #2b2b44;
+   background: linear-gradient(135deg, var(--details-yellow-2), var(--details-orange));
+   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+   font-family: var(--font-main, "Nunito", sans-serif);
+   font-size: 0.92rem;
+   font-weight: 900;
+   cursor: pointer;
+}
+
+.add-member-divider {
+   height: 1px;
+   margin: 18px 0;
+   background: rgba(255, 255, 255, 0.1);
+}
+
+.classroom-members-table-wrapper {
+   overflow-x: auto;
+   border: 1px solid rgba(255, 255, 255, 0.1);
+   border-radius: 12px;
+   background: rgba(0, 0, 0, 0.18);
+}
+
+.classroom-members-table {
+   width: 100%;
+   border-collapse: collapse;
+   min-width: 680px;
+}
+
+.classroom-members-table th,
+.classroom-members-table td {
+   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+   padding: 14px 16px;
+   text-align: left;
+}
+
+.classroom-members-table th {
+   color: var(--details-muted);
+   font-size: 0.78rem;
+   font-weight: 900;
+   letter-spacing: 0.08em;
+   text-transform: uppercase;
+}
+
+.classroom-members-table td {
+   color: rgba(255, 255, 255, 0.84);
+   font-size: 0.9rem;
+}
+
+.classroom-members-table tr:last-child td {
+   border-bottom: none;
+}
+
+.classroom-member-cell {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+}
+
+.classroom-member-avatar {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 36px;
+   height: 36px;
+   flex-shrink: 0;
+   border-radius: 50%;
+   color: #fff;
+   background: #9c27b0;
+   font-size: 0.78rem;
+   font-weight: 900;
+}
+
+.classroom-member-cell strong,
+.classroom-member-cell small {
+   display: block;
+}
+
+.classroom-member-cell strong {
+   color: #fff;
+   font-weight: 900;
+}
+
+.classroom-member-cell small {
+   margin-top: 2px;
+   color: var(--details-muted);
+   font-size: 0.8rem;
+}
+
+.submit-badge {
+   display: inline-flex;
+   align-items: center;
+   gap: 5px;
+   border-radius: 999px;
+   padding: 4px 10px;
+   font-size: 0.76rem;
+   font-weight: 900;
+}
+
+.submit-badge.submitted {
+   color: var(--details-green);
+   border: 1px solid rgba(77, 172, 74, 0.35);
+   background: rgba(77, 172, 74, 0.15);
+}
+
+.submit-badge.pending {
+   color: rgba(255, 255, 255, 0.48);
+   border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.remove-student-button {
+   border: 1px solid transparent;
+   border-radius: 8px;
+   padding: 8px 11px;
+   color: rgba(239, 83, 80, 0.9);
+   background: transparent;
+   font: inherit;
+   font-weight: 900;
+   cursor: pointer;
+}
+
+.remove-student-button:hover {
+   border-color: rgba(239, 83, 80, 0.32);
+   background: rgba(239, 83, 80, 0.12);
+}
+
+.classroom-members-pagination {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 14px;
+   margin-top: 22px;
+}
+
+.classroom-members-pagination span {
+   color: rgba(255, 255, 255, 0.78);
+   font-weight: 800;
+}
+
+.classroom-members-pagination button {
+   border: 1px solid rgba(255, 255, 255, 0.18);
+   padding: 10px 16px;
+   color: rgba(255, 255, 255, 0.78);
+}
+
+.classroom-members-pagination button:not(:disabled):hover {
+   color: #fff;
+}
+
+@keyframes classroom-details-enter {
+   from {
+      opacity: 0;
+      transform: translateY(14px);
+   }
+
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}
+
+@media (max-width: 980px) {
+   .classroom-details-page {
+      width: min(100% - 32px, 760px);
+   }
+
+   .classroom-details-card:has(.add-member-card) {
+      grid-template-columns: 1fr;
+   }
+
+   .add-member-card {
+      grid-column: 1;
+      grid-row: auto;
+   }
+
+   .classroom-details-hero__content,
+   .classroom-add-student,
+   .classroom-edit-form__row {
+      grid-template-columns: 1fr;
+      flex-direction: column;
+   }
+
+   .classroom-details-hero__code {
+      width: 100%;
+      min-width: 0;
+   }
+
+   .classroom-details-hero__actions {
+      justify-content: flex-start;
+   }
+}
+
+@media (max-width: 620px) {
+   .classroom-details-page {
+      width: min(100% - 24px, 100%);
+      padding-top: 104px;
+   }
+
+   .classroom-details-hero__content,
+   .classroom-details-hero__actions,
+   .classroom-details-card {
+      padding-left: 18px;
+      padding-right: 18px;
+   }
+
+   .classroom-details-hero__actions,
+   .classroom-details-hero__code-actions,
+   .classroom-add-student {
+      align-items: stretch;
+      flex-direction: column;
+   }
+
+   .classroom-details-tabs {
+      overflow-x: auto;
+   }
+
+   .classroom-details-tabs button {
+      font-size: 1rem;
+      white-space: nowrap;
+   }
+}

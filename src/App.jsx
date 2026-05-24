@@ -22,6 +22,8 @@ import FunctionBitsPage from "./pages/FunctionBitsPage.jsx";
 import AdminPage from "./pages/AdminPage.jsx";
 import AuditPage from "./pages/AuditPage.jsx";
 import ResearchPage from "./pages/ResourchPage.jsx";
+import ClassroomPage from "./pages/ClassroomPage.jsx";
+import ClassroomDetailsPage from "./pages/ClassroomDetailsPage.jsx";
 
 function App() {
   return (
@@ -58,6 +60,15 @@ function App() {
 
           <Route path="/ranking" element={<PrivateRoute element={Ranking} />} />
 
+          <Route 
+            path="/classrooms"
+            element={<PrivateRoute element={ClassroomPage}/>}
+          />
+
+          <Route
+            path="/classrooms/:id"
+            element={<PrivateRoute element={ClassroomDetailsPage} />}
+          />
           <Route
             path="/matches/:id"
             element={<PrivateRoute element={Matches} />}

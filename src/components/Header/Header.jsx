@@ -50,6 +50,9 @@ export default function Header() {
         <Link className="nav-link" to="/ranking" onClick={toggleMobileNav}>
           Ranking
         </Link>
+        <Link className="nav-link" to="/classrooms" onClick={toggleMobileNav}>
+          Turmas
+        </Link>
 
         {/* Botão visível apenas para admins */}
         {isAuthenticated && isAdmin && (

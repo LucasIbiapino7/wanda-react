@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Nunito:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Comic+Neue:wght@400;700&family=Montserrat:wght@700;800;900&family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root {
   --roxo:        #9c27b0;
@@ -18,5 +18,7 @@
   --radius-lg:   16px;
   --font-main:   'Nunito', sans-serif;
   --font-fun:    'Comic Neue', cursive;
+  --font-display: 'Montserrat', sans-serif;
+  --font-eyebrow: 'Bebas Neue', sans-serif;
 }
 
