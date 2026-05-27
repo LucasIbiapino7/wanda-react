@@ -34,6 +34,13 @@ const TournamentService = {
     return response.data;
   },
 
+  async getByClassroom(classroomId, { page = 0, size = 5 } = {}) {
+    const response = await api.get(`/tournment/classroom/${classroomId}`, {
+      params: { page, size }
+    })
+    return response.data
+  },
+
   async update(tournamentId, payload) {
     const response = await api.patch(`/tournament/${tournamentId}`, payload, {
       headers: { "Content-Type": "application/json" },
