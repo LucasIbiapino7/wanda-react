@@ -24,6 +24,7 @@ import AuditPage from "./pages/AuditPage.jsx";
 import ResearchPage from "./pages/ResourchPage.jsx";
 import ClassroomPage from "./pages/ClassroomPage.jsx";
 import ClassroomDetailsPage from "./pages/ClassroomDetailsPage.jsx";
+import DashboardPage from "./pages/DashboardPage.jsx";
 
 function App() {
   return (
@@ -69,6 +70,12 @@ function App() {
             path="/classrooms/:id"
             element={<PrivateRoute element={ClassroomDetailsPage} />}
           />
+
+          <Route
+            path="/classrooms/:id/dashboard"
+            element={<PrivateRoute element={DashboardPage} />}
+          />
+
           <Route
             path="/matches/:id"
             element={<PrivateRoute element={Matches} />}

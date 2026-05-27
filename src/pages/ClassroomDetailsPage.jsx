@@ -497,7 +497,10 @@ export default function ClassroomDetailsPage() {
 
                         {canManage && (
                             <div className="classroom-details-hero__actions">
-                                <button type="button" className="classroom-details-hero__dashboard">
+                                <button 
+                                    type="button" className="classroom-details-hero__dashboard"
+                                    onClick={() => navigate(`/classrooms/${id}/dashboard`)}
+                                >
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                                     Ver Dashboard
                                 </button>
