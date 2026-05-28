@@ -35,7 +35,7 @@ const TournamentService = {
   },
 
   async getByClassroom(classroomId, { page = 0, size = 5 } = {}) {
-    const response = await api.get(`/tournment/classroom/${classroomId}`, {
+    const response = await api.get(`/tournament/classroom/${classroomId}`, {
       params: { page, size }
     })
     return response.data

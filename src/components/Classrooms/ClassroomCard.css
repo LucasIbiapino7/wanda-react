@@ -35,12 +35,8 @@
       0 0 0 3px rgba(255, 204, 0, 0.25);
 }
 
-.classroom-card--archived {
-   opacity: 0.68;
-}
-
-.classroom-card--archived:hover {
-   opacity: 0.84;
+.classroom-card:disabled {
+   color: inherit;
 }
 
 .classroom-card__accent {
@@ -126,7 +122,6 @@
 .classroom-card__status--archived {
    color: rgba(255, 255, 255, 0.46);
    border: 1px solid rgba(255, 255, 255, 0.16);
-   background: rgba(255, 255, 255, 0.06);
 }
 
 .classroom-card__status-dot {
@@ -167,13 +162,11 @@
 .classroom-card__game--jokempo {
    color: #ff9b9b;
    border: 1px solid rgba(255, 107, 107, 0.38);
-   background: rgba(255, 107, 107, 0.15);
 }
 
 .classroom-card__game--bits {
    color: #81d4fa;
    border: 1px solid rgba(79, 195, 247, 0.38);
-   background: rgba(79, 195, 247, 0.15);
 }
 
 .classroom-card__progress {
@@ -272,7 +265,51 @@
    border: 1px solid rgba(255, 255, 255, 0.16);
    border-radius: 6px;
    color: rgba(255, 255, 255, 0.7);
-   background: rgba(255, 255, 255, 0.08);
+}
+
+.classroom-card.classroom-card--archived,
+.classroom-card.classroom-card--archived:disabled {
+   opacity: 0.72;
+   cursor: default;
+   filter: grayscale(0.65);
+   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.42);
+   border-color: rgba(255, 255, 255, 0.1);
+}
+
+.classroom-card.classroom-card--archived:hover,
+.classroom-card.classroom-card--archived:disabled:hover {
+   transform: none;
+   opacity: 0.72;
+   border-color: rgba(255, 255, 255, 0.1);
+   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.42);
+}
+
+.classroom-card--archived .classroom-card__accent,
+.classroom-card--archived .classroom-card__accent--bits,
+.classroom-card--archived .classroom-card__accent--jokenpo,
+.classroom-card--archived .classroom-card__accent--jokempo {
+   background: rgba(255, 255, 255, 0.22);
+}
+
+.classroom-card--archived .classroom-card__title,
+.classroom-card--archived .classroom-card__course,
+.classroom-card--archived .classroom-card__location,
+.classroom-card--archived .classroom-card__description,
+.classroom-card--archived .classroom-card__meta-row,
+.classroom-card--archived .classroom-card__footer-note {
+   color: rgba(255, 255, 255, 0.48);
+}
+
+.classroom-card--archived .classroom-card__game,
+.classroom-card--archived .classroom-card__game--bits,
+.classroom-card--archived .classroom-card__game--jokenpo,
+.classroom-card--archived .classroom-card__game--jokempo {
+   color: rgba(255, 255, 255, 0.5);
+   border-color: rgba(255, 255, 255, 0.16);
+}
+
+.classroom-card--archived .classroom-card__footer {
+   background: rgba(255, 255, 255, 0.035);
 }
 
 @keyframes classroom-card-enter {

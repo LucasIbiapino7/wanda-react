@@ -409,9 +409,9 @@ export default function ClassroomDetailsPage() {
         try{
             await TournamentService.create({
                 ...payload,
+                classroomId: Number(classroomId),
                 gameName: classroom.gameName,
-                asPrivate: false,
-                password: ""
+                asPrivate: false
             })
 
             setCreatingTournament(false)
@@ -873,23 +873,32 @@ export default function ClassroomDetailsPage() {
                                 className="classroom-details-hero__dashboard"
                                 onClick={() => setCreatingTournament(true)}
                             >
-                                Novo torneio
+                                + Novo torneio
                             </button>
                         )}
                     </div>
 
-                    <OpenTournaments
-                        classroomId={classroomId}
-                        refreshKey={tournamentRefreshKey}
-                        title=""
-                        emptyMessage="Nenhum torneio foi criado para esta turma."
-                    />
+                    {isArchived ? (
+                        <p className="classroom-empty-text">
+                            Esta turma foi arquivada. Os torneios vinculados não estão mais disponíveis.
+                        </p>
+                    ) : (
+                        <OpenTournaments
+                            classroomId={Number(classroomId)}
+                            refreshKey={tournamentRefreshKey}
+                            title=""
+                            emptyMessage="Nenhum torneio foi criado para esta turma."
+                        />
+                    )}
 
-                    <CreateTournamentModal
-                        isOpen={creatingTournament}
-                        onClose={() => setCreatingTournament(false)}
-                        onCreate={handleCreateTournament}
-                    />
+                    {canManage && !isArchived && (
+                        <CreateTournamentModal
+                            isOpen={creatingTournament}
+                            onClose={() => setCreatingTournament(false)}
+                            onCreate={handleCreateTournament}
+                            gameName={classroom.gameName}
+                        />
+                    )}
                 </section>
             )}
 

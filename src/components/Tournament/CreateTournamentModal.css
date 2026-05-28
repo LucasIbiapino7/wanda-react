@@ -1,206 +1,186 @@
-/* ===== Overlay do Modal ===== */
 .modal-overlay-tournament {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  animation: fadeIn 0.25s ease;
+   position: fixed;
+   inset: 0;
+   z-index: 10000;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 24px;
+   background: rgba(0, 0, 0, 0.7);
+   backdrop-filter: blur(4px);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* ===== Container ===== */
 .modal-container-tournament {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 28px;
-  width: 100%;
-  max-width: 480px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-  animation: fadeInUp 0.25s ease;
-  position: relative;
+   width: 100%;
+   max-width: 520px;
+   max-height: 90vh;
+   overflow-y: auto;
+   border: 1px solid rgba(255, 255, 255, 0.16);
+   border-radius: 20px;
+   padding: 28px;
+   background: #1e0d35;
+   color: #fff;
+   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+   position: relative;
 }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ===== Botão Fechar ===== */
 .modal-close-button-tournament {
-  position: absolute;
-  right: 16px;
-  top: 12px;
-  font-size: 22px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: #333;
-  transition: color 0.2s ease;
+   position: absolute;
+   top: 24px;
+   right: 24px;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 32px;
+   height: 32px;
+   border: 1px solid var(--borda, rgba(255, 255, 255, 0.16));
+   border-radius: var(--radius-sm, 6px);
+   color: var(--texto-muted, rgba(255, 255, 255, 0.6));
+   background: var(--surface, rgba(255, 255, 255, 0.08));
+   font-size: 1.25rem;
+   cursor: pointer;
 }
 
-.modal-close-button-tournament:hover {
-  color: #0b66d1;
-}
-
-/* ===== Títulos ===== */
 .modal-title-tournament {
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin-bottom: 4px;
-  color: #0b3f91;
+   margin: 0 42px 4px 0;
+   color: var(--amarelo, #ffcc00);
+   font-family: var(--font-main, "Nunito", sans-serif);
+   font-size: 1.15rem;
+   font-weight: 800;
 }
 
 .modal-subtitle-tournament {
-  font-size: 0.9rem;
-  color: #555;
-  margin-bottom: 16px;
+   margin: 0 42px 18px 0;
+   color: var(--texto-muted, rgba(255, 255, 255, 0.6));
+   font-size: 0.86rem;
 }
 
-/* ===== Formulário ===== */
 .modal-form-tournament {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+   display: grid;
+   gap: 14px;
 }
 
-.modal-form-tournament label {
-  display: flex;
-  flex-direction: column;
-  font-weight: 600;
-  color: #222;
+.modal-form-tournament label,
+.game-label {
+   display: grid;
+   gap: 8px;
+   margin: 0;
+   color: rgba(255, 255, 255, 0.75);
+   font-family: var(--font-main, "Nunito", sans-serif);
+   font-size: 0.8rem;
+   font-weight: 700;
+   letter-spacing: 0.1em;
+   text-transform: uppercase;
 }
 
 .modal-form-tournament input,
 .modal-form-tournament textarea,
 .modal-form-tournament select {
-  width: 100%;
-  padding: 8px 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  font-size: 0.95rem;
-  font-family: inherit;
-  color: #333;
+   width: 100%;
+   border: 1px solid rgba(255, 255, 255, 0.16);
+   border-radius: var(--radius-md, 10px);
+   padding: 10px 14px;
+   color: var(--branco, #fff);
+   background: rgba(0, 0, 0, 0.4);
+   font: inherit;
+   font-size: 0.88rem;
+   outline: none;
 }
 
-.modal-form-tournament input:focus,
-.modal-form-tournament textarea:focus,
-.modal-form-tournament select:focus {
-  border-color: #0b66d1;
-  box-shadow: 0 0 0 2px rgba(11, 102, 209, 0.2);
-  outline: none;
+.modal-form-tournament select {
+   appearance: none;
+   background:
+      linear-gradient(45deg, transparent 50%, #ffffff 50%),
+      linear-gradient(135deg, #ffffff 50%, transparent 50%),
+      rgba(0, 0, 0, 0.4);
+   background-position:
+      calc(100% - 18px) 50%,
+      calc(100% - 12px) 50%,
+      0 0;
+   background-size:
+      6px 6px,
+      6px 6px,
+      100% 100%;
+   background-repeat: no-repeat;
 }
 
-/* ===== Erros ===== */
-.field-error {
-  display: block;
-  margin-top: 4px;
-  color: #ff6f6f;
-  font-size: 0.85rem;
-  font-weight: 600;
+.modal-form-tournament select option {
+   color: #ffffff;
+   background: #1e0d35;
 }
 
-input:invalid,
-textarea:invalid {
-  border-color: #ff8a8a;
-}
-
-.error-messages {
-  margin-top: 8px;
-  padding: 8px;
-  background: rgba(255, 70, 70, 0.08);
-  border-radius: 8px;
-}
-
-.error-text {
-  color: #ff5555;
-  font-weight: 600;
-  margin: 2px 0;
-}
-
-/* ===== Seção dos Jogos ===== */
-.game-label {
-  font-weight: 600;
-  margin-top: 8px;
-  color: #333;
-  text-align: left;
+.modal-form-tournament textarea {
+   min-height: 72px;
+   resize: vertical;
 }
 
 .game-grid {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
+   display: grid;
+   grid-template-columns: repeat(2, minmax(0, 1fr));
+   gap: 12px;
 }
 
 .game-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  border: 2px solid transparent;
-  border-radius: 10px;
-  padding: 12px 10px;
-  background: #1c1c1c;
-  color: #fff;
-  transition: all 0.25s ease;
-  width: 110px;
-  cursor: pointer;
-  user-select: none;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+   border: 1px solid rgba(255, 255, 255, 0.16);
+   border-radius: var(--radius-md, 10px);
+   padding: 10px 14px;
+   background: rgba(0, 0, 0, 0.32);
+   color: #fff;
+   font: inherit;
+   font-size: 0.88rem;
+   font-weight: 800;
+   cursor: pointer;
 }
 
 .game-card img {
-  width: 64px;
-  height: 64px;
-  object-fit: contain;
-}
-
-.game-card span {
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.game-card:hover {
-  border-color: #0b66d1;
-  background: #252525;
-  transform: translateY(-3px);
+   width: 26px;
+   height: 26px;
+   object-fit: contain;
 }
 
 .game-card.selected {
-  border-color: #00bcd4;
-  background: #252525;
-  box-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
+   border-color: rgba(255, 204, 0, 0.55);
+   box-shadow: inset 0 0 0 1px rgba(255, 204, 0, 0.22);
 }
 
-/* ===== Botão de Enviar ===== */
+.game-card:disabled {
+   opacity: 0.38;
+   cursor: not-allowed;
+}
+
+.field-error,
+.error-text {
+   color: #ffb4b4;
+   font-size: 0.75rem;
+   font-weight: 700;
+}
+
+.error-messages {
+   padding: 10px 12px;
+   border: 1px solid rgba(239, 83, 80, 0.35);
+   border-radius: var(--radius-md, 10px);
+   background: rgba(239, 83, 80, 0.1);
+}
+
 .modal-submit-button-tournament {
-  margin-top: 6px;
-  background: linear-gradient(135deg, #0b66d1, #00bcd4);
-  color: #fff;
-  font-weight: 700;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 16px;
-  cursor: pointer;
-  transition: background 0.25s ease, transform 0.15s ease;
-}
-
-.modal-submit-button-tournament:hover {
-  background: linear-gradient(135deg, #094fa0, #00a5b5);
-  transform: translateY(-1px);
+   justify-self: end;
+   border: none;
+   border-radius: 999px;
+   padding: 0.65rem 1.4rem;
+   color: #2b2b44;
+   background: linear-gradient(135deg, var(--amarelo-2, #ffb84d), var(--laranja, #ff9933));
+   font: inherit;
+   font-size: 0.88rem;
+   font-weight: 700;
+   cursor: pointer;
+   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
 }
 
 .modal-submit-button-tournament:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+   opacity: 0.65;
+   cursor: not-allowed;
 }
-
-

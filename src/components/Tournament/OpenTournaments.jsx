@@ -221,7 +221,7 @@ export default function OpenTournaments({
         <Pagination
           currentPage={page}
           totalPages={totalPages}
-          onPageChange={setPage}
+          onPageChange={fetchTournaments}
         />
       )}
 
