@@ -2,6 +2,9 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import AuthContext from "../context/AuthContext"
 import ClassroomService from "../services/ClassroomService"
+import CreateTournamentModal from "../components/Tournament/CreateTournamentModal"
+import OpenTournaments from "../components/Tournament/OpenTournaments"
+import TournamentService from "../services/TournamentService"
 import AppModal from "../components/UI/AppModal"
 import { getApiError } from "../utils/errors"
 import "./ClassroomDetailsPage.css"
@@ -78,6 +81,9 @@ export default function ClassroomDetailsPage() {
     const [removingStudentId, setRemovingStudentId] = useState(null)
     const [regeneratingCode, setRegeneratingCode] = useState(false)
     const [archiving, setArchiving] = useState(false)
+
+    const [creatingTournament, setCreatingTournament] = useState(false)
+    const [tournamentRefreshKey, setTournamentRefreshKey] = useState(0)
 
     const [modal, setModal] = useState({
         open: false,
@@ -398,6 +404,34 @@ export default function ClassroomDetailsPage() {
         }
     }
 
+    // Criar torneio
+    const handleCreateTournament = async (payload) => {
+        try{
+            await TournamentService.create({
+                ...payload,
+                classroomId: Number(classroomId),
+                gameName: classroom.gameName,
+                asPrivate: false
+            })
+
+            setCreatingTournament(false)
+            setTournamentRefreshKey((current) => current + 1)
+
+            showModal({
+                title: "Torneio criado",
+                message: "Torneio criado com sucesso",
+                variant: "success"
+            })
+        } catch(error){
+            showModal({
+                title: "Erro ao criar torneio",
+                message: getApiError(error),
+                variant: "error"
+            })
+            throw error
+        }
+    }
+
     if (loading) {
         return <main className="classroom-details-page">Carregando turma...</main>
     }
@@ -673,6 +707,14 @@ export default function ClassroomDetailsPage() {
                 >
                     Alunos
                 </button>
+
+                <button
+                    type="button"
+                    className={activeTab === "tournaments" ? "active" : ""}
+                    onClick={() => setActiveTab("tournaments")}
+                >
+                    Torneios
+                </button>
             </div>
 
             {activeTab === "mural" && (
@@ -816,6 +858,49 @@ export default function ClassroomDetailsPage() {
                                 Próxima
                             </button>
                         </div>
+                    )}
+                </section>
+            )}
+
+            {activeTab === "tournaments" && (
+                <section className="classroom-details-card classroom-tournaments-card">
+                    <div className="classroom-members-header">
+                        <div>
+                            <h2>Torneios da turma</h2>
+                            <p>Crie e acompanhe torneios vinculados a esta turma.</p>
+                        </div>
+
+                        {canManage && !isArchived && (
+                            <button
+                                type="button"
+                                className="classroom-details-hero__dashboard"
+                                onClick={() => setCreatingTournament(true)}
+                            >
+                                + Novo torneio
+                            </button>
+                        )}
+                    </div>
+
+                    {isArchived ? (
+                        <p className="classroom-empty-text">
+                            Esta turma foi arquivada. Os torneios vinculados não estão mais disponíveis.
+                        </p>
+                    ) : (
+                        <OpenTournaments
+                            classroomId={Number(classroomId)}
+                            refreshKey={tournamentRefreshKey}
+                            title=""
+                            emptyMessage="Nenhum torneio foi criado para esta turma."
+                        />
+                    )}
+
+                    {canManage && !isArchived && (
+                        <CreateTournamentModal
+                            isOpen={creatingTournament}
+                            onClose={() => setCreatingTournament(false)}
+                            onCreate={handleCreateTournament}
+                            gameName={classroom.gameName}
+                        />
                     )}
                 </section>
             )}

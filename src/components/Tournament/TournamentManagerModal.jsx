@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import PropTypes from "prop-types";
 import TournamentService from "../../services/TournamentService";
 import "./TournamentManagerModal.css";
@@ -52,8 +53,8 @@ export default function TournamentManagerModal({ tournament, onClose }) {
     else if (form.name.length < 3 || form.name.length > 40)
       errors.name = "O nome precisa ter entre 3 e 40 caracteres.";
     if (!form.description.trim()) errors.description = "A descrição é obrigatória.";
-    else if (form.description.length < 5 || form.description.length > 80)
-      errors.description = "A descrição precisa ter entre 5 e 80 caracteres.";
+    else if (form.description.trim().length > 80)
+      errors.description = "A descrição deve ter no máximo 80 caracteres.";
     return errors;
   };
 
@@ -83,7 +84,7 @@ export default function TournamentManagerModal({ tournament, onClose }) {
 
       await TournamentService.update(tournament.id, {
         name: form.name,
-        description: form.description,
+        description: form.description.trim() || null,
         startTime: iso || null,
       });
       setFormSuccess("Torneio atualizado com sucesso!");
@@ -152,7 +153,7 @@ export default function TournamentManagerModal({ tournament, onClose }) {
     </>
   );
 
-  return (
+  return createPortal(
     <div className="tm-overlay" onClick={onClose}>
       <div className="tm-container" onClick={(e) => e.stopPropagation()}>
 
@@ -267,7 +268,8 @@ export default function TournamentManagerModal({ tournament, onClose }) {
         )}
 
       </div>
-    </div>
+    </div>, 
+    document.body
   );
 }
 

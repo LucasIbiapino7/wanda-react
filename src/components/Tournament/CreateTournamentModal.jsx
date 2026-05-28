@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import PropTypes from "prop-types";
 import "./CreateTournamentModal.css";
 
@@ -7,33 +8,65 @@ const GAMES = [
   { key: "bits", label: "BITS", icon: "/assets/games/bits-logo.png" },
 ];
 
-export default function CreateTournamentModal({ isOpen, onClose, onCreate }) {
-  const [form, setForm] = useState({
+// Retorno tempo de inicio do jogo default (apos 5 minutos)
+function getInitialStartTime() {
+  const date = new Date()
+  date.setMinutes(date.getMinutes() + 5)
+
+  // Deixar no formato do input datetime-local
+  const offset = date.getTimezoneOffset()
+  const localDate = new Date(date.getTime() - offset * 60000)
+
+  return localDate.toISOString().slice(0,16)
+}
+
+function getInitialForm(gameName){
+  return{
     name: "",
     description: "",
-    startTime: "",
+    startTime: getInitialStartTime(),
     maxParticipants: 8,
-    gameName: "jokenpo",
-  });
+    gameName: gameName || "jokenpo"
+  }
+}
+export default function CreateTournamentModal({ isOpen, onClose, onCreate, gameName = "" }) {
+  const [form, setForm] = useState(() => getInitialForm(gameName))
 
   const [errors, setErrors] = useState([]); // erros do backend
   const [fieldErrors, setFieldErrors] = useState({}); // validações inline do front
   const [submitting, setSubmitting] = useState(false);
 
-  if (!isOpen) return null;
+  useEffect(()=>{
+    if(!isOpen){
+      return 
+    }
+
+    setForm(getInitialForm(gameName))
+    setFieldErrors({})
+    setErrors([])
+  }, [isOpen, gameName])
+
+  if (!isOpen) {
+    return null
+  }
 
   const validateFields = () => {
     const newErrors = {};
 
-    if (!form.name.trim()) newErrors.name = "O nome é obrigatório.";
-    else if (form.name.length < 3 || form.name.length > 40)
+    if (!form.name.trim()) {
+      newErrors.name = "O nome é obrigatório."
+    }
+    else if (form.name.length < 3 || form.name.length > 40){
       newErrors.name = "O nome precisa ter entre 3 e 40 caracteres.";
+    }
 
-    if (!form.description.trim()) newErrors.description = "A descrição é obrigatória.";
-    else if (form.description.length < 5 || form.description.length > 80)
-      newErrors.description = "A descrição precisa ter entre 5 e 80 caracteres.";
+    if (form.description.trim().length > 80){
+      newErrors.description = "A descrição precisa ter no máximo 80 caracteres."
+    } 
 
-    if (!form.startTime) newErrors.startTime = "A data de início é obrigatória.";
+    if (!form.startTime) {
+      newErrors.startTime = "A data de início é obrigatória.";
+    }
 
     return newErrors;
   };
@@ -61,11 +94,14 @@ export default function CreateTournamentModal({ isOpen, onClose, onCreate }) {
     setSubmitting(true);
 
     let iso = form.startTime;
-    if (iso && iso.length === 16) iso = iso + ":00";
+    if (iso && iso.length === 16) {
+      iso = iso + ":00"
+    }
 
     try {
       await onCreate({
         ...form,
+        description: form.description.trim() || null,
         startTime: iso,
         maxParticipants: Number(form.maxParticipants),
       });
@@ -83,8 +119,7 @@ export default function CreateTournamentModal({ isOpen, onClose, onCreate }) {
       setSubmitting(false);
     }
   };
-
-  return (
+  return createPortal(
     <div className="modal-overlay-tournament" onClick={onClose}>
       <div
         className="modal-container-tournament"
@@ -95,7 +130,7 @@ export default function CreateTournamentModal({ isOpen, onClose, onCreate }) {
           onClick={onClose}
           aria-label="Fechar"
         >
-          ×
+          x
         </button>
 
         <h3 className="modal-title-tournament">Criar novo torneio</h3>
@@ -145,7 +180,7 @@ export default function CreateTournamentModal({ isOpen, onClose, onCreate }) {
           </label>
 
           <label>
-            Nº de participantes
+            Quantidade de participantes
             <select
               name="maxParticipants"
               value={form.maxParticipants}
@@ -158,25 +193,34 @@ export default function CreateTournamentModal({ isOpen, onClose, onCreate }) {
             </select>
           </label>
 
-          <p className="game-label">Selecione o jogo:</p>
+          <p className="game-label">
+            {gameName ? "Jogo da turma" : "Selecione o jogo:"}
+          </p>
+
           <div className="game-grid">
-            {GAMES.map((g) => (
-              <button
-                key={g.key}
-                type="button"
-                className={`game-card ${form.gameName === g.key ? "selected" : ""}`}
-                onClick={() => handleSelectGame(g.key)}
-              >
-                <img src={g.icon} alt={g.label} />
-                <span>{g.label}</span>
-              </button>
-            ))}
+            {GAMES.map((g) => {
+                const selected = form.gameName === g.key
+                const disabled = Boolean(gameName) && gameName !== g.key
+
+                return (
+                  <button
+                      key={g.key}
+                      type="button"
+                      className={`game-card ${selected ? "selected" : ""}`}
+                      onClick={() => !gameName && handleSelectGame(g.key)}
+                      disabled={disabled}
+                  >
+                      <img src={g.icon} alt={g.label} />
+                      <span>{g.label}</span>
+                  </button>
+                )
+            })}
           </div>
 
           {errors.length > 0 && (
             <div className="error-messages">
               {errors.map((msg, idx) => (
-                <p key={idx} className="error-text">⚠️ {msg}</p>
+                <p key={idx} className="error-text">{msg}</p>
               ))}
             </div>
           )}
@@ -190,7 +234,8 @@ export default function CreateTournamentModal({ isOpen, onClose, onCreate }) {
           </button>
         </form>
       </div>
-    </div>
+    </div>, 
+    document.body
   );
 }
 
@@ -198,4 +243,5 @@ CreateTournamentModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onCreate: PropTypes.func.isRequired,
+  gameName: PropTypes.string
 };

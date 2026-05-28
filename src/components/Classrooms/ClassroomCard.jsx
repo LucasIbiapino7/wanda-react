@@ -86,26 +86,46 @@ function copyAccessCode(accessCode) {
 export default function ClassroomCard({ classroom, mode, onOpen }) {
   const [copied, setCopied] = useState(false)
   const isArchived = classroom.status === "ARCHIVED"
+  const canOpen = !isArchived
   const gameKey = normalizeGameKey(classroom.gameName)
   const membersCount = getMembersCount(classroom)
   const progress = getSubmissionProgress(classroom)
   const hasAccessCode = mode === "instructor" && classroom.accessCode
 
-  const openCard = () => onOpen(classroom)
-  const handleCopyAccessCode = async (event) => {
-    event.stopPropagation()
-    const success = await copyAccessCode(classroom.accessCode)
+   const openCard = () => {
+      if(!canOpen){
+         return
+      }
+      onOpen(classroom)
+   }
 
-    if (success) {
-      setCopied(true)      
-    }
-  }
+   const handleCardKeyDown = (event) => {
+      if (!canOpen) {
+         return
+      }
+
+      if (event.key === "Enter" || event.key === " ") {
+         event.preventDefault()
+         onOpen(classroom)
+      }
+   }
+
+   const handleCopyAccessCode = async (event) => {
+      event.stopPropagation()
+      const success = await copyAccessCode(classroom.accessCode)
+
+      if (success) {
+         setCopied(true)      
+      }
+   }
 
    return (
-      <article    
+      <article   
          className={`classroom-card ${isArchived ? "classroom-card--archived" : ""}`}
-         tabIndex={0}
-         onClick={openCard}
+         onClick={canOpen ? openCard : undefined}
+         onKeyDown={handleCardKeyDown}
+         tabIndex={canOpen ? 0 : -1}
+         role={canOpen ? "button" : undefined}
       >
          <div className={`classroom-card__accent classroom-card__accent--${gameKey}`} />
 
