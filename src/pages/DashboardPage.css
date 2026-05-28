@@ -396,11 +396,10 @@ body {
   margin-top: 2px;
 }
 
-/*  LAYOUTS DAS ABAS
-*/
+/* LAYOUTS DAS ABAS*/
 .dashboard-layout {
   display: grid;
-  grid-template-columns: 1fr 300px;
+  grid-template-columns: 1fr; /*Colocar a coluna de erros quando for implementado no microsserviço Python*/
   gap: 20px;
   align-items: start;
 }
@@ -620,6 +619,44 @@ body {
 }
 
 .error-count { font-size: 0.82rem; font-weight: 800; color: var(--branco); white-space: nowrap; }
+
+/* PAGINAÇÃO */
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.pagination-info {
+  color: var(--texto-muted);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.btn-page {
+  padding: 5px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--borda);
+  color: var(--texto-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font-main);
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn-page:hover:not(:disabled) {
+  background: var(--surface-hover);
+  color: var(--branco);
+}
+
+.btn-page:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
 
 /*  RANKING TABLE (aba competição)
 */
