@@ -3,6 +3,7 @@ import DashBoardService from '../../services/DashBoardService';
 import { getApiError } from '../../utils/errors';
 import "../../pages/DashboardPage.css";
 import MatchesDashboard from './MatchesDashboard';
+import PropTypes from 'prop-types';
 
 function getInitials(name) {
   return name.split(' ').slice(0, 2).map(n => n[0]).join('').toUpperCase();
@@ -28,7 +29,6 @@ function getWinsPercent(wins, ranking) {
   return Math.round((wins / max) * 100);
 }
 
-
 export default function RankingDashboard({ classroomID }) { 
     const [ranking, setRanking] = useState(null);
     const [error, setError] = useState(null);
@@ -47,13 +47,12 @@ export default function RankingDashboard({ classroomID }) {
     return (
         <div>
             <div className="comp-layout">
-
             {/*-- ranking interno -- */}
             <div className="section-card">
                 <div className="section-header">
                     <div>
                     <p className="section-title">Ranking da turma</p>
-                    <p className="section-subtitle">Partidas entre membros no período selecionado</p>
+                    <p className="section-subtitle">Vitórias acumuladas em partidas da turma</p>
                     </div>
                 </div>
                 <table className="ranking-table">
@@ -66,7 +65,7 @@ export default function RankingDashboard({ classroomID }) {
                     </thead>
                     <tbody>
                         {ranking.map(aluno => (
-                        <tr>
+                        <tr key={aluno.userId}>
                             <td>
                                 <span className={`rank-pos ${getRankPosClass(aluno.position)}`}>
                                     {getRankPosLabel(aluno.position)}
@@ -104,4 +103,8 @@ export default function RankingDashboard({ classroomID }) {
             </div>
         </div>
     );
+}
+
+RankingDashboard.propTypes = {
+    classroomID: PropTypes.number.isRequired
 }

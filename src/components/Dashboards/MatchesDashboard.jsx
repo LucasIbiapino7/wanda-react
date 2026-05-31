@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import DashBoardService from '../../services/DashBoardService';
 import { getApiError } from '../../utils/errors';
 import "../../pages/DashboardPage.css";
-
+import PropTypes from 'prop-types';
 
 export default function MatchesDashboard({ classroomID }) {
     const [matches, setMatches] = useState(null);
@@ -21,7 +21,6 @@ export default function MatchesDashboard({ classroomID }) {
     }
 
     return (
-        <>
         <div className="section-card">
             <div className="section-header">
                 <div>
@@ -44,7 +43,7 @@ export default function MatchesDashboard({ classroomID }) {
                             {match.player2Name}
                         </span>
                         <span className={`match-result ${match.winnerId === match.player1Id ? 'match-result--win' : 'match-result--loss'}`} style={{ marginLeft: '8px' }}>
-                            {match.winnerId ? (match.winnerId === match.player1Id ? '1×0' : '0×1') : 'Empate'}
+                            {match.winnerId ? (match.winnerId === match.player1Id ? '1x0' : '0x1') : 'Empate'}
                         </span>
                     </div>
                 ))
@@ -71,6 +70,9 @@ export default function MatchesDashboard({ classroomID }) {
                 </div>
             )}
         </div>
-        </>
     );
+}
+
+MatchesDashboard.propTypes = {
+    classroomID: PropTypes.number.isRequired
 }

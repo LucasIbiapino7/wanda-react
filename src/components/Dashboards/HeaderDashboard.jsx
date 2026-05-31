@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "../../pages/DashboardPage.css"
+import PropTypes from "prop-types";
 
 export default function HeaderDashboard({id, classroom, from, to, onFromChange, onToChange, onFilter}) {
     const navigate = useNavigate();
@@ -38,4 +39,24 @@ export default function HeaderDashboard({id, classroom, from, to, onFromChange, 
         </div>
         </>
     );
+}
+
+HeaderDashboard.propTypes = {
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    classroom: PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string,
+        course: PropTypes.string,
+        institution: PropTypes.string,
+        city: PropTypes.string,
+        state: PropTypes.string,
+        gameName: PropTypes.string,
+        instructorName: PropTypes.string,
+        createdAt: PropTypes.string
+    }).isRequired,
+    from: PropTypes.string.isRequired,
+    to: PropTypes.string.isRequired,
+    onFromChange: PropTypes.func.isRequired,
+    onToChange: PropTypes.func.isRequired,
+    onFilter: PropTypes.func.isRequired
 }

@@ -1,14 +1,16 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthContext.jsx";
 import wandaLogo from "../../assets/logo.png";
 import labLogo from "../../assets/telemidia-logo.png";
 import profileImg from "../../assets/profile.svg";
+import NotificationBell from "../Notifications/NotificationBell.jsx";
 import "./Header.css";
 
 export default function Header() {
   const { isAuthenticated, isAdmin, logout } = useContext(AuthContext);
 
+  const profileMenuRef = useRef()
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showMobileNav, setShowMobileNav] = useState(false);
 
@@ -22,8 +24,27 @@ export default function Header() {
   const toggleProfile = () => setShowProfileMenu((p) => !p);
   const toggleMobileNav = () => setShowMobileNav((p) => !p);
 
+  // Fecha notificações ao clicar fora da aba
+  useEffect(() => {
+    if (!showProfileMenu){
+      return undefined
+    }
+
+    const handleClose = (event) => {
+      if(profileMenuRef.current && !profileMenuRef.current.contains(event.target)){
+        setShowProfileMenu(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClose)
+
+    return () => {
+      document.removeEventListener("mousedown", handleClose)
+    }
+    }, [showProfileMenu])
+
   return (
-    <header className="header">
+    <header className="header" ref={profileMenuRef}>
       <div className="logo-group">
         <Link to="/">
           <img src={wandaLogo} alt="Wanda" className="logo-main" />
@@ -64,6 +85,10 @@ export default function Header() {
           >
             Admin
           </Link>
+        )}
+
+        {isAuthenticated && (
+          <NotificationBell enabled={isAuthenticated} />
         )}
 
         {isAuthenticated && (

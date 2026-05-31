@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ClassroomService from "../services/ClassroomService";
 import "./DashboardPage.css"
 import { useEffect, useState } from "react";
@@ -6,11 +6,9 @@ import HeaderDashboard from "../components/Dashboards/HeaderDashboard";
 import OverviewDashboard from "../components/Dashboards/OverviewDashboard";
 import EngagementDashboard from "../components/Dashboards/EngagementDashboard";
 import AppModal from "../components/UI/AppModal";
-import { filter } from "framer-motion/client";
 import RankingDashboard from "../components/Dashboards/RankingDashboard";
 
 export default function DashboardPage() {
-    const navigate = useNavigate();
     const { id } = useParams();
     const classroomID = Number(id);
     const [classroom, setClassroom] = useState(null);
@@ -34,7 +32,7 @@ export default function DashboardPage() {
                 to: `${toDate}T23:59:59`,
             });
         });  
-    }, [id]);
+    }, [classroomID]);
 
     const formatToISO = (dateStr, endOfDay = false) => {
         if (!dateStr) {

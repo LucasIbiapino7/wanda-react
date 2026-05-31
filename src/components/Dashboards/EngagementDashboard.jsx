@@ -2,6 +2,7 @@ import "../../pages/DashboardPage.css"
 import { getApiError } from "../../utils/errors";
 import DashBoardService from "../../services/DashBoardService";
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
 function getInitials(name) {
   return name.split(' ').slice(0, 2).map(n => n[0]).join('').toUpperCase();
@@ -58,7 +59,6 @@ export default function EngagementDashboard({classroomID, from, to}) {
     const [page, setPage] = useState(0);
     const [todosAlunos, setTodosAlunos] = useState([]);
 
-
     //Paginada para a tabela
     useEffect(() => {
         if (!from || !to) { return; }
@@ -70,7 +70,7 @@ export default function EngagementDashboard({classroomID, from, to}) {
     useEffect(() => {
         if (!from || !to || !engagement) { return; }
         DashBoardService.getEngagement(classroomID, from, to, 0, engagement.totalElements).then(data => setTodosAlunos(data.content)).catch(err => setError(getApiError(err)));
-    }, [classroomID, from, to, engagement?.totalElements]);
+    }, [classroomID, from, to, engagement, engagement?.totalElements]);
 
     const inativos = todosAlunos.filter(a => a.status === 'INACTIVE');
 
@@ -124,7 +124,7 @@ export default function EngagementDashboard({classroomID, from, to}) {
                     </thead>
                     <tbody>
                     {engagement.content.map(alunos => (
-                        <tr>
+                        <tr key={alunos.userId}>
                         <td>
                             <div className="student-name-cell">
                                 <div className={`student-avatar ${getAvatarClass(alunos.status)}`}>{getInitials(alunos.userName)}</div>
@@ -179,4 +179,10 @@ export default function EngagementDashboard({classroomID, from, to}) {
         </div>
         </>
     );
+}
+
+EngagementDashboard.propTypes = {
+    classroomID: PropTypes.number.isRequired,
+    from: PropTypes.string.isRequired,
+    to: PropTypes.string.isRequired
 }
