@@ -811,3 +811,125 @@
       white-space: nowrap;
    }
 }
+
+.classroom-challenges-card {
+   display: flex;
+   flex-direction: column;
+   gap: 22px;
+}
+
+.classroom-challenges-layout {
+   display: grid;
+   grid-template-columns: minmax(0, 1fr) minmax(320px, 0.75fr);
+   gap: 22px;
+}
+
+.classroom-challenges-panel {
+   border: 1px solid rgba(255, 255, 255, 0.1);
+   border-radius: 14px;
+   background: rgba(255, 255, 255, 0.035);
+   padding: 20px;
+}
+
+.classroom-challenges-panel--wide {
+   grid-column: 1 / -1;
+}
+
+.classroom-challenges-panel h3 {
+   margin: 0 0 14px;
+   color: #ffffff;
+   font-size: 1rem;
+   font-weight: 800;
+}
+
+.classroom-challenges-list,
+.classroom-challenge-members {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.classroom-challenge-row {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   border: 1px solid rgba(255, 255, 255, 0.08);
+   border-radius: 10px;
+   background: rgba(0, 0, 0, 0.14);
+   padding: 12px 14px;
+   color: rgba(255, 255, 255, 0.72);
+}
+
+.classroom-challenge-row strong {
+   color: #ffffff;
+}
+
+.classroom-challenge-row small {
+   margin-left: auto;
+   border: 1px solid rgba(255, 204, 0, 0.28);
+   border-radius: 999px;
+   padding: 3px 8px;
+   color: #ffcc00;
+   font-size: 0.72rem;
+   font-weight: 800;
+   text-transform: uppercase;
+}
+
+.classroom-challenge-member {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 14px;
+   border: 1px solid rgba(255, 255, 255, 0.08);
+   border-radius: 10px;
+   background: rgba(0, 0, 0, 0.14);
+   padding: 12px 14px;
+}
+
+.classroom-challenge-member div {
+   display: flex;
+   flex-direction: column;
+   gap: 2px;
+}
+
+.classroom-challenge-member strong {
+   color: #ffffff;
+   font-size: 0.92rem;
+}
+
+.classroom-challenge-member span {
+   color: rgba(255, 255, 255, 0.58);
+   font-size: 0.82rem;
+}
+
+.classroom-challenge-member button {
+   border: 0;
+   border-radius: 999px;
+   background: #ff9f2f;
+   color: #171022;
+   padding: 9px 16px;
+   font-weight: 800;
+   cursor: pointer;
+}
+
+.classroom-challenge-member button:disabled {
+   opacity: 0.6;
+   cursor: not-allowed;
+}
+
+.classroom-section-meta {
+   border: 1px solid rgba(255, 204, 0, 0.28);
+   border-radius: 999px;
+   padding: 5px 10px;
+   color: #ffcc00;
+   font-size: 0.72rem;
+   font-weight: 800;
+   letter-spacing: 0.08em;
+   text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+   .classroom-challenges-layout {
+      grid-template-columns: 1fr;
+   }
+}

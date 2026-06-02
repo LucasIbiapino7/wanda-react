@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import AuthContext from "../context/AuthContext"
 import ClassroomService from "../services/ClassroomService"
+import ClassroomChallenge from "../components/Classrooms/ClassroomChallenge"
 import CreateTournamentModal from "../components/Tournament/CreateTournamentModal"
 import OpenTournaments from "../components/Tournament/OpenTournaments"
 import TournamentService from "../services/TournamentService"
@@ -142,7 +143,9 @@ export default function ClassroomDetailsPage() {
     }
 
     const fetchClassroom = useCallback(async () => {
-        if (!classroomId) return
+        if (!classroomId) {
+            return
+        }
 
         setLoading(true)
         setError("")
@@ -199,8 +202,10 @@ export default function ClassroomDetailsPage() {
     }, [fetchClassroom])
 
     useEffect(() => {
-        fetchMembers(0)
-    }, [fetchMembers])
+        if (activeTab === "members" || activeTab === "challenges"){
+            fetchMembers()
+        }
+    }, [activeTab, fetchMembers])
 
     // Membros que já submeteram questão
     const submittedCount = useMemo(() => {
@@ -715,6 +720,14 @@ export default function ClassroomDetailsPage() {
                 >
                     Torneios
                 </button>
+
+                <button
+                    type="button"
+                    className={activeTab === "challenges" ? "active" : ""}
+                    onClick={() => setActiveTab("challenges")}
+                >
+                    Desafios
+                </button>
             </div>
 
             {activeTab === "mural" && (
@@ -903,6 +916,14 @@ export default function ClassroomDetailsPage() {
                         />
                     )}
                 </section>
+            )}
+
+            {activeTab === "challenges" && (
+                <ClassroomChallenge 
+                    classroom={classroom}
+                    members={members}
+                    canManage={canManage}
+                /> 
             )}
 
             <AppModal
