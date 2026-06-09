@@ -1,0 +1,289 @@
+*{
+   font-family: var(--font-main, "Nunito", sans-serif);
+}
+
+.create-classroom-modal__overlay {
+   position: fixed;
+   inset: 0;
+   z-index: 100000;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 24px;
+   background: rgba(0, 0, 0, 0.7);
+   backdrop-filter: blur(4px);
+}
+
+body.create-classroom-modal-open .header {
+   opacity: 0;
+   visibility: hidden;
+   pointer-events: none;
+}
+
+.create-classroom-modal {
+   width: 100%;
+   max-width: 520px;
+   max-height: 90vh;
+   overflow-y: auto;
+   border: 1px solid rgba(255, 255, 255, 0.16);
+   border-radius: 20px;
+   padding: 28px;
+   background: #1e0d35;
+   color: #fff;
+   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+}
+
+.create-classroom-modal__header {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 8px;
+   padding: 0;
+   border-bottom: 0;
+}
+
+.create-classroom-modal__header h2 {
+   margin: 0;
+   color: var(--amarelo, #ffcc00);
+   font-size: 1.15rem;
+   font-weight: 800;
+}
+
+.create-classroom-modal__close {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 32px;
+   height: 32px;
+   border: 1px solid var(--borda, rgba(255, 255, 255, 0.16));
+   border-radius: var(--radius-sm, 6px);
+   color: var(--texto-muted, rgba(255, 255, 255, 0.6));
+   background: var(--surface, rgba(255, 255, 255, 0.08));
+   font: inherit;
+   font-size: 1.35rem;
+   line-height: 1;
+   cursor: pointer;
+   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.create-classroom-modal__close:hover {
+   color: var(--branco, #fff);
+   background: var(--surface-hover, rgba(255, 255, 255, 0.13));
+}
+
+.create-classroom-modal__form {
+   display: grid;
+   gap: 14px;
+   padding: 18px 0 0;
+}
+
+.create-classroom-modal__form label,
+.create-classroom-modal__field {
+   display: grid;
+   gap: 8px;
+   color: rgba(255, 255, 255, 0.75);
+   font-size: 0.8rem;
+   font-weight: 700;
+   letter-spacing: 0.1em;
+   text-transform: uppercase;
+}
+
+.create-classroom-modal__form label span strong,
+.create-classroom-modal__label strong {
+   color: var(--amarelo-2, #ffb84d);
+}
+
+.create-classroom-modal__label {
+   color: rgba(255, 255, 255, 0.75);
+   font-size: 0.8rem;
+   font-weight: 700;
+   letter-spacing: 0.1em;
+   text-transform: uppercase;
+}
+
+.create-classroom-modal__form input,
+.create-classroom-modal__form select,
+.create-classroom-modal__form textarea {
+   width: 100%;
+   border: 1px solid rgba(255, 255, 255, 0.16);
+   border-radius: var(--radius-md, 10px);
+   padding: 10px 14px;
+   color: var(--branco, #fff);
+   background: rgba(0, 0, 0, 0.4);
+   font: inherit;
+   font-size: 0.88rem;
+   outline: none;
+   transition: border-color 0.2s, background 0.2s;
+}
+
+.create-classroom-modal__form input::placeholder,
+.create-classroom-modal__form textarea::placeholder {
+   color: rgba(255, 255, 255, 0.34);
+}
+
+.create-classroom-modal__form input:focus,
+.create-classroom-modal__form select:focus,
+.create-classroom-modal__form textarea:focus {
+   border-color: rgba(255, 204, 0, 0.48);
+   background: rgba(0, 0, 0, 0.55);
+}
+
+.create-classroom-modal__form select option {
+   color: var(--texto-muted, rgba(255, 255, 255, 0.6));
+   background: #1e0d35;
+}
+
+.create-classroom-modal__form textarea {
+   min-height: 72px;
+   resize: vertical;
+}
+
+.create-classroom-modal__games {
+   display: grid;
+   grid-template-columns: repeat(2, minmax(0, 1fr));
+   gap: 12px;
+}
+
+.create-classroom-modal__games button{
+   background: rgba(0, 0, 0, 0.4);
+}
+
+
+.create-classroom-modal__game {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+   border: 1px solid rgba(255, 255, 255, 0.16);
+   border-radius: var(--radius-md, 10px);
+   padding: 10px 14px;
+   color: #fff;
+   font: inherit;
+   font-size: 0.88rem;
+   font-weight: 800;
+   cursor: pointer;
+   transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.create-classroom-modal__game:hover {
+   transform: translateY(-1px);
+}
+
+.create-classroom-modal__game--jokenpo {
+   color: #ff9b9b;
+   border-color: rgba(255, 107, 107, 0.45);
+}
+
+.create-classroom-modal__game--bits {
+   color: #81d4fa;
+   border-color: rgba(79, 195, 247, 0.45);
+}
+
+.create-classroom-modal__game--selected {
+   border-color: rgba(255, 204, 0, 0.5);
+   box-shadow: inset 0 0 0 1px rgba(255, 204, 0, 0.22);
+   border-width: 4px;
+}
+
+.create-classroom-modal__hint,
+.create-classroom-modal__error {
+   font-size: 0.75rem;
+   font-weight: 700;
+   letter-spacing: 0;
+   text-transform: none;
+}
+
+.create-classroom-modal__hint {
+   color: var(--texto-muted, rgba(255, 255, 255, 0.6));
+}
+
+.create-classroom-modal__error {
+   color: #ffb4b4;
+}
+
+.create-classroom-modal__divider {
+   height: 0;
+   border: none;
+   border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.create-classroom-modal__section-label {
+   display: block;
+   margin: -4px 0;
+   color: rgba(255, 255, 255, 0.4);
+   font-size: 0.72rem;
+   letter-spacing: 0.16em;
+   text-transform: uppercase;
+}
+
+.create-classroom-modal__row {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 12px;
+}
+
+.create-classroom-modal__actions {
+   display: flex;
+   align-items: center;
+   justify-content: flex-end;
+   gap: 10px;
+   padding-top: 4px;
+}
+
+.create-classroom-modal__actions button {
+   border-radius: 999px;
+   padding: 0.6rem 1.2rem;
+   font: inherit;
+   font-size: 0.85rem;
+   font-weight: 600;
+   cursor: pointer;
+   transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.create-classroom-modal__actions button:first-child {
+   border: 1px solid rgba(255, 255, 255, 0.2);
+   color: rgba(255, 255, 255, 0.76);
+   background: transparent;
+}
+
+.create-classroom-modal__actions button:first-child:hover {
+   color: #fff;
+}
+
+.create-classroom-modal__actions button:last-child {
+   border: none;
+   color: #2b2b44;
+   background: linear-gradient(135deg, var(--amarelo-2, #ffb84d), var(--laranja, #ff9933));
+   font-weight: 700;
+   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
+.create-classroom-modal__actions button:last-child:hover {
+   transform: translateY(-1px);
+}
+
+.create-classroom-modal__actions button:disabled {
+   opacity: 0.65;
+   cursor: not-allowed;
+   transform: none;
+}
+
+@media (max-width: 640px) {
+   .create-classroom-modal__games,
+   .create-classroom-modal__row {
+      grid-template-columns: 1fr;
+   }
+
+   .create-classroom-modal__actions {
+      align-items: stretch;
+      flex-direction: column-reverse;
+   }
+
+   .create-classroom-modal__overlay {
+      padding: 16px;
+   }
+
+   .create-classroom-modal {
+      max-height: calc(100vh - 32px);
+   }
+}

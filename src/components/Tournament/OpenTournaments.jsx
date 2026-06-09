@@ -8,13 +8,19 @@ import TournamentService from "../../services/TournamentService";
 import AppModal from "../UI/AppModal";
 import TournamentDetailsModal from "./TournamentDetailsModal";
 import PropTypes from "prop-types";
+import { getApiError } from "../../utils/errors";
 
 const GAME_LOGOS = {
   jokenpo: "/assets/games/jokenpo-logo.png",
   bits: "/assets/games/bits-logo.png",
 };
 
-export default function OpenTournaments({ refreshKey = 0 }) {
+export default function OpenTournaments({
+  refreshKey = 0,
+  classroomId = null,
+  title = "Torneios Abertos",
+  emptyMessage = "Não há torneios abertos nesse momento",
+}) {
   const { token } = useContext(AuthContext);
 
   const [tournaments, setTournaments] = useState([]);
@@ -33,25 +39,22 @@ export default function OpenTournaments({ refreshKey = 0 }) {
     variant: "default",
   });
 
-  const extractApiError = (err) => {
-    const data = err?.response?.data;
-    return (
-      data?.message ||
-      data?.error ||
-      "Ocorreu um erro ao processar sua solicitação."
-    );
-  };
-
   const fetchTournaments = useCallback(
     async (pageNum = 0) => {
       if (!token) return;
       setLoading(true);
       setError(null);
       try {
-        const data = await TournamentService.getOpen({
-          page: pageNum,
-          size: 5,
-        });
+        const data = classroomId
+          ? await TournamentService.getByClassroom(classroomId, {
+              page: pageNum,
+              size: 5,
+            })
+          : await TournamentService.getOpen({
+              page: pageNum,
+              size: 5,
+            });
+
         setTournaments(data?.content ?? []);
         setTotalPages(data?.totalPages ?? 0);
         setPage(pageNum);
@@ -62,7 +65,7 @@ export default function OpenTournaments({ refreshKey = 0 }) {
         setLoading(false);
       }
     },
-    [token],
+    [token, classroomId],
   );
 
   useEffect(() => {
@@ -88,7 +91,7 @@ export default function OpenTournaments({ refreshKey = 0 }) {
       });
       fetchTournaments(page);
     } catch (err) {
-      const msg = extractApiError(err);
+      const msg = getApiError(err);
       setModal({
         open: true,
         title: "Erro ao entrar no torneio",
@@ -111,15 +114,16 @@ export default function OpenTournaments({ refreshKey = 0 }) {
     return `${days}d ${hrs}h ${mins}m`;
   };
 
+  const openTournaments = tournaments.filter((t) => t.status === "OPEN");
   return (
     <div className="open-tournaments">
-      <h2 className="section-title">Torneios Abertos</h2>
+      <h2 className="section-title">{title}</h2>
 
       {loading && <p className="loading">Carregando torneios...</p>}
       {error && <p className="error">{error}</p>}
 
       <div className="tournaments-grid">
-        {tournaments.map((t) => {
+        {openTournaments.map((t) => {
           const full = t.currentParticipants >= t.maxParticipants;
           const gameKey = String(t.game?.name || "")
             .toLowerCase()
@@ -208,15 +212,15 @@ export default function OpenTournaments({ refreshKey = 0 }) {
         })}
       </div>
 
-      {!loading && tournaments.length === 0 && (
-        <p className="empty-message">Não há torneios abertos no momento.</p>
+      {!loading && openTournaments.length === 0 && (
+        <p className="empty-message">{emptyMessage}</p>
       )}
 
       {!loading && totalPages > 1 && (
         <Pagination
           currentPage={page}
           totalPages={totalPages}
-          onPageChange={setPage}
+          onPageChange={fetchTournaments}
         />
       )}
 
@@ -248,4 +252,7 @@ export default function OpenTournaments({ refreshKey = 0 }) {
 
 OpenTournaments.propTypes = {
   refreshKey: PropTypes.number,
+  classroomId: PropTypes.number,
+  title: PropTypes.string,
+  emptyMessage: PropTypes.string,
 };

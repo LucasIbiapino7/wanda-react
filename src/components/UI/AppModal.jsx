@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import PropTypes from "prop-types";
 import "./AppModal.css";
 
@@ -10,7 +11,7 @@ export default function AppModal({
   variant = "default",
   primaryAction,
   secondaryAction,
-  initialFocus, 
+  initialFocus,
 }) {
   const overlayRef = useRef(null);
 
@@ -34,13 +35,17 @@ export default function AppModal({
 
   const className =
     "app-modal " +
-    (variant === "success" ? "app-modal--success" : variant === "error" ? "app-modal--error" : "");
+    (variant === "success"
+      ? "app-modal--success"
+      : variant === "error"
+        ? "app-modal--error"
+        : "");
 
   const handleBackdrop = (e) => {
     if (e.target === overlayRef.current) onClose?.();
   };
 
-  return (
+  return createPortal(
     <div
       ref={overlayRef}
       className="app-modal-overlay"
@@ -76,7 +81,8 @@ export default function AppModal({
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 
