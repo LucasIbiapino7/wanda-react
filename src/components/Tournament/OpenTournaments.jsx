@@ -15,14 +15,12 @@ const GAME_LOGOS = {
   bits: "/assets/games/bits-logo.png",
 };
 
-export default function OpenTournaments({ 
-    refreshKey = 0,
-    classroomId = null,
-    title = "Torneios Abertos",
-    emptyMessage = "Não há torneios abertos nesse momento" 
-  }) {
-  
-  
+export default function OpenTournaments({
+  refreshKey = 0,
+  classroomId = null,
+  title = "Torneios Abertos",
+  emptyMessage = "Não há torneios abertos nesse momento",
+}) {
   const { token } = useContext(AuthContext);
 
   const [tournaments, setTournaments] = useState([]);
@@ -47,15 +45,15 @@ export default function OpenTournaments({
       setLoading(true);
       setError(null);
       try {
-        const data = classroomId 
-        ? await TournamentService.getByClassroom(classroomId, {
-          page: pageNum,
-          size: 5
-        }) 
-        : await TournamentService.getOpen({
-          page: pageNum,
-          size: 5
-        })
+        const data = classroomId
+          ? await TournamentService.getByClassroom(classroomId, {
+              page: pageNum,
+              size: 5,
+            })
+          : await TournamentService.getOpen({
+              page: pageNum,
+              size: 5,
+            });
 
         setTournaments(data?.content ?? []);
         setTotalPages(data?.totalPages ?? 0);
@@ -116,6 +114,7 @@ export default function OpenTournaments({
     return `${days}d ${hrs}h ${mins}m`;
   };
 
+  const openTournaments = tournaments.filter((t) => t.status === "OPEN");
   return (
     <div className="open-tournaments">
       <h2 className="section-title">{title}</h2>
@@ -124,7 +123,7 @@ export default function OpenTournaments({
       {error && <p className="error">{error}</p>}
 
       <div className="tournaments-grid">
-        {tournaments.map((t) => {
+        {openTournaments.map((t) => {
           const full = t.currentParticipants >= t.maxParticipants;
           const gameKey = String(t.game?.name || "")
             .toLowerCase()
@@ -213,7 +212,7 @@ export default function OpenTournaments({
         })}
       </div>
 
-      {!loading && tournaments.length === 0 && (
+      {!loading && openTournaments.length === 0 && (
         <p className="empty-message">{emptyMessage}</p>
       )}
 
@@ -255,5 +254,5 @@ OpenTournaments.propTypes = {
   refreshKey: PropTypes.number,
   classroomId: PropTypes.number,
   title: PropTypes.string,
-  emptyMessage: PropTypes.string
+  emptyMessage: PropTypes.string,
 };

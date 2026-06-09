@@ -27,7 +27,7 @@ const STATUS_COLOR = {
   ERROR: "#ff4444",
 };
 
-export default function ParticipatingTournaments() {
+export default function ParticipatingTournaments({ classroomId = null, refreshKey = 0 }) {
   const { token, user } = useContext(AuthContext);
 
   const [tournaments, setTournaments] = useState([]);
@@ -45,29 +45,31 @@ export default function ParticipatingTournaments() {
       setLoading(true);
       setError(null);
       try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/tournament/participating`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-            params: { size: 5, page: pageNum },
-          }
-        );
+        // No contexto de uma turma, lista TODOS os torneios da turma
+        // (mesmo DTO do /participating). Fora dela, mantém o comportamento global.
+        const url = classroomId
+          ? `${import.meta.env.VITE_API_URL}/tournament/classroom/${classroomId}`
+          : `${import.meta.env.VITE_API_URL}/tournament/participating`;
+        const { data } = await axios.get(url, {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { size: 5, page: pageNum },
+        });
         setTournaments(data?.content ?? []);
         setTotalPages(data?.totalPages ?? 0);
         setPage(pageNum);
       } catch (err) {
         console.error(err);
-        setError("Não foi possível carregar seus torneios.");
+        setError("Não foi possível carregar os torneios.");
       } finally {
         setLoading(false);
       }
     },
-    [token]
+    [token, classroomId]
   );
 
   useEffect(() => {
     if (token) fetchParticipating(page);
-  }, [token, page, fetchParticipating]);
+  }, [token, page, refreshKey, fetchParticipating]);
 
   const handleStartTournament = async (id) => {
     setStartLoadingId(id);
@@ -319,13 +321,19 @@ export default function ParticipatingTournaments() {
 
   return (
     <section className="participating-section">
-      <h2 className="section-title">Meus Torneios</h2>
+      <h2 className="section-title">
+        {classroomId ? "Torneios da turma" : "Meus Torneios"}
+      </h2>
 
-      {loading && <p className="loading">Carregando seus torneios...</p>}
+      {loading && <p className="loading">Carregando torneios...</p>}
       {error && <p className="error">{error}</p>}
 
       {!loading && tournaments.length === 0 && (
-        <p className="empty-message">Você não está participando de nenhum torneio.</p>
+        <p className="empty-message">
+          {classroomId
+            ? "Nenhum torneio foi criado para esta turma."
+            : "Você não está participando de nenhum torneio."}
+        </p>
       )}
 
       {ativos.length > 0 && (
