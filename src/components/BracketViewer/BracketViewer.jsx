@@ -10,6 +10,9 @@ import confetti from "canvas-confetti";
 // watching  → professor abriu a partida, aguardando reveal
 // revealing → card em flip 3D
 // revealed  → vencedor mostrado
+//
+// Partidas de W.O. (match.walkover === true) NÃO entram nesse fluxo de suspense:
+// nascem já "revealed" e usam um card próprio (sem flip, com selo de sorteio).
 
 export default function BracketViewer({ tournamentId }) {
   const { token } = useContext(AuthContext);
@@ -36,7 +39,8 @@ export default function BracketViewer({ tournamentId }) {
         const initial = {};
         for (const round of response.data.rounds) {
           for (const match of round.matches) {
-            initial[match.matchId] = "pending";
+            // W.O. já nasce revelado (não há suspense pra um sorteio)
+            initial[match.matchId] = match.walkover ? "revealed" : "pending";
           }
         }
         setMatchStates(initial);
@@ -95,6 +99,16 @@ export default function BracketViewer({ tournamentId }) {
     }, delay);
   }
 
+  // Final decidida por W.O.: sem flip/suspense, o professor aciona o campeão direto
+  function handleShowChampion(match) {
+    fireChampionConfetti();
+    const winnerName =
+      match.winnerId === match.player1Id
+        ? match.player1Name
+        : match.player2Name;
+    setChampion({ name: winnerName });
+  }
+
   return (
     <div className={`bv-container ${isFinal ? "bv-is-final" : ""}`}>
       <h2 className={`bv-title ${isFinal ? "bv-title--final" : ""}`}>
@@ -131,6 +145,7 @@ export default function BracketViewer({ tournamentId }) {
                 isFinal={isFinal}
                 onWatch={() => handleWatch(match)}
                 onReveal={() => handleReveal(match)}
+                onShowChampion={() => handleShowChampion(match)}
               />
             );
           })}
@@ -159,7 +174,27 @@ export default function BracketViewer({ tournamentId }) {
   );
 }
 
-function MatchCard({ match, state, winnerIsP1, isFinal, onWatch, onReveal }) {
+function MatchCard({
+  match,
+  state,
+  winnerIsP1,
+  isFinal,
+  onWatch,
+  onReveal,
+  onShowChampion,
+}) {
+  // Caminho do W.O.: card próprio, já revelado, sem flip nem suspense.
+  if (match.walkover) {
+    return (
+      <WalkoverMatchCard
+        match={match}
+        winnerIsP1={winnerIsP1}
+        isFinal={isFinal}
+        onShowChampion={onShowChampion}
+      />
+    );
+  }
+
   const isFlipping = state === "revealing";
   const isRevealed = state === "revealed";
 
@@ -233,6 +268,53 @@ function MatchCard({ match, state, winnerIsP1, isFinal, onWatch, onReveal }) {
               ↩ Rever partida
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WalkoverMatchCard({ match, winnerIsP1, isFinal, onShowChampion }) {
+  return (
+    <div
+      className={`bv-flip-wrapper ${isFinal ? "bv-flip-wrapper--final" : ""}`}
+    >
+      <div
+        className={`bv-match-card bv-match-card--walkover ${isFinal ? "bv-match-card--final" : ""}`}
+      >
+        <span className="bv-walkover-tag">⚖️ Sorteio</span>
+
+        <div className="bv-match-players">
+          <PlayerSlot
+            name={match.player1Name}
+            isWinner={winnerIsP1}
+            isFinal={isFinal}
+          />
+          <span className="bv-vs">vs</span>
+          <PlayerSlot
+            name={match.player2Name}
+            isWinner={!winnerIsP1}
+            isFinal={isFinal}
+          />
+        </div>
+
+        <p className="bv-walkover-note">
+          {match.reason ||
+            "Partida não disputada — classificação decidida por sorteio."}
+        </p>
+
+        <div className="bv-match-actions">
+          <button
+            className="bv-replay-button bv-replay-button--secondary"
+            onClick={() => window.open(`/matches/${match.matchId}`, "_blank")}
+          >
+            Ver detalhes
+          </button>
+          {isFinal && (
+            <button className="bv-replay-button" onClick={onShowChampion}>
+              🏆 Ver campeão
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -330,12 +412,29 @@ MatchCard.propTypes = {
     player2Name: PropTypes.string.isRequired,
     player1Id: PropTypes.number.isRequired,
     winnerId: PropTypes.number.isRequired,
+    walkover: PropTypes.bool,
+    reason: PropTypes.string,
   }).isRequired,
   state: PropTypes.string.isRequired,
   winnerIsP1: PropTypes.bool.isRequired,
   isFinal: PropTypes.bool.isRequired,
   onWatch: PropTypes.func.isRequired,
   onReveal: PropTypes.func.isRequired,
+  onShowChampion: PropTypes.func.isRequired,
+};
+
+WalkoverMatchCard.propTypes = {
+  match: PropTypes.shape({
+    matchId: PropTypes.number.isRequired,
+    player1Name: PropTypes.string.isRequired,
+    player2Name: PropTypes.string.isRequired,
+    player1Id: PropTypes.number.isRequired,
+    winnerId: PropTypes.number.isRequired,
+    reason: PropTypes.string,
+  }).isRequired,
+  winnerIsP1: PropTypes.bool.isRequired,
+  isFinal: PropTypes.bool.isRequired,
+  onShowChampion: PropTypes.func.isRequired,
 };
 
 PlayerSlot.propTypes = {
@@ -348,3 +447,4 @@ ChampionScreen.propTypes = {
   name: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
 };
+

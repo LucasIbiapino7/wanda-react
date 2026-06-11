@@ -1,0 +1,71 @@
+/* Estilos específicos da tela de W.O. (sorteio).
+   Reaproveita .arena / .arena-container / .player-info / .character do Arena.css
+   e adiciona apenas o que é próprio do walkover. */
+
+.walkover-arena {
+  position: relative;
+}
+
+/* faixa central com a explicação do sorteio */
+.walkover-banner {
+  position: absolute;
+  top: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(80%, 640px);
+  text-align: center;
+  background: rgba(10, 12, 24, 0.78);
+  border: 1px solid rgba(255, 184, 77, 0.5);
+  border-radius: 12px;
+  padding: 18px 22px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 5;
+}
+
+.walkover-tag {
+  display: inline-block;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  font-size: 0.8rem;
+  color: #1a1300;
+  background: #ffb84d;
+  border-radius: 999px;
+  padding: 3px 12px;
+  margin-bottom: 10px;
+}
+
+.walkover-reason {
+  margin: 0;
+  color: #f3f4f6;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.walkover-winner {
+  margin: 10px 0 0;
+  color: #ffd591;
+  font-size: 0.98rem;
+}
+
+.walkover-winner strong {
+  color: #ffb84d;
+}
+
+/* selo "Avançou" perto do nome do classificado */
+.walkover-badge {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #06240f;
+  background: #4ade80;
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
+/* quem não avançou fica esmaecido, dando destaque ao classificado */
+.character.walkover-dimmed {
+  filter: grayscale(0.6) brightness(0.7);
+  opacity: 0.75;
+}

@@ -1,10 +1,13 @@
-import { useState, useCallback, useContext, useEffect } from "react"
+import { useState, useCallback, useContext, useEffect, useMemo } from "react"
 import PropTypes from "prop-types"
 import AuthContext from "../../context/AuthContext"
 import ChallengeService from "../../services/ChallengeService"
+import ClassroomService from "../../services/ClassroomService"
 import AppModal from "../UI/AppModal"
 import PendingChallengeCard from "../Challenges/PendingChallengeCard"
 import { getApiError } from "../../utils/errors"
+
+const MEMBERS_PER_PAGE = 8
 
 export default function ClassroomChallenge({
     classroom,
@@ -16,6 +19,13 @@ export default function ClassroomChallenge({
     const [loading, setLoading] = useState(false)
     const [creatingFor, setCreatingFor] = useState(null)
     const [busyIds, setBusyIds] = useState(new Set())
+
+    // Lista COMPLETA de membros (buscada aqui), pra permitir desafiar qualquer
+    // aluno — não apenas a primeira página que a página da turma carrega.
+    const [allMembers, setAllMembers] = useState(members || [])
+    const [memberSearch, setMemberSearch] = useState("")
+    const [memberPage, setMemberPage] = useState(0)
+
     const [modal, setModal] = useState({
         open: false,
         title: "",
@@ -55,7 +65,7 @@ export default function ClassroomChallenge({
                 size: 10
             })
             setChallenges(allData?.content ?? [])
-            
+
         } catch(error){
             setModal({
                 open: true,
@@ -73,6 +83,32 @@ export default function ClassroomChallenge({
     useEffect(() => {
         fetchChallenges()
     }, [fetchChallenges])
+
+    // Traz todos os membros da turma de uma vez (escala de turma), pra o painel
+    // de desafio poder alcançar qualquer aluno e oferecer busca por nome.
+    const fetchAllMembers = useCallback(async () => {
+        if (!classroomId) {
+            return
+        }
+        try {
+            const data = await ClassroomService.listMembers(classroomId, {
+                page: 0,
+                size: 500
+            })
+            setAllMembers(data?.content ?? [])
+        } catch (error) {
+            // silencioso: se falhar, mantém o que já houver (inclusive o vindo via prop)
+        }
+    }, [classroomId])
+
+    useEffect(() => {
+        fetchAllMembers()
+    }, [fetchAllMembers])
+
+    // sempre que a busca muda, volta pra primeira página da lista
+    useEffect(() => {
+        setMemberPage(0)
+    }, [memberSearch])
 
     const handleCreateChallenge = async (student) => {
         setCreatingFor(student.userId)
@@ -169,9 +205,29 @@ export default function ClassroomChallenge({
         closeModal()
     }
 
-    const membrosDaTurma = members.filter((member) => {
-        return member.userId && member.userId !== user?.id 
-    })
+    // membros desafiáveis: todos menos eu, aplicando a busca por nome/e-mail
+    const membrosFiltrados = useMemo(() => {
+        const term = memberSearch.trim().toLowerCase()
+        return allMembers
+            .filter((member) => member.userId && member.userId !== user?.id)
+            .filter((member) => {
+                if (!term) return true
+                return (
+                    (member.name || "").toLowerCase().includes(term) ||
+                    (member.email || "").toLowerCase().includes(term)
+                )
+            })
+    }, [allMembers, memberSearch, user?.id])
+
+    const totalMemberPages = Math.max(
+        1,
+        Math.ceil(membrosFiltrados.length / MEMBERS_PER_PAGE)
+    )
+    const paginaAtual = Math.min(memberPage, totalMemberPages - 1)
+    const membrosVisiveis = membrosFiltrados.slice(
+        paginaAtual * MEMBERS_PER_PAGE,
+        paginaAtual * MEMBERS_PER_PAGE + MEMBERS_PER_PAGE
+    )
 
     // "Meus desafios pendentes" tem dois casos: os que EU recebi (posso aceitar)
     // e os que EU enviei (aguardando o outro). O /me da turma traz ambos.
@@ -241,34 +297,74 @@ export default function ClassroomChallenge({
                     <div className="classroom-challenges-panel">
                         <h3>Desafiar aluno</h3>
 
-                        {membrosDaTurma.length === 0 ? (
+                        <input
+                            type="text"
+                            className="classroom-challenge-search"
+                            placeholder="Buscar aluno por nome ou e-mail..."
+                            value={memberSearch}
+                            onChange={(e) => setMemberSearch(e.target.value)}
+                        />
+
+                        {membrosFiltrados.length === 0 ? (
                             <p className="classroom-empty-text">
-                                Nenhum aluno disponível para desafio.
+                                {memberSearch
+                                    ? "Nenhum aluno encontrado para essa busca."
+                                    : "Nenhum aluno disponível para desafio."}
                             </p>
                         ) : (
-                            <div className="classroom-challenge-members">
-                                {membrosDaTurma.map((member) => (
-                                    <div
-                                        key={member.userId}
-                                        className="classroom-challenge-member"
-                                    >
-                                        <div>
-                                            <strong>{member.name}</strong>
-                                            <span>{member.email}</span>
-                                        </div>
+                            <>
+                                <div className="classroom-challenge-members">
+                                    {membrosVisiveis.map((member) => (
+                                        <div
+                                            key={member.userId}
+                                            className="classroom-challenge-member"
+                                        >
+                                            <div>
+                                                <strong>{member.name}</strong>
+                                                <span>{member.email}</span>
+                                            </div>
 
+                                            <button
+                                                type="button"
+                                                onClick={() => handleCreateChallenge(member)}
+                                                disabled={creatingFor === member.userId}
+                                            >
+                                                {creatingFor === member.userId
+                                                    ? "Enviando..."
+                                                    : "Desafiar"}
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {totalMemberPages > 1 && (
+                                    <div className="classroom-challenge-pagination">
                                         <button
                                             type="button"
-                                            onClick={() => handleCreateChallenge(member)}
-                                            disabled={creatingFor === member.userId}
+                                            onClick={() =>
+                                                setMemberPage((p) => Math.max(0, p - 1))
+                                            }
+                                            disabled={paginaAtual === 0}
                                         >
-                                            {creatingFor === member.userId
-                                                ? "Enviando..."
-                                                : "Desafiar"}
+                                            ← Anterior
+                                        </button>
+                                        <span>
+                                            {paginaAtual + 1} / {totalMemberPages}
+                                        </span>
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                setMemberPage((p) =>
+                                                    Math.min(totalMemberPages - 1, p + 1)
+                                                )
+                                            }
+                                            disabled={paginaAtual >= totalMemberPages - 1}
+                                        >
+                                            Próximo →
                                         </button>
                                     </div>
-                                ))}
-                            </div>
+                                )}
+                            </>
                         )}
                     </div>
 
