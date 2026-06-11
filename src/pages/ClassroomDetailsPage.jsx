@@ -815,17 +815,51 @@ export default function ClassroomDetailsPage() {
       </div>
 
       {activeTab === "mural" && (
-        <section className="classroom-details-card">
-          <h2>Mural da turma</h2>
+        <>
+          <section
+            className={`classroom-game-banner classroom-game-banner--${gameKey}`}
+          >
+            <div className="classroom-game-banner__glow" />
+            <img
+              className="classroom-game-banner__logo"
+              src={`/assets/games/${gameKey === "bits" ? "bits" : "jokenpo"}-logo.png`}
+              alt={getGameLabel(classroom.gameName)}
+            />
+            <div className="classroom-game-banner__content">
+              <span className="classroom-game-banner__eyebrow">
+                Jogo da turma
+              </span>
+              <h2 className="classroom-game-banner__title">
+                {getGameLabel(classroom.gameName)}
+              </h2>
+              <p className="classroom-game-banner__desc">
+                Treine sua estratégia, suba no ranking e dispute os torneios da
+                turma.
+              </p>
+            </div>
+            <button
+              type="button"
+              className="classroom-game-banner__cta"
+              onClick={() =>
+                navigate(gameKey === "bits" ? "/bits" : "/jokenpo1")
+              }
+            >
+              ▶ Escreva sua estratégia
+            </button>
+          </section>
 
-          {classroom.mural ? (
-            <p className="classroom-mural-text">{classroom.mural}</p>
-          ) : (
-            <p className="classroom-empty-text">
-              Nenhuma mensagem no mural ainda.
-            </p>
-          )}
-        </section>
+          <section className="classroom-details-card">
+            <h2>Mural da turma</h2>
+
+            {classroom.mural ? (
+              <p className="classroom-mural-text">{classroom.mural}</p>
+            ) : (
+              <p className="classroom-empty-text">
+                Nenhuma mensagem no mural ainda.
+              </p>
+            )}
+          </section>
+        </>
       )}
 
       {activeTab === "members" && (

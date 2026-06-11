@@ -6,6 +6,7 @@ import Arena from "../components/Arena/Arena";
 import MatchService from "../services/MatchService";
 import AppModal from "../components/UI/AppModal";
 import BitsReplayPage from "../pages/BitsReplayPage";
+import WalkoverReplay from "../components/Arena/WalkoverReplay.jsx";
 
 function Matches() {
   const { id } = useParams();
@@ -48,8 +49,7 @@ function Matches() {
     fetchMatch();
   }, [id, token]);
 
-  const closeModal = () =>
-    setErrorModal((prev) => ({ ...prev, open: false }));
+  const closeModal = () => setErrorModal((prev) => ({ ...prev, open: false }));
 
   // Backend novo: { game, payload }
   // Fallback: caso algum endpoint ainda devolva direto o payload
@@ -119,6 +119,12 @@ function Matches() {
           <p>Nenhum payload de replay encontrado.</p>
         </div>
       );
+    }
+
+    // W.O. (sorteio): mesmo payload dos outros replays, mas marcado como WALKOVER.
+    // Intercepta antes do switch de jogo — não há rounds pra animar.
+    if (replayPayload.type === "WALKOVER") {
+      return <WalkoverReplay duel={replayPayload} />;
     }
 
     if (gameKey === "bits") {
