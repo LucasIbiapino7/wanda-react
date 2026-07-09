@@ -357,6 +357,19 @@
    transform: none;
 }
 
+.classroom-edit-form__actions {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 10px;
+}
+
+.classroom-edit-form__cancel {
+   border: 1px solid rgba(255, 255, 255, 0.2) !important;
+   color: rgba(255, 255, 255, 0.78) !important;
+   background: transparent !important;
+   box-shadow: none !important;
+}
+
 .classroom-details-tabs {
    display: flex;
    gap: 4px;
@@ -436,7 +449,8 @@
 
 .classroom-edit-form input,
 .classroom-edit-form textarea,
-.classroom-add-student input {
+.classroom-add-student input,
+.classroom-add-student select {
    width: 100%;
    border: 1px solid var(--details-border);
    border-radius: 10px;
@@ -451,7 +465,8 @@
 
 .classroom-edit-form input:focus,
 .classroom-edit-form textarea:focus,
-.classroom-add-student input:focus {
+.classroom-add-student input:focus,
+.classroom-add-student select:focus {
    border-color: rgba(255, 204, 0, 0.48);
    background: rgba(0, 0, 0, 0.48);
 }

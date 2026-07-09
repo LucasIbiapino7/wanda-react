@@ -43,6 +43,17 @@ export default function CreateClassroomModal({ open, onClose, onCreate }) {
    const [fieldErrors, setFieldErrors] = useState({})
    const [submitting, setSubmitting] = useState(false)
 
+   const resetModalState = () => {
+      setForm(INITIAL_FORM)
+      setFieldErrors({})
+      setSubmitting(false)
+   }
+
+   const handleClose = () => {
+      resetModalState()
+      onClose()
+   }
+
    if (!open) {
       return null
    }
@@ -96,7 +107,8 @@ export default function CreateClassroomModal({ open, onClose, onCreate }) {
             state: form.state || null
          })
 
-         setForm(INITIAL_FORM)
+         resetModalState()
+         onClose()
       } finally {
          setSubmitting(false)
       }
@@ -116,7 +128,7 @@ export default function CreateClassroomModal({ open, onClose, onCreate }) {
                <button
                   type="button"
                   className="create-classroom-modal__close"
-                  onClick={onClose}
+                  onClick={handleClose}
                   aria-label="Fechar modal"
                >
                   x
@@ -249,7 +261,7 @@ export default function CreateClassroomModal({ open, onClose, onCreate }) {
                </div>
 
                <div className="create-classroom-modal__actions">
-                  <button type="button" onClick={onClose} disabled={submitting}>
+                  <button type="button" onClick={handleClose} disabled={submitting}>
                      Cancelar
                   </button>
 

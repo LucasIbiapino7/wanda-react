@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { redirect, useNavigate, useParams } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import ClassroomService from "../services/ClassroomService";
 import ClassroomChallenge from "../components/Classrooms/ClassroomChallenge";
@@ -28,6 +28,12 @@ const GAME_LABELS = {
   jokenpo: "Jokenpô",
   bits: "BITS",
 };
+
+const STATE_OPTIONS = [
+   "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS",
+   "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC",
+   "SP", "SE", "TO"
+]
 
 // Editar aqui após implementação de escalabilidade
 function getGameLabel(gameName) {
@@ -92,21 +98,32 @@ export default function ClassroomDetailsPage() {
     title: "",
     message: "",
     variant: "default",
+    redirectTo: null
   });
 
   const closeModal = () => {
-    setModal((current) => ({
-      ...current,
+    const redirectTo = modal.redirectTo
+
+    setModal({
       open: false,
-    }));
+      title: "",
+      message: "",
+      variant: "default",
+      redirectTo: null
+    });
+
+    if (redirectTo){
+      navigate(redirectTo)
+    }
   };
 
-  const showModal = ({ title, message, variant = "default" }) => {
+  const showModal = ({ title, message, variant = "default", redirectTo = null }) => {
     setModal({
       open: true,
       title,
       message,
       variant,
+      redirectTo
     });
   };
 
@@ -205,9 +222,7 @@ export default function ClassroomDetailsPage() {
   }, [fetchClassroom]);
 
   useEffect(() => {
-    if (activeTab === "members" || activeTab === "challenges") {
-      fetchMembers();
-    }
+    fetchMembers();
   }, [activeTab, fetchMembers]);
 
   // Membros que já submeteram questão
@@ -222,6 +237,27 @@ export default function ClassroomDetailsPage() {
       ...current,
       [name]: value,
     }));
+  };
+
+  const resetEditForm = () => {
+    if (!classroom) {
+      return;
+    }
+
+    setEditForm({
+      name: classroom.name || "",
+      course: classroom.course || "",
+      description: classroom.description || "",
+      mural: classroom.mural || "",
+      institution: classroom.institution || "",
+      city: classroom.city || "",
+      state: classroom.state || ""
+    });
+  };
+
+  const handleCancelEdit = () => {
+    resetEditForm();
+    setEditing(false);
   };
 
   // Atualiza as turmas
@@ -247,7 +283,7 @@ export default function ClassroomDetailsPage() {
         mural: editForm.mural.trim() || null,
         institution: editForm.institution.trim() || null,
         city: editForm.city.trim() || null,
-        state: editForm.state.trim() || null,
+        state: editForm.state || null,
       });
 
       setClassroom(updated);
@@ -313,6 +349,7 @@ export default function ClassroomDetailsPage() {
         title: "Turma arquivada",
         message: "A turma foi arquivada com sucesso.",
         variant: "success",
+        redirectTo: "/classrooms"
       });
     } catch (error) {
       showModal({
@@ -600,7 +637,7 @@ export default function ClassroomDetailsPage() {
                 <button
                   type="button"
                   className="classroom-details-hero__edit"
-                  onClick={() => setEditing((current) => !current)}
+                  onClick={editing ? handleCancelEdit : () => setEditing(true)}
                   disabled={isArchived}
                 >
                   <svg
@@ -764,18 +801,35 @@ export default function ClassroomDetailsPage() {
 
               <label>
                 Estado
-                <input
-                  name="state"
-                  value={editForm.state}
-                  onChange={handleEditChange}
-                  maxLength={2}
-                />
+              <select
+                name="state"
+                value={editForm.state || ""}
+                onChange={handleEditChange}
+              >
+                <option value="">UF</option>
+                {STATE_OPTIONS.map((state) => (
+                    <option key={state} value={state}>
+                      {state}
+                    </option>
+                ))}
+              </select>
               </label>
             </div>
 
-            <button type="submit" disabled={saving}>
-              {saving ? "Salvando..." : "Salvar alterações"}
-            </button>
+            <div className="classroom-edit-form__actions">
+              <button type="submit" disabled={saving}>
+                {saving ? "Salvando..." : "Salvar alterações"}
+              </button>
+
+              <button
+                type="button"
+                className="classroom-edit-form__cancel"
+                onClick={handleCancelEdit}
+                disabled={saving}
+              >
+                Fechar edição
+              </button>
+            </div>
           </form>
         </section>
       )}
