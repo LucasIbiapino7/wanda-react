@@ -15,17 +15,15 @@
 .logo-group {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 22px;
 }
 
 .logo-main {
   height: 35px;
   width: auto;
 }
-.logo-lab {
-  height: 48px;
-  width: 80px;
-  border-radius: 20%;
+.logos {
+  height: 55px;
 }
 
 .nav {

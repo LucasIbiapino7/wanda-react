@@ -8,9 +8,9 @@ import "../SendFunction.css";
 import { Info } from "lucide-react";
 
 import AuthContext from "../../../context/AuthContext";
-import cosmo from "../../../assets/cosmo-avatar.png";
-import timmy from "../../../assets/timmy.png";
-import wanda from "../../../assets/wanda.png";
+import bit from "../../../assets/mascotes/bit.png";
+import pixel from "../../../assets/mascotes/pixel.png";
+import ada from "../../../assets/mascotes/ada.png";
 import like from "../../../assets/like.svg";
 import dislike from "../../../assets/dislike.svg";
 
@@ -306,11 +306,11 @@ function SendFunctionJokenpo2() {
 
   const agentName =
     assistantStyle === "VERBOSE"
-      ? "Cosmo"
+      ? "Bit"
       : assistantStyle === "SUCCINCT"
-      ? "Timmy"
+      ? "Pixel"
       : assistantStyle === "INTERMEDIATE"
-      ? "Wanda"
+      ? "Ada"
       : null;
 
   // HintBox (hover/focus)
@@ -391,28 +391,28 @@ function SendFunctionJokenpo2() {
             <div
               className={`agent-tab ${assistantStyle === "VERBOSE" ? "active" : ""} ${isProcessing ? "disabled" : ""}`}
               onClick={() => handleAgentTabClick("VERBOSE")}
-              title={isProcessing ? "Aguarde o processamento terminar" : "Selecionar Cosmo"}
+              title={isProcessing ? "Aguarde o processamento terminar" : "Selecionar Bit"}
             >
-              <img src={cosmo} alt="Cosmo" className="agent-img" />
-              <span>Cosmo</span>
+              <img src={bit} alt="Bit" className="agent-img" />
+              <span>Bit</span>
             </div>
 
             <div
               className={`agent-tab ${assistantStyle === "SUCCINCT" ? "active" : ""} ${isProcessing ? "disabled" : ""}`}
               onClick={() => handleAgentTabClick("SUCCINCT")}
-              title={isProcessing ? "Aguarde o processamento terminar" : "Selecionar Timmy"}
+              title={isProcessing ? "Aguarde o processamento terminar" : "Selecionar Pixel"}
             >
-              <img src={timmy} alt="Timmy" className="agent-img" />
-              <span>Timmy</span>
+              <img src={pixel} alt="Pixel" className="agent-img" />
+              <span>Pixel</span>
             </div>
 
             <div
               className={`agent-tab ${assistantStyle === "INTERMEDIATE" ? "active" : ""} ${isProcessing ? "disabled" : ""}`}
               onClick={() => handleAgentTabClick("INTERMEDIATE")}
-              title={isProcessing ? "Aguarde o processamento terminar" : "Selecionar Wanda"}
+              title={isProcessing ? "Aguarde o processamento terminar" : "Selecionar Ada"}
             >
-              <img src={wanda} alt="Wanda" className="agent-img" />
-              <span>Wanda</span>
+              <img src={ada} alt="Ada" className="agent-img" />
+              <span>Ada</span>
             </div>
           </div>
 

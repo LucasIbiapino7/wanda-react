@@ -1,10 +1,10 @@
 import { useState } from "react";
 import "./telas.css";
-import cosmoImage from "../../../assets/cosmo-avatar.png"
-import cardPaper from "../../../assets/papel.png"
-import cardStone from "../../../assets/pedra.png"
-import cardScissors from "../../../assets/tesoura.png"
-import cardSecret from "../../../assets/secret.png"
+import bitImage from "../../../assets/mascotes/bit.png"
+import cardPaper from "../../../assets/jokenpo/papel.png"
+import cardStone from "../../../assets/jokenpo/pedra.png"
+import cardScissors from "../../../assets/jokenpo/tesoura.png"
+import cardSecret from "../../../assets/jokenpo/secret.png"
 
 const CARTAS = [
   { key: "pedra", image: cardStone, label: "Pedra" },
@@ -65,9 +65,9 @@ export default function Tela1Jogo({ onPronto }) {
   return (
     <div className="tela">
       <div className="tela__fala">
-        <div className="tela__avatar"><img src={cosmoImage} alt="cosmo-avatar" /></div>
+        <div className="tela__avatar"><img src={bitImage} alt="Bit" /></div>
         <div className="tela__bubble">
-          Sou o <strong>Cosmo</strong>! Vamos jogar um Jokenpo rápido. Clique em
+          Sou o <strong>Bit</strong>! Vamos jogar um Jokenpo rápido. Clique em
           uma carta pra jogar. Melhor de 3! 🃏
         </div>
       </div>

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import './telas.css'
-import timmyImage from "../../../assets/timmy.png"
-import cosmoImage from "../../../assets/cosmo-avatar.png"
-import wandaImage from "../../../assets/wanda.png"
+import pixelImage from "../../../assets/mascotes/pixel.png"
+import bitImage from "../../../assets/mascotes/bit.png"
+import adaImage from "../../../assets/mascotes/ada.png"
 
 const CODIGO_EXEMPLO = `def strategy(card1, card2, card3):
     return "pedra"`
@@ -10,25 +10,25 @@ const CODIGO_EXEMPLO = `def strategy(card1, card2, card3):
 const AGENTES = [
   {
     key: 'VERBOSE',
-    avatar: cosmoImage,
-    alt: 'Cosmo-avatar',
-    nome: 'Cosmo',
+    avatar: bitImage,
+    alt: 'Bit',
+    nome: 'Bit',
     tag: 'Detalhista',
     preview: `Olha, sua função está retornando sempre "pedra", independente das cartas que você tem na mão! Isso significa que os parâmetros card1, card2 e card3 estão sendo completamente ignorados. Sua estratégia vai funcionar, mas vai ser bastante previsível — qualquer adversário que perceber isso pode se adaptar facilmente. Que tal usar as cartas disponíveis pra tomar uma decisão mais inteligente?`,
   },
   {
     key: 'SUCCINCT',
-    avatar: timmyImage,
-    alt: 'timmy-avatar',
-    nome: 'Timmy',
+    avatar: pixelImage,
+    alt: 'Pixel',
+    nome: 'Pixel',
     tag: 'Direto',
     preview: `Retornando sempre "pedra". Nenhum parâmetro usado. Estratégia previsível — considere usar card1, card2 ou card3 pra variar.`,
   },
   {
     key: 'INTERMEDIATE',
-    avatar: wandaImage,
-    alt: 'wanda-avatar',
-    nome: 'Wanda',
+    avatar: adaImage,
+    alt: 'Ada',
+    nome: 'Ada',
     tag: 'Equilibrado',
     preview: `Sua função sempre retorna "pedra", sem considerar as cartas da sua mão. Isso funciona, mas torna sua estratégia previsível. Tente usar card1, card2 ou card3 pra tomar decisões mais adaptativas — por exemplo, se tiver papel na mão, pode ser uma escolha mais forte dependendo do contexto.`,
   },
@@ -66,7 +66,7 @@ export default function Tela3Agentes({ onPronto }) {
     <div className="tela">
 
       <div className="tela__fala">
-        <div className="tela__avatar"><img src={wandaImage} alt="wanda-avatar"/></div>
+        <div className="tela__avatar"><img src={adaImage} alt="Ada"/></div>
         <div className="tela__bubble">
           No editor você conta com <strong>3 agentes</strong> que analisam
           seu código. Clique em cada um pra ver como eles respondem! 👇

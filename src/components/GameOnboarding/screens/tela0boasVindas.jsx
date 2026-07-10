@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import "./telas.css";
-import wandaImage from "../../../assets/wanda.png"
+import adaImage from "../../../assets/mascotes/ada.png"
 
 const passos = [
   {
@@ -28,9 +28,9 @@ export default function Tela0BoasVindas({ onPronto }) {
   return (
     <div className="tela">
       <div className="tela__fala">
-        <div className="tela__avatar"><img src={wandaImage} alt="wanda-image"/></div>
+        <div className="tela__avatar"><img src={adaImage} alt="Ada"/></div>
         <div className="tela__bubble">
-          Olá! Eu sou a <strong>Wanda</strong>. Antes de programar, deixa eu te
+          Olá! Eu sou a <strong>Ada</strong>. Antes de programar, deixa eu te
           mostrar como tudo funciona. São só 4 passos rápidos!
         </div>
       </div>

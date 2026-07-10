@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import "./telas.css";
-import timmyImage from "../../../assets/timmy.png"
-import cardPaper from "../../../assets/papel.png"
-import cardStone from "../../../assets/pedra.png"
-import cardScissors from "../../../assets/tesoura.png"
-import cardSecret from "../../../assets/secret.png"
+import pixelImage from "../../../assets/mascotes/pixel.png"
+import cardPaper from "../../../assets/jokenpo/papel.png"
+import cardStone from "../../../assets/jokenpo/pedra.png"
+import cardScissors from "../../../assets/jokenpo/tesoura.png"
+import cardSecret from "../../../assets/jokenpo/secret.png"
 
 const IMAGE = { pedra: cardStone, papel: cardPaper, tesoura: cardScissors};
 const EMOJI = {pedra: '🪨', papel: '📄', tesoura: '✂️'};
@@ -46,9 +46,9 @@ export default function Tela2Funcao({ onPronto }) {
   return (
     <div className="tela">
       <div className="tela__fala">
-        <div className="tela__avatar"><img src={timmyImage} alt="timmy-avatar"/></div>
+        <div className="tela__avatar"><img src={pixelImage} alt="Pixel"/></div>
         <div className="tela__bubble">
-          Sou o <strong>Timmy</strong>! O baralho tem 2 pedras, 2 papéis e 2
+          Sou o <strong>Pixel</strong>! O baralho tem 2 pedras, 2 papéis e 2
           tesouras — embaralhados e divididos entre vocês dois. 🃏
         </div>
       </div>

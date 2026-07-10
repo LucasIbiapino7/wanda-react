@@ -16,9 +16,9 @@
 }
 
 .tela__avatar {
-  width: 60px;
-  height: 60px;
-  padding: 0.3rem;
+  width: 84px;
+  height: 84px;
+  padding: 0.35rem;
   border-radius: 50%;
   background: rgba(156, 39, 176, 0.4);
   border: 2px solid var(--roxo);
@@ -32,7 +32,8 @@
 .tela__avatar > img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center bottom;
 }
 
 .tela__bubble {
@@ -479,8 +480,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 14px 10px;
+  gap: 8px;
+  padding: 16px 10px;
   border-radius: var(--radius-md);
   border: 1.5px solid var(--borda);
   background: var(--surface);
@@ -491,9 +492,10 @@
 }
 
 .tela3__agente img {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
+  width: 88px;
+  height: 88px;
+  object-fit: contain;
+  object-position: center bottom;
 }
 
 .tela3__agente:hover {
@@ -507,6 +509,10 @@
 }
 
 .tela3__agente-emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 88px;
   font-size: 26px;
 }
 
@@ -709,6 +715,20 @@
 }
 
 @media screen and (max-width:720px) {
+  .tela__avatar {
+    width: 72px;
+    height: 72px;
+  }
+
+  .tela3__agente img {
+    width: 72px;
+    height: 72px;
+  }
+
+  .tela3__agente-emoji {
+    min-height: 72px;
+  }
+
   .tela0__passos {
     flex-direction: column;
     align-items: center;

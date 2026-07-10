@@ -1,11 +1,11 @@
 import { useState } from "react";
 import "./telas.css";
-import cosmoImage from "../../../assets/cosmo-avatar.png";
+import bitImage from "../../../assets/mascotes/bit.png";
 import CardBit8 from "../../../assets/bits/bit8.png"
 import CardBit16 from "../../../assets/bits/bit16.png"
 import CardBit32 from "../../../assets/bits/bit32.png"
 import CardFirewall from "../../../assets/bits/firewall.png"
-import CardSecret from "../../../assets/secret.png"
+import CardSecret from "../../../assets/jokenpo/secret.png"
 
 const CARTAS = [
   { key: "BIT8",     label: "BIT8",     image: CardBit8 },
@@ -73,9 +73,9 @@ export default function Tela1JogoBits({ onPronto }) {
   return (
     <div className="tela">
       <div className="tela__fala">
-        <div className="tela__avatar"><img src={cosmoImage} alt="cosmo-avatar" /></div>
+        <div className="tela__avatar"><img src={bitImage} alt="Bit" /></div>
         <div className="tela__bubble">
-          Sou o <strong>Cosmo</strong>! Vamos jogar um round rápido de BITS.
+          Sou o <strong>Bit</strong>! Vamos jogar um round rápido de BITS.
           Cada jogador tem um conjunto de cartas — escolha a sua! 🃏
         </div>
       </div>

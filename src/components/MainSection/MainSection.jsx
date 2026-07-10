@@ -2,10 +2,10 @@ import "./MainSection.css";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 
-import Cosmo from "../../assets/cosmo-avatar.png";
-import Timmy from "../../assets/timmy.png";
-import Wanda from "../../assets/wanda.png";
-import Logo from "../../assets/logo.png";
+import bit from "../../assets/mascotes/bit.png";
+import pixel from "../../assets/mascotes/pixel.png";
+import ada from "../../assets/mascotes/ada.png";
+import Logo from "../../assets/logos/wanda-logo.png";
 import AuthContext from "../../context/AuthContext";
 
 export default function MainSection() {
@@ -360,8 +360,10 @@ export default function MainSection() {
 
         <div className="agents-grid">
           <article className="agent-card">
-            <img src={Cosmo} alt="Cosmo" className="agent-avatar" />
-            <h3 className="agent-name">Cosmo</h3>
+            <div className="div-avatar">
+              <img src={bit} alt="Bit" className="agent-avatar" />
+            </div>
+            <h3 className="agent-name">Bit</h3>
             <p className="agent-role">Explicações bem detalhadas</p>
             <p className="agent-description">
               Respostas mais longas, cheias de exemplos e explicações passo a
@@ -371,8 +373,10 @@ export default function MainSection() {
           </article>
 
           <article className="agent-card">
-            <img src={Timmy} alt="Timmy" className="agent-avatar" />
-            <h3 className="agent-name">Timmy</h3>
+            <div className="div-avatar">
+              <img src={pixel} alt="Pixel" className="agent-avatar" />
+            </div>
+            <h3 className="agent-name">Pixel</h3>
             <p className="agent-role">Direto ao ponto</p>
             <p className="agent-description">
               Fala pouco, mas vai direto ao que importa. Útil quando você já tem
@@ -381,12 +385,14 @@ export default function MainSection() {
           </article>
 
           <article className="agent-card">
-            <img src={Wanda} alt="Wanda" className="agent-avatar" />
-            <h3 className="agent-name">Wanda</h3>
+            <div className="div-avatar">
+              <img src={ada} alt="Ada" className="agent-avatar" />
+            </div>
+            <h3 className="agent-name">Ada</h3>
             <p className="agent-role">Equilíbrio</p>
             <p className="agent-description">
-              Mistura de clareza e objetividade. Nem tão curto quanto o Timmy,
-              nem tão longo quanto o Cosmo: o meio-termo ideal.
+              Mistura de clareza e objetividade. Nem tão curto quanto o Pixel,
+              nem tão longo quanto o Bit: o meio-termo ideal.
             </p>
           </article>
         </div>

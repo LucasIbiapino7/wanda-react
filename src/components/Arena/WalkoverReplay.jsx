@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import ArenaBackground from "../../assets/arena-background-pixel-art.png";
+import ArenaBackground from "../../assets/jokenpo/arena-background-pixel-art.png";
 import "./Arena.css";
 import "./WalkoverReplay.css";
 

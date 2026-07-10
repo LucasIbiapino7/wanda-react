@@ -3,8 +3,8 @@ export const tourSteps = [
     target: ".agent-tabs",
     content: (
       <div>
-        Aqui está a área dos assistentes: <strong>Cosmo</strong>,{" "}
-        <strong>Timmy</strong> ou <strong>Wanda</strong>, cada um com um estilo
+        Aqui está a área dos assistentes: <strong>Bit</strong>,{" "}
+        <strong>Pixel</strong> ou <strong>Ada</strong>, cada um com um estilo
         diferente de respostas, como visto anteriormente.
       </div>
     ),

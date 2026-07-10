@@ -1,0 +1,177 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradientes originais -->
+    <linearGradient id="blueGrad" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#3F78D0"/>
+      <stop offset="100%" stop-color="#2E66BD"/>
+    </linearGradient>
+
+    <linearGradient id="yellowGrad" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#F2A415"/>
+      <stop offset="100%" stop-color="#EE9D10"/>
+    </linearGradient>
+
+    <linearGradient id="greenGrad" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#79CB4A"/>
+      <stop offset="100%" stop-color="#69BF42"/>
+    </linearGradient>
+
+    <linearGradient id="redGrad" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#D13A2B"/>
+      <stop offset="100%" stop-color="#C82F23"/>
+    </linearGradient>
+
+    <linearGradient id="cyanGrad" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#5FD5D2"/>
+      <stop offset="100%" stop-color="#47C7C5"/>
+    </linearGradient>
+
+    <!-- brilho/reflexo -->
+    <linearGradient id="shineGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="white" stop-opacity="0"/>
+      <stop offset="45%" stop-color="white" stop-opacity="0"/>
+      <stop offset="50%" stop-color="white" stop-opacity="0.95"/>
+      <stop offset="55%" stop-color="white" stop-opacity="0"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- glow -->
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6" result="blur1"/>
+      <feColorMatrix
+        in="blur1"
+        type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 0.8 0"
+        result="glowColor"/>
+      <feMerge>
+        <feMergeNode in="glowColor"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- sombra suave -->
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#000000" flood-opacity="0.18"/>
+    </filter>
+
+    <!-- clip para o reflexo -->
+    <clipPath id="logoClip">
+      <path d="m384.54999,202.27l-54.32999,54.83l53.73999,54.82999l0.59,0z"/>
+      <path d="m397.21781,141.17762l-17.56141,17.36821l17.37071,17.36821l0.19071,0z" transform="rotate(134.615 388.437 158.546)"/>
+      <polygon points="117.54000091552734,30.5 172.87554529187219,84.83999633789062 227.60000184601267,30.5"/>
+      <polygon points="272.1000061035156,31 296.6000061035156,31 296.6000061035156,54.880001068115234"/>
+      <polygon points="295.17999267578125,51.27000045776367 295.17999267578125,128.27999877929688 372.19000244140625,128.27999877929688"/>
+      <polygon points="112.72998809814453,475.5 165.86997985839844,421.9599914550781 217.60000610351562,475.5"/>
+      <polygon points="260.5400085449219,490.42999267578125 284.4200134277344,467.1499938964844 284.4200134277344,491.0299987792969"/>
+      <polygon points="236.89999389648438,19.790000915527344 117.48999786376953,139.7899932861328 211.82000732421875,139.7899932861328 281.6700134277344,208.4499969482422 282.8699951171875,305.760009765625 402.8699951171875,184.57000732421875 359.8800048828125,141.5800018310547 281.6700134277344,140.99000549316406 280.4800109863281,62.18000030517578"/>
+      <polygon points="294.7900085449219,418.3900146484375 316.2799987792969,418.3900146484375 316.2799987792969,440.4800109863281 294.7900085449219,440.4800109863281"/>
+      <polygon points="330.63,257.79 165.25,422.57 236.90,496.00 403.46,330.63"/>
+    </clipPath>
+
+    <style>
+      .logoWrap {
+        transform-origin: 256px 256px;
+        animation: floatLogo 4.6s ease-in-out infinite;
+      }
+
+      .pulseGlow {
+        animation: pulseGlow 2.8s ease-in-out infinite;
+      }
+
+      .shineSweep {
+        animation: shineMove 3.8s linear infinite;
+      }
+
+      .spark1, .spark2, .spark3 {
+        transform-origin: center;
+        animation: twinkle 2s ease-in-out infinite;
+      }
+
+      .spark2 { animation-delay: 0.5s; }
+      .spark3 { animation-delay: 1s; }
+
+      @keyframes floatLogo {
+        0%, 100% { transform: translateY(0px) scale(1); }
+        50% { transform: translateY(-5px) scale(1.01); }
+      }
+
+      @keyframes pulseGlow {
+        0%, 100% { opacity: 0.85; filter: url(#glow); }
+        50% { opacity: 1; filter: url(#glow); }
+      }
+
+      @keyframes shineMove {
+        0%   { transform: translateX(-320px) translateY(0); opacity: 0; }
+        10%  { opacity: 0.0; }
+        20%  { opacity: 0.75; }
+        55%  { opacity: 0.45; }
+        70%  { opacity: 0; }
+        100% { transform: translateX(620px) translateY(0); opacity: 0; }
+      }
+
+      @keyframes twinkle {
+        0%, 100% { opacity: 0.2; transform: scale(0.8) rotate(0deg); }
+        50% { opacity: 1; transform: scale(1.15) rotate(12deg); }
+      }
+    </style>
+  </defs>
+
+  <!-- fundo opcional transparente -->
+  <g class="logoWrap" filter="url(#shadow)">
+    <!-- glow duplicado por trás -->
+    <g class="pulseGlow" opacity="0.55">
+      <path d="m384.54999,202.27l-54.32999,54.83l53.73999,54.82999l0.59,0z" fill="#8CFF72"/>
+      <path d="m397.21781,141.17762l-17.56141,17.36821l17.37071,17.36821l0.19071,0z" fill="#8CFF72" transform="rotate(134.615 388.437 158.546)"/>
+      <polygon fill="#6DA8FF" points="117.54000091552734,30.5 172.87554529187219,84.83999633789062 227.60000184601267,30.5"/>
+      <polygon fill="#6DA8FF" points="272.1000061035156,31 296.6000061035156,31 296.6000061035156,54.880001068115234"/>
+      <polygon fill="#6DA8FF" points="295.17999267578125,51.27000045776367 295.17999267578125,128.27999877929688 372.19000244140625,128.27999877929688"/>
+      <polygon fill="#6DA8FF" points="112.72998809814453,475.5 165.86997985839844,421.9599914550781 217.60000610351562,475.5"/>
+      <polygon fill="#6DA8FF" points="260.5400085449219,490.42999267578125 284.4200134277344,467.1499938964844 284.4200134277344,491.0299987792969"/>
+      <polygon fill="#FFD15C" points="236.89999389648438,19.790000915527344 117.48999786376953,139.7899932861328 211.82000732421875,139.7899932861328 281.6700134277344,208.4499969482422 282.8699951171875,305.760009765625 402.8699951171875,184.57000732421875 359.8800048828125,141.5800018310547 281.6700134277344,140.99000549316406 280.4800109863281,62.18000030517578"/>
+      <polygon fill="#75F2EF" points="294.7900085449219,418.3900146484375 316.2799987792969,418.3900146484375 316.2799987792969,440.4800109863281 294.7900085449219,440.4800109863281"/>
+      <polygon fill="#FF6A5F" points="330.63,257.79 165.25,422.57 236.90,496.00 403.46,330.63"/>
+    </g>
+
+    <!-- logo principal -->
+    <g id="logo" filter="url(#glow)">
+      <path d="m384.54999,202.27l-54.32999,54.83l53.73999,54.82999l0.59,0z" fill="url(#greenGrad)"/>
+      <path d="m397.21781,141.17762l-17.56141,17.36821l17.37071,17.36821l0.19071,0z" fill="url(#greenGrad)" transform="rotate(134.615 388.437 158.546)"/>
+
+      <polygon fill="url(#blueGrad)" points="117.54000091552734,30.5 172.87554529187219,84.83999633789062 227.60000184601267,30.5"/>
+      <polygon fill="url(#blueGrad)" points="272.1000061035156,31 296.6000061035156,31 296.6000061035156,54.880001068115234"/>
+      <polygon fill="url(#blueGrad)" points="295.17999267578125,51.27000045776367 295.17999267578125,128.27999877929688 372.19000244140625,128.27999877929688"/>
+      <polygon fill="url(#blueGrad)" points="112.72998809814453,475.5 165.86997985839844,421.9599914550781 217.60000610351562,475.5"/>
+      <polygon fill="url(#blueGrad)" points="260.5400085449219,490.42999267578125 284.4200134277344,467.1499938964844 284.4200134277344,491.0299987792969"/>
+
+      <polygon fill="url(#yellowGrad)" points="236.89999389648438,19.790000915527344 117.48999786376953,139.7899932861328 211.82000732421875,139.7899932861328 281.6700134277344,208.4499969482422 282.8699951171875,305.760009765625 402.8699951171875,184.57000732421875 359.8800048828125,141.5800018310547 281.6700134277344,140.99000549316406 280.4800109863281,62.18000030517578"/>
+
+      <polygon fill="url(#cyanGrad)" points="294.7900085449219,418.3900146484375 316.2799987792969,418.3900146484375 316.2799987792969,440.4800109863281 294.7900085449219,440.4800109863281"/>
+
+      <polygon fill="url(#redGrad)" points="330.63,257.79 165.25,422.57 236.90,496.00 403.46,330.63"/>
+    </g>
+
+    <!-- reflexo animado -->
+    <g clip-path="url(#logoClip)">
+      <rect
+        class="shineSweep"
+        x="-240"
+        y="-40"
+        width="140"
+        height="620"
+        rx="24"
+        fill="url(#shineGrad)"
+        transform="rotate(20 256 256)"
+      />
+    </g>
+
+    <!-- brilhinhos extras -->
+    <g>
+      <path class="spark1" d="M392 118 L396 128 L406 132 L396 136 L392 146 L388 136 L378 132 L388 128 Z" fill="white" opacity="0.8"/>
+      <path class="spark2" d="M106 92 L109 99 L116 102 L109 105 L106 112 L103 105 L96 102 L103 99 Z" fill="white" opacity="0.7"/>
+      <path class="spark3" d="M287 390 L290 397 L297 400 L290 403 L287 410 L284 403 L277 400 L284 397 Z" fill="white" opacity="0.75"/>
+    </g>
+  </g>
+</svg>
