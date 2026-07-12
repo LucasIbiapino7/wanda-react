@@ -9,6 +9,41 @@ import { getApiError } from "../../utils/errors"
 
 const MEMBERS_PER_PAGE = 8
 
+const STATUS_LABELS = {
+    PENDING: "Pendente",
+    FINISHED: "Finalizado",
+    DECLINED: "Recusado",
+    ACCEPTED: "Aceito"
+}
+
+const isPendingChallenge = (challenge) => challenge.status === "PENDING" || !challenge.status
+
+const isAnsweredChallenge = (challenge) => ["FINISHED", "DECLINED", "ACCEPTED"].includes(challenge.status)
+
+const getChallengeResultText = (challenge) => {
+    if (challenge.status === "DECLINED") {
+        return "Desafio recusado"
+    }
+
+    if (challenge.resultSummary) {
+        return challenge.resultSummary
+    }
+
+    if (challenge.winnerName) {
+        return `${challenge.winnerName} venceu`
+    }
+
+    if (challenge.status === "FINISHED") {
+        return "Desafio finalizado"
+    }
+
+    return "Aguardando resposta"
+}
+
+const openReplay = (matchId) => {
+    window.open(`/matches/${matchId}`, "_blank")
+}
+
 export default function ClassroomChallenge({
     classroom,
     members,
@@ -96,7 +131,7 @@ export default function ClassroomChallenge({
                 size: 500
             })
             setAllMembers(data?.content ?? [])
-        } catch (error) {
+        } catch {
             // silencioso: se falhar, mantém o que já houver (inclusive o vindo via prop)
         }
     }, [classroomId])
@@ -231,8 +266,13 @@ export default function ClassroomChallenge({
 
     // "Meus desafios pendentes" tem dois casos: os que EU recebi (posso aceitar)
     // e os que EU enviei (aguardando o outro). O /me da turma traz ambos.
-    const recebidos = myChallenges.filter((c) => c.challengerId !== user?.id)
-    const enviados = myChallenges.filter((c) => c.challengerId === user?.id)
+    const recebidos = myChallenges.filter(
+        (challenge) => challenge.challengerId !== user?.id && isPendingChallenge(challenge)
+    )
+    const enviados = myChallenges.filter(
+        (challenge) => challenge.challengerId === user?.id && isPendingChallenge(challenge)
+    )
+    const respondidos = myChallenges.filter(isAnsweredChallenge)
 
     return(
         <section className="classroom-details-card classroom-challenges-card">
@@ -256,7 +296,7 @@ export default function ClassroomChallenge({
                     <div className="classroom-challenges-panel">
                         <h3>Meus desafios pendentes</h3>
 
-                        {recebidos.length === 0 && enviados.length === 0 ? (
+                        {recebidos.length === 0 && enviados.length === 0 && respondidos.length === 0 ? (
                             <p className="classroom-empty-text">
                                 Você não tem desafios pendentes nesta turma.
                             </p>
@@ -286,6 +326,40 @@ export default function ClassroomChallenge({
                                                 <strong>{challenge.challengedName}</strong>
                                                 <small>{challenge.gameName}</small>
                                                 <small>· aguardando aceitação</small>
+                                            </article>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {respondidos.length > 0 && (
+                                    <div className="classroom-challenges-list">
+                                        {respondidos.map((challenge) => (
+                                            <article
+                                                key={challenge.id}
+                                                className="classroom-challenge-row classroom-challenge-row--result"
+                                            >
+                                                <div className="classroom-challenge-main">
+                                                    <span>
+                                                        <strong>{challenge.challengerName}</strong>
+                                                        {" "}desafiou{" "}
+                                                        <strong>{challenge.challengedName}</strong>
+                                                    </span>
+                                                    <span>{getChallengeResultText(challenge)}</span>
+                                                </div>
+
+                                                <span className="classroom-challenge-status">
+                                                    {STATUS_LABELS[challenge.status] || challenge.status}
+                                                </span>
+
+                                                {challenge.matchId && (
+                                                    <button
+                                                        type="button"
+                                                        className="classroom-challenge-replay"
+                                                        onClick={() => openReplay(challenge.matchId)}
+                                                    >
+                                                        Ver replay
+                                                    </button>
+                                                )}
                                             </article>
                                         ))}
                                     </div>
@@ -381,12 +455,32 @@ export default function ClassroomChallenge({
                                     {challenges.map((challenge) => (
                                         <article
                                             key={challenge.id}
-                                            className="classroom-challenge-row"
+                                            className="classroom-challenge-row classroom-challenge-row--result"
                                         >
-                                            <strong>{challenge.challengerName}</strong>
-                                            <span>desafiou</span>
-                                            <strong>{challenge.challengedName}</strong>
+                                            <div className="classroom-challenge-main">
+                                                <span>
+                                                    <strong>{challenge.challengerName}</strong>
+                                                    {" "}desafiou{" "}
+                                                    <strong>{challenge.challengedName}</strong>
+                                                </span>
+                                                <span>{getChallengeResultText(challenge)}</span>
+                                            </div>
+
                                             <small>{challenge.gameName}</small>
+
+                                            <span className="classroom-challenge-status">
+                                                {STATUS_LABELS[challenge.status] || challenge.status || "Pendente"}
+                                            </span>
+
+                                            {challenge.matchId && (
+                                                <button
+                                                    type="button"
+                                                    className="classroom-challenge-replay"
+                                                    onClick={() => openReplay(challenge.matchId)}
+                                                >
+                                                    Ver replay
+                                                </button>
+                                            )}
                                         </article>
                                     ))}
                                 </div>

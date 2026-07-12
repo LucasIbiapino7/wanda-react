@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import './telas.css'
 import pixelImage from "../../../assets/mascotes/pixel.png"
 import bitImage from "../../../assets/mascotes/bit.png"
 import adaImage from "../../../assets/mascotes/ada.png"
-
-const CODIGO_EXEMPLO = `def strategy(card1, card2, card3):
-    return "pedra"`
 
 const AGENTES = [
   {
@@ -60,7 +58,7 @@ export default function Tela3Agentes({ onPronto }) {
 
   useEffect(() => {
     if (agenteSelecionado) onPronto()
-  }, [agenteSelecionado])
+  }, [agenteSelecionado, onPronto])
 
   return (
     <div className="tela">
@@ -104,7 +102,7 @@ export default function Tela3Agentes({ onPronto }) {
             <span className="tela2__param">card3</span>):<br />
             <span className="tela2__indent">
               <span className="tela2__kw">return</span>{' '}
-              <span className="tela2__str">"pedra"</span>
+              <span className="tela2__str">&quot;pedra&quot;</span>
             </span>
           </div>
           <div className="tela3__preview-bubble">
@@ -136,4 +134,8 @@ export default function Tela3Agentes({ onPronto }) {
 
     </div>
   )
+}
+
+Tela3Agentes.propTypes = {
+  onPronto: PropTypes.func.isRequired,
 }

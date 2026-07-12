@@ -1,9 +1,11 @@
 import { useState, useEffect, useContext, useCallback } from "react";
+import PropTypes from "prop-types";
 import axios from "axios";
 import AuthContext from "../../context/AuthContext";
 import Pagination from "../Challenges/Pagination";
 import "./ParticipatingTournaments.css";
 import TournamentManagerModal from "./TournamentManagerModal";
+import TournamentDetailsModal from "./TournamentDetailsModal";
 import AppModal from "../UI/AppModal";
 
 const GAME_LOGOS = {
@@ -37,6 +39,7 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
   const [error, setError] = useState(null);
   const [startLoadingId, setStartLoadingId] = useState(null);
   const [managerModal, setManagerModal] = useState({ open: false, tournament: null });
+  const [detailsModal, setDetailsModal] = useState({ open: false, tournament: null });
   const [errorModal, setErrorModal] = useState({ open: false, message: "" });
 
   const fetchParticipating = useCallback(
@@ -96,6 +99,14 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
   const handleCloseManager = () => {
     setManagerModal({ open: false, tournament: null });
     fetchParticipating(page);
+  };
+
+  const handleOpenDetails = (tournament) => {
+    setDetailsModal({ open: true, tournament });
+  };
+
+  const handleCloseDetails = () => {
+    setDetailsModal({ open: false, tournament: null });
   };
 
   const renderCountdown = (startTime, status) => {
@@ -229,6 +240,15 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
                 onClick={() => handleOpenManager(t)}
               >
                 ⚙ Gerenciar
+              </button>
+            )}
+
+            {classroomId && !isCreator && (
+              <button
+                className="card-button card-button--secondary"
+                onClick={() => handleOpenDetails(t)}
+              >
+                Ver detalhes
               </button>
             )}
 
@@ -383,6 +403,13 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
         />
       )}
 
+      {detailsModal.open && (
+        <TournamentDetailsModal
+          tournament={detailsModal.tournament}
+          onClose={handleCloseDetails}
+        />
+      )}
+
       <AppModal
         open={errorModal.open}
         onClose={() => setErrorModal({ open: false, message: "" })}
@@ -400,3 +427,8 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
     </section>
   );
 }
+
+ParticipatingTournaments.propTypes = {
+  classroomId: PropTypes.number,
+  refreshKey: PropTypes.number,
+};

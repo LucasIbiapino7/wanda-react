@@ -1,17 +1,15 @@
 import PropTypes from "prop-types"
 import GameOnboarding from "../GameOnboarding.jsx"
 
-import Tela0BoasVindas from "../screens/tela0boasVindas"
-import Tela1Jogo from "../screens/tela1Jogo"
-import Tela2Funcao from "../screens/tela2funcao"
-import Tela3Agentes from "../screens/tela3Agentes"
-import Tela4Fim from "../screens/tela4fim"
+import Tela0BoasVindas from "../screens/tela0boasVindas.jsx"
+import Tela2FuncaoJokenpo2 from "../screens/tela2funcaoJokenpo2.jsx"
+import Tela3Agentes from "../screens/tela3Agentes.jsx"
+import Tela4Fim from "../screens/tela4fim.jsx"
 
-export default function GameOnboardingJokenpo({ isOpen, onFinish }) {
+export default function GameOnboardingJokenpo2({ isOpen, onFinish }) {
    const telas = [
       <Tela0BoasVindas key="boas-vindas" />,
-      <Tela1Jogo key="jogo" />,
-      <Tela2Funcao key="funcao" />,
+      <Tela2FuncaoJokenpo2 key="funcao-jokenpo-2" />,
       <Tela3Agentes key="agentes" />,
       <Tela4Fim key="fim" />
    ]
@@ -26,7 +24,7 @@ export default function GameOnboardingJokenpo({ isOpen, onFinish }) {
    )
 }
 
-GameOnboardingJokenpo.propTypes = {
+GameOnboardingJokenpo2.propTypes = {
    isOpen: PropTypes.bool.isRequired,
    onFinish: PropTypes.func.isRequired
 }

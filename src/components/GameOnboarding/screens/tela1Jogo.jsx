@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import "./telas.css";
 import bitImage from "../../../assets/mascotes/bit.png"
 import cardPaper from "../../../assets/jokenpo/papel.png"
@@ -161,3 +162,7 @@ export default function Tela1Jogo({ onPronto }) {
     </div>
   );
 }
+
+Tela1Jogo.propTypes = {
+  onPronto: PropTypes.func.isRequired,
+};

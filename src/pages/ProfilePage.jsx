@@ -39,8 +39,6 @@ export default function ProfilePage() {
   // toast global
   const [toastMsg, setToastMsg] = useState("");
 
-  const gameIconSrc = (gameName) =>
-    `/assets/games/${String(gameName || "").toLowerCase()}.png`;
   const gameLogoSrc = (gameName) =>
     `/assets/games/${String(gameName || "").toLowerCase()}-logo.png`;
 

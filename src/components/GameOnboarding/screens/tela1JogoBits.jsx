@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import "./telas.css";
 import bitImage from "../../../assets/mascotes/bit.png";
 import CardBit8 from "../../../assets/bits/bit8.png"
@@ -168,3 +169,7 @@ export default function Tela1JogoBits({ onPronto }) {
     </div>
   );
 }
+
+Tela1JogoBits.propTypes = {
+  onPronto: PropTypes.func.isRequired,
+};

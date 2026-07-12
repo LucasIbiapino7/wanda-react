@@ -1,8 +1,8 @@
 import projetoWanda from "../assets/materiais/projeto-wanda.pdf"
-import variaveis from "../assets/materiais/variaveis.pptx"
-import operadores from "../assets/materiais/operadores.pptx"
-import comandosCondicionais from "../assets/materiais/comandos-condicionais.pptx"
-import funcoesDebug from "../assets/materiais/funcoes-internas-e-debug.pptx"
+import variaveis from "../assets/materiais/variaveis.pdf"
+import operadores from "../assets/materiais/operadores.pdf"
+import comandosCondicionais from "../assets/materiais/comandos-condicionais.pdf"
+import funcoesDebug from "../assets/materiais/funcoes-internas-e-debug.pdf"
 
 export const materials = [
    {
@@ -13,26 +13,26 @@ export const materials = [
    },
    {
       id: 2,
-      fileName: "Variáveis.pptx",
-      type: "PPTX",
+      fileName: "Variáveis.pdf",
+      type: "PDF",
       url: variaveis
    },
    {
       id: 3,
-      fileName: "Operadores.pptx",
-      type: "PPTX",
+      fileName: "Operadores.pdf",
+      type: "PDF",
       url: operadores
    },
    {
       id: 4,
-      fileName: "Comandos Condicionais.pptx",
-      type: "PPTX",
+      fileName: "Comandos Condicionais.pdf",
+      type: "PDF",
       url: comandosCondicionais
    },
    {
       id: 5,
-      fileName: "Funções internas e Debug.pptx",
-      type: "PPTX",
+      fileName: "Funções internas e Debug.pdf",
+      type: "PDF",
       url: funcoesDebug
    }
 ]

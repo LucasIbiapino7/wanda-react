@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
+import PropTypes from "prop-types";
 import "./telas.css";
 import adaImage from "../../../assets/mascotes/ada.png"
 
@@ -23,7 +24,7 @@ const passos = [
 export default function Tela0BoasVindas({ onPronto }) {
   useEffect(() => {
     onPronto();
-  }, []);
+  }, [onPronto]);
 
   return (
     <div className="tela">
@@ -39,8 +40,8 @@ export default function Tela0BoasVindas({ onPronto }) {
 
       <div className="tela0__passos">
         {passos.map((p, i) => (
-          <>
-            <div key={i} className="tela0__passo">
+          <Fragment key={p.titulo}>
+            <div className="tela0__passo">
               <div className="tela0__passo-icon">{p.icon}</div>
               <div className="tela0__passo-titulo">{p.titulo}</div>
               <div className="tela0__passo-desc">{p.desc}</div>
@@ -50,7 +51,7 @@ export default function Tela0BoasVindas({ onPronto }) {
                 →
               </div>
             )}
-          </>
+          </Fragment>
         ))}
       </div>
       <div className="tela__aviso">
@@ -61,3 +62,7 @@ export default function Tela0BoasVindas({ onPronto }) {
     </div>
   );
 }
+
+Tela0BoasVindas.propTypes = {
+  onPronto: PropTypes.func.isRequired,
+};

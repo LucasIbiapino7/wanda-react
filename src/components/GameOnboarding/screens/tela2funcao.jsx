@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import PropTypes from "prop-types";
 import "./telas.css";
 import pixelImage from "../../../assets/mascotes/pixel.png"
 import cardPaper from "../../../assets/jokenpo/papel.png"
@@ -41,7 +42,11 @@ export default function Tela2Funcao({ onPronto }) {
 
   const { jogador, adversario } = maos;
 
-  onPronto();
+  useEffect(() => {
+    if (etapa >= 4) {
+      onPronto();
+    }
+  }, [etapa, onPronto]);
 
   return (
     <div className="tela">
@@ -133,21 +138,21 @@ export default function Tela2Funcao({ onPronto }) {
             <br />
             <span className="tela2__indent">
               <span className="tela2__cmt"># card1 = </span>
-              <span className="tela2__val">"{jogador[0]}"</span>
+              <span className="tela2__val">&quot;{jogador[0]}&quot;</span>
               {"  "}
               {EMOJI[jogador[0]]}
             </span>
             <br />
             <span className="tela2__indent">
               <span className="tela2__cmt"># card2 = </span>
-              <span className="tela2__val">"{jogador[1]}"</span>
+              <span className="tela2__val">&quot;{jogador[1]}&quot;</span>
               {"  "}
               {EMOJI[jogador[1]]}
             </span>
             <br />
             <span className="tela2__indent">
               <span className="tela2__cmt"># card3 = </span>
-              <span className="tela2__val">"{jogador[2]}"</span>
+              <span className="tela2__val">&quot;{jogador[2]}&quot;</span>
               {"  "}
               {EMOJI[jogador[2]]}
             </span>
@@ -167,9 +172,9 @@ export default function Tela2Funcao({ onPronto }) {
           {etapa >= 4 && (
             <div className="tela2__retorno-hint tela2__fade">
               Sua função deve retornar qual carta jogar:{" "}
-              <span className="tela2__tag">🪨 "pedra"</span>
-              <span className="tela2__tag">📄 "papel"</span>
-              <span className="tela2__tag">✂️ "tesoura"</span>
+              <span className="tela2__tag">🪨 &quot;pedra&quot;</span>
+              <span className="tela2__tag">📄 &quot;papel&quot;</span>
+              <span className="tela2__tag">✂️ &quot;tesoura&quot;</span>
             </div>
           )}
         </div>
@@ -177,3 +182,7 @@ export default function Tela2Funcao({ onPronto }) {
     </div>
   );
 }
+
+Tela2Funcao.propTypes = {
+  onPronto: PropTypes.func.isRequired,
+};

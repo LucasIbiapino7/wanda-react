@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { redirect, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import ClassroomService from "../services/ClassroomService";
 import ClassroomChallenge from "../components/Classrooms/ClassroomChallenge";
@@ -479,7 +479,17 @@ export default function ClassroomDetailsPage() {
   };
 
   if (loading) {
-    return <main className="classroom-details-page">Carregando turma...</main>;
+    return (
+        <main className="classroom-details-page">
+          <section className="classroom-details-loading">
+              <span className="classroom-details-loading__spinner" />
+              <div>
+                <strong>Carregando turma</strong>
+                <p>Buscando informações, alunos e atividades...</p>
+              </div>
+          </section>
+        </main>
+    )
   }
 
   if (error) {

@@ -14,7 +14,7 @@ import ada from "../../../assets/mascotes/ada.png";
 import like from "../../../assets/like.svg";
 import dislike from "../../../assets/dislike.svg";
 
-import GameOnboardingJokenpo from "../../GameOnboarding/games/GameOnboardingJokenpo.jsx";
+import GameOnboardingJokenpo2 from "../../GameOnboarding/games/GameOnboardingJokenpo2.jsx";
 import SuccessModal from "../SuccessModal";
 import FunctionService from "../../../services/FunctionService.js";
 import AppModal from "../../UI/AppModal.jsx";
@@ -76,6 +76,7 @@ function SendFunctionJokenpo2() {
   // estado de função salva / sucesso
   const [hasSavedFunction, setHasSavedFunction] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
 
   const [modal, setModal] = useState({
     open: false,
@@ -334,7 +335,13 @@ function SendFunctionJokenpo2() {
   return (
     <div className="container-sendfunction">
 
-      
+      {showWelcome && (
+        <GameOnboardingJokenpo2
+          isOpen={showWelcome}
+          onFinish={() => setShowWelcome(false)}
+        />
+      )}
+
       <div className="top-section">
         <div className="informations-section">
           <h1>Função 2 – Round 2</h1>
@@ -531,7 +538,7 @@ function SendFunctionJokenpo2() {
       </AppModal>
 
       
-      <GameOnboardingJokenpo
+      <GameOnboardingJokenpo2
         isOpen={helpModalOpen}
         onFinish={() => setHelpModalOpen(false)}
       />
