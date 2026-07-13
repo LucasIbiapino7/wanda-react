@@ -18,20 +18,35 @@ export default function DashboardPage() {
     const [modal, setModal] = useState({ open: false, message: '' });
     const [activeTab, setActiveTab] = useState("aprendizado");
 
+    const [loadingClassroom, setLoadingClassroom] = useState(true);
+    const [classroomError, setClassroomError] = useState("");
+
     useEffect(() => {
-        ClassroomService.findById(classroomID).then(data => {
-            setClassroom(data);
+        const fetchClassroom = async () => {
+            setLoadingClassroom(true)
+            setClassroomError("")
+        
+            try{
+                const data = await ClassroomService.findById(classroomID)
+                setClassroom(data)
 
-            const fromDate = data.createdAt.slice(0, 10);
-            const toDate = new Date().toISOString().slice(0,10);
+                const fromDate = data.createdAt.slice(0,10)
+                const toDate = new Date().toISOString().slice(0,10)
 
-            setFrom(fromDate);
-            setTo(toDate);
-            setFilterApplied({
-                from: `${fromDate}T00:00:00`,
-                to: `${toDate}T23:59:59`,
-            });
-        });  
+                setFrom(fromDate)
+                setTo(toDate)
+                setFilterApplied({
+                    from: `${fromDate}T00:00:00`,
+                    to: `${toDate}T23:59:59`,
+                })
+            } catch(error){
+                setClassroomError(error)
+            } finally{
+                setLoadingClassroom(false)
+            }
+        }
+        fetchClassroom()
+          
     }, [classroomID]);
 
     const formatToISO = (dateStr, endOfDay = false) => {
@@ -56,6 +71,22 @@ export default function DashboardPage() {
         const toISO =formatToISO(to, true);
 
         setFilterApplied({from: fromISO, to: toISO});
+    }
+
+    if (loadingClassroom) {
+        return (
+            <main className="page-dashboard-classroom">
+                <p className="dashboard-loading">Carregando dashboard...</p>
+            </main>
+        );
+    }
+
+    if (classroomError) {
+        return (
+            <main className="page-dashboard-classroom">
+                <p className="dashboard-error">{classroomError}</p>
+            </main>
+        );
     }
 
     if (!classroom) {

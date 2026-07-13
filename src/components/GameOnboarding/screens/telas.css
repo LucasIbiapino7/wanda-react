@@ -16,9 +16,9 @@
 }
 
 .tela__avatar {
-  width: 60px;
-  height: 60px;
-  padding: 0.3rem;
+  width: 84px;
+  height: 84px;
+  padding: 0.35rem;
   border-radius: 50%;
   background: rgba(156, 39, 176, 0.4);
   border: 2px solid var(--roxo);
@@ -32,7 +32,8 @@
 .tela__avatar > img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center bottom;
 }
 
 .tela__bubble {
@@ -40,9 +41,9 @@
   border: 1px solid var(--borda);
   border-radius: 12px 12px 12px 2px;
   padding: 10px 14px;
-  font-size: 14px;
-  line-height: 1.55;
-  max-width: 400px;
+  font-size: 16px;
+  line-height: 1.65;
+  max-width: 520px;
 }
 
 .tela__bubble strong {
@@ -51,11 +52,12 @@
 
 /* Subtítulo de seção */
 .tela__subtitulo {
-  font-size: 11px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--texto-muted);
+  margin: 10px 0; 
 }
 
 /* Aviso/callout */
@@ -64,7 +66,7 @@
   border-left: 3px solid var(--amarelo);
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
   padding: 10px 14px;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--texto-muted);
   line-height: 1.5;
 }
@@ -106,13 +108,13 @@
 }
 
 .tela0__passo-titulo {
-  font-size: 13px;
+  font-size: 17px;
   font-weight: 800;
   color: var(--texto);
 }
 
 .tela0__passo-desc {
-  font-size: 11px;
+  font-size: 15px;
   color: var(--texto-muted);
   line-height: 1.4;
 }
@@ -391,7 +393,7 @@
   border-radius: var(--radius-md);
   padding: 14px 16px;
   font-family: 'Courier New', monospace;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.9;
   color: #cdd6f4;
 }
@@ -400,7 +402,7 @@
   border: 1px solid var(--borda);
   border-radius: var(--radius-md);
   padding: 10px 14px;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--texto-muted);
   line-height: 1.8;
   text-align: center;
@@ -435,7 +437,7 @@
   border: 1px solid var(--borda);
   border-radius: var(--radius-md);
   padding: 10px 14px;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--texto-muted);
 }
 
@@ -479,8 +481,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 14px 10px;
+  gap: 8px;
+  padding: 16px 10px;
   border-radius: var(--radius-md);
   border: 1.5px solid var(--borda);
   background: var(--surface);
@@ -491,9 +493,10 @@
 }
 
 .tela3__agente img {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
+  width: 88px;
+  height: 88px;
+  object-fit: contain;
+  object-position: center bottom;
 }
 
 .tela3__agente:hover {
@@ -507,6 +510,10 @@
 }
 
 .tela3__agente-emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 88px;
   font-size: 26px;
 }
 
@@ -558,7 +565,7 @@
 }
 
 .tela3__preview-bubble p {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--texto-muted);
   line-height: 1.6;
   font-family: var(--font-fun);
@@ -592,7 +599,7 @@
 }
 
 .tela3__acao-desc {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--texto-muted);
   line-height: 1.4;
 }
@@ -709,6 +716,20 @@
 }
 
 @media screen and (max-width:720px) {
+  .tela__avatar {
+    width: 72px;
+    height: 72px;
+  }
+
+  .tela3__agente img {
+    width: 72px;
+    height: 72px;
+  }
+
+  .tela3__agente-emoji {
+    min-height: 72px;
+  }
+
   .tela0__passos {
     flex-direction: column;
     align-items: center;

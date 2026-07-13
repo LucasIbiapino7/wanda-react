@@ -256,6 +256,12 @@
    background: rgba(255, 204, 0, 0.12);
 }
 
+.classroom-card__copy-button:disabled {
+   opacity: 0.45;
+   cursor: default;
+   pointer-events: none;
+}
+
 .classroom-card__open-hint {
    display: inline-flex;
    align-items: center;

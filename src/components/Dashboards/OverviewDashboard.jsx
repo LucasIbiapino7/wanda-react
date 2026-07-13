@@ -6,18 +6,37 @@ import PropTypes from "prop-types";
 export default function OverviewDashboard({classroomID, from, to}) {
     const [overview, setOverview] = useState(null);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false)
     
     useEffect(() => {
-        if (!from || !to) { return; }
+        if (!from || !to) { 
+            return; 
+        }
 
-        DashBoardService.getOverview(classroomID, from, to).then(data => setOverview(data)).catch(err => setError(getApiError(err)));
+        const fetchOverview = async () => {
+            setLoading(true)
+            setError(false)
+
+            try{
+                const data = await DashBoardService.getOverview(classroomID, from, to)
+                setOverview(data)
+            } catch(error){
+                setError(getApiError(error))
+            } finally{
+                setLoading(false)
+            }
+        }
+        fetchOverview()
     }, [classroomID, from, to]);
 
     if (error) {
         return <p>{error}</p>; //alterar posteriormente
     }
+    if (loading) {
+        return <p className="dashboard-loading">Carregando visão geral...</p>;
+    }
     if (!overview) {
-        return null;
+       return <p className="dashboard-empty">Nenhum dado encontrado para o período.</p>;
     }
 
     return (

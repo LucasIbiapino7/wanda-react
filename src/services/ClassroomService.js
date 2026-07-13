@@ -37,6 +37,14 @@ const ClassroomService = {
         return response.data
     },
 
+    async listMine({ page = 0, size = 10 } = {}) {
+        const response = await api.get("/challenge/me", {
+            params: { page, size }
+        })
+
+        return response.data
+    },
+
     // Buscar sala específica por ID
     async findById(classroomId){
         const response = await api.get(`/classroom/${classroomId}`)

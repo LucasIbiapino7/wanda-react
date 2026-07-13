@@ -1,14 +1,14 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 import './GameOnboarding.css'
 
 export default function GameOnboarding({ onFinish, isOpen, telas = [], titulo = 'WANDA' }) {
-
-  if (!isOpen) return null
-
   const TOTAL = telas.length
 
   const [atual, setAtual] = useState(0)
   const [podeAvancar, setPodeAvancar] = useState(false)
+
+  if (!isOpen) return null
 
   const ir = (n) => {
     setAtual(n)
@@ -88,4 +88,11 @@ export default function GameOnboarding({ onFinish, isOpen, telas = [], titulo = 
       </div>
     </div>
   )
+}
+
+GameOnboarding.propTypes = {
+  onFinish: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  telas: PropTypes.arrayOf(PropTypes.element),
+  titulo: PropTypes.string,
 }

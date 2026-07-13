@@ -4,7 +4,6 @@ import AuthContext from "../context/AuthContext";
 import ClassroomService from "../services/ClassroomService";
 import ClassroomChallenge from "../components/Classrooms/ClassroomChallenge";
 import CreateTournamentModal from "../components/Tournament/CreateTournamentModal";
-import OpenTournaments from "../components/Tournament/OpenTournaments";
 import TournamentService from "../services/TournamentService";
 import AppModal from "../components/UI/AppModal";
 import { getApiError } from "../utils/errors";
@@ -28,6 +27,12 @@ const GAME_LABELS = {
   jokenpo: "Jokenpô",
   bits: "BITS",
 };
+
+const STATE_OPTIONS = [
+   "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS",
+   "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC",
+   "SP", "SE", "TO"
+]
 
 // Editar aqui após implementação de escalabilidade
 function getGameLabel(gameName) {
@@ -92,21 +97,32 @@ export default function ClassroomDetailsPage() {
     title: "",
     message: "",
     variant: "default",
+    redirectTo: null
   });
 
   const closeModal = () => {
-    setModal((current) => ({
-      ...current,
+    const redirectTo = modal.redirectTo
+
+    setModal({
       open: false,
-    }));
+      title: "",
+      message: "",
+      variant: "default",
+      redirectTo: null
+    });
+
+    if (redirectTo){
+      navigate(redirectTo)
+    }
   };
 
-  const showModal = ({ title, message, variant = "default" }) => {
+  const showModal = ({ title, message, variant = "default", redirectTo = null }) => {
     setModal({
       open: true,
       title,
       message,
       variant,
+      redirectTo
     });
   };
 
@@ -205,9 +221,7 @@ export default function ClassroomDetailsPage() {
   }, [fetchClassroom]);
 
   useEffect(() => {
-    if (activeTab === "members" || activeTab === "challenges") {
-      fetchMembers();
-    }
+    fetchMembers();
   }, [activeTab, fetchMembers]);
 
   // Membros que já submeteram questão
@@ -222,6 +236,27 @@ export default function ClassroomDetailsPage() {
       ...current,
       [name]: value,
     }));
+  };
+
+  const resetEditForm = () => {
+    if (!classroom) {
+      return;
+    }
+
+    setEditForm({
+      name: classroom.name || "",
+      course: classroom.course || "",
+      description: classroom.description || "",
+      mural: classroom.mural || "",
+      institution: classroom.institution || "",
+      city: classroom.city || "",
+      state: classroom.state || ""
+    });
+  };
+
+  const handleCancelEdit = () => {
+    resetEditForm();
+    setEditing(false);
   };
 
   // Atualiza as turmas
@@ -247,7 +282,7 @@ export default function ClassroomDetailsPage() {
         mural: editForm.mural.trim() || null,
         institution: editForm.institution.trim() || null,
         city: editForm.city.trim() || null,
-        state: editForm.state.trim() || null,
+        state: editForm.state || null,
       });
 
       setClassroom(updated);
@@ -313,6 +348,7 @@ export default function ClassroomDetailsPage() {
         title: "Turma arquivada",
         message: "A turma foi arquivada com sucesso.",
         variant: "success",
+        redirectTo: "/classrooms"
       });
     } catch (error) {
       showModal({
@@ -442,7 +478,17 @@ export default function ClassroomDetailsPage() {
   };
 
   if (loading) {
-    return <main className="classroom-details-page">Carregando turma...</main>;
+    return (
+        <main className="classroom-details-page">
+          <section className="classroom-details-loading">
+              <span className="classroom-details-loading__spinner" />
+              <div>
+                <strong>Carregando turma</strong>
+                <p>Buscando informações, alunos e atividades...</p>
+              </div>
+          </section>
+        </main>
+    )
   }
 
   if (error) {
@@ -600,7 +646,7 @@ export default function ClassroomDetailsPage() {
                 <button
                   type="button"
                   className="classroom-details-hero__edit"
-                  onClick={() => setEditing((current) => !current)}
+                  onClick={editing ? handleCancelEdit : () => setEditing(true)}
                   disabled={isArchived}
                 >
                   <svg
@@ -764,18 +810,35 @@ export default function ClassroomDetailsPage() {
 
               <label>
                 Estado
-                <input
-                  name="state"
-                  value={editForm.state}
-                  onChange={handleEditChange}
-                  maxLength={2}
-                />
+              <select
+                name="state"
+                value={editForm.state || ""}
+                onChange={handleEditChange}
+              >
+                <option value="">UF</option>
+                {STATE_OPTIONS.map((state) => (
+                    <option key={state} value={state}>
+                      {state}
+                    </option>
+                ))}
+              </select>
               </label>
             </div>
 
-            <button type="submit" disabled={saving}>
-              {saving ? "Salvando..." : "Salvar alterações"}
-            </button>
+            <div className="classroom-edit-form__actions">
+              <button type="submit" disabled={saving}>
+                {saving ? "Salvando..." : "Salvar alterações"}
+              </button>
+
+              <button
+                type="button"
+                className="classroom-edit-form__cancel"
+                onClick={handleCancelEdit}
+                disabled={saving}
+              >
+                Fechar edição
+              </button>
+            </div>
           </form>
         </section>
       )}
@@ -1009,7 +1072,7 @@ export default function ClassroomDetailsPage() {
       )}
 
       {activeTab === "tournaments" && (
-        <section className="classroom-details-card classroom-tournaments-card">
+        <section className="classroom-details-card-tournaments">
           <div className="classroom-members-header">
             <div>
               <h2>Torneios da turma</h2>
@@ -1017,35 +1080,15 @@ export default function ClassroomDetailsPage() {
             </div>
 
             {canManage && !isArchived && (
-              <button
-                type="button"
-                className="classroom-details-hero__dashboard"
-                onClick={() => setCreatingTournament(true)}
-              >
-                + Novo torneio
-              </button>
+                <button
+                  type="button"
+                  className="classroom-details-hero__dashboard"
+                  onClick={() => setCreatingTournament(true)}
+                >
+                  + Novo torneio
+                </button>
             )}
           </div>
-
-          {isArchived ? (
-            <p className="classroom-empty-text">
-              Esta turma foi arquivada. Os torneios vinculados não estão mais
-              disponíveis.
-            </p>
-          ) : (
-            <>
-              <OpenTournaments
-                classroomId={Number(classroomId)}
-                refreshKey={tournamentRefreshKey}
-                title=""
-                emptyMessage="Nenhum torneio foi criado para esta turma."
-              />
-              <ParticipatingTournaments
-                classroomId={Number(classroomId)}
-                refreshKey={tournamentRefreshKey}
-              />
-            </>
-          )}
 
           {canManage && !isArchived && (
             <CreateTournamentModal
@@ -1054,6 +1097,20 @@ export default function ClassroomDetailsPage() {
               onCreate={handleCreateTournament}
               gameName={classroom.gameName}
             />
+          )}
+
+          {!isArchived && (
+            <ParticipatingTournaments
+              classroomId={Number(classroomId)}
+              refreshKey={tournamentRefreshKey}
+            />
+          )}
+
+          {isArchived && (
+            <p className="classroom-empty-text">
+              Esta turma foi arquivada. Os torneios vinculados não estão mais
+              disponíveis.
+            </p>
           )}
         </section>
       )}

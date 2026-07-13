@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
+import PropTypes from "prop-types";
 import "./telas.css";
-import timmyImage from "../../../assets/timmy.png";
+import pixelImage from "../../../assets/mascotes/pixel.png";
 import CardBit8 from "../../../assets/bits/bit8.png"
 import CardBit16 from "../../../assets/bits/bit16.png"
 import CardBit32 from "../../../assets/bits/bit32.png"
@@ -38,14 +39,18 @@ export default function Tela2FuncaoBits({ onPronto }) {
 
   const { jogador, adversario } = maos;
 
-  onPronto();
+  useEffect(() => {
+    if (etapa >= 4) {
+      onPronto();
+    }
+  }, [etapa, onPronto]);
 
   return (
     <div className="tela">
       <div className="tela__fala">
-        <div className="tela__avatar"><img src={timmyImage} alt="timmy-avatar" /></div>
+        <div className="tela__avatar"><img src={pixelImage} alt="Pixel" /></div>
         <div className="tela__bubble">
-          Sou o <strong>Timmy</strong>! No BITS, cada jogador começa com as
+          Sou o <strong>Pixel</strong>! No BITS, cada jogador começa com as
           mesmas 4 cartas. Você usa cada uma uma única vez por partida. 🃏
         </div>
       </div>
@@ -143,10 +148,10 @@ export default function Tela2FuncaoBits({ onPronto }) {
           {etapa >= 4 && (
             <div className="tela2__retorno-hint tela2__fade">
               Sua função deve retornar qual carta jogar:{" "}
-              <span className="tela2__tag"><img src={IMAGE_BITS["BIT8"]} alt="" /> "BIT8"</span>
-              <span className="tela2__tag"><img src={IMAGE_BITS["BIT16"]} alt="" /> "BIT16"</span>
-              <span className="tela2__tag"><img src={IMAGE_BITS["BIT32"]} alt="" /> "BIT32"</span>
-              <span className="tela2__tag"><img src={IMAGE_BITS["FIREWALL"]} alt="" /> "FIREWALL"</span>
+              <span className="tela2__tag"><img src={IMAGE_BITS["BIT8"]} alt="" /> &quot;BIT8&quot;</span>
+              <span className="tela2__tag"><img src={IMAGE_BITS["BIT16"]} alt="" /> &quot;BIT16&quot;</span>
+              <span className="tela2__tag"><img src={IMAGE_BITS["BIT32"]} alt="" /> &quot;BIT32&quot;</span>
+              <span className="tela2__tag"><img src={IMAGE_BITS["FIREWALL"]} alt="" /> &quot;FIREWALL&quot;</span>
             </div>
           )}
         </div>
@@ -154,3 +159,7 @@ export default function Tela2FuncaoBits({ onPronto }) {
     </div>
   );
 }
+
+Tela2FuncaoBits.propTypes = {
+  onPronto: PropTypes.func.isRequired,
+};
