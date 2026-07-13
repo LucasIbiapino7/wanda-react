@@ -119,10 +119,10 @@ export default function Tela2FuncaoJokenpo2({ onPronto }) {
             </div>
 
             <div className="tela2__retorno-hint tela2__fade">
-               Sua função deve retornar uma das cartas que você possui:
-               <span className="tela2__tag">&quot;pedra&quot;</span>
-               <span className="tela2__tag">&quot;papel&quot;</span>
-               <span className="tela2__tag">&quot;tesoura&quot;</span>
+               Sua função deve retornar qual carta jogar:
+               <span className="tela2__tag">🪨 &quot;pedra&quot;</span>
+               <span className="tela2__tag">📄 &quot;papel&quot;</span>
+               <span className="tela2__tag">✂️ &quot;tesoura&quot;</span>
             </div>
          </div>
       </div>

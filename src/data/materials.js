@@ -3,6 +3,7 @@ import variaveis from "../assets/materiais/variaveis.pdf"
 import operadores from "../assets/materiais/operadores.pdf"
 import comandosCondicionais from "../assets/materiais/comandos-condicionais.pdf"
 import funcoesDebug from "../assets/materiais/funcoes-internas-e-debug.pdf"
+import funcoes from "../assets/materiais/funcoes.pdf"
 
 export const materials = [
    {
@@ -34,5 +35,11 @@ export const materials = [
       fileName: "Funções internas e Debug.pdf",
       type: "PDF",
       url: funcoesDebug
+   },
+   {
+      id: 6,
+      fileName: "Funções",
+      type: "PDF",
+      url: funcoes
    }
 ]

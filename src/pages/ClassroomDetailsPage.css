@@ -440,6 +440,17 @@
    border-bottom-color: var(--details-yellow);
 }
 
+.classroom-details-card-tournaments {
+   border: 1px solid var(--details-border);
+   border-radius: 16px;
+   padding: 22px 24px;
+   background-color: var(--details-card-bg);
+   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
+   animation: classroom-details-enter 0.28s ease both;
+   display: flex;
+   flex-flow: column;
+}
+
 .classroom-details-card {
    border: 1px solid var(--details-border);
    border-radius: 16px;
@@ -899,6 +910,16 @@
    display: flex;
    flex-direction: column;
    gap: 22px;
+}
+
+.classroom-details-card-tournaments {
+   display: flex;
+   flex-direction: column;
+   gap: 24px;
+   border-radius: 14px;
+   padding: 28px;
+   background: var(--details-card-bg);
+   box-shadow: var(--details-shadow);
 }
 
 .classroom-challenges-layout {

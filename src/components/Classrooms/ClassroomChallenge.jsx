@@ -294,7 +294,7 @@ export default function ClassroomChallenge({
             {!loading && (
                 <div className="classroom-challenges-layout">
                     <div className="classroom-challenges-panel">
-                        <h3>Meus desafios pendentes</h3>
+                        <h3>Meus desafios</h3>
 
                         {recebidos.length === 0 && enviados.length === 0 && respondidos.length === 0 ? (
                             <p className="classroom-empty-text">

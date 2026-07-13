@@ -4,7 +4,6 @@ import AuthContext from "../context/AuthContext";
 import ClassroomService from "../services/ClassroomService";
 import ClassroomChallenge from "../components/Classrooms/ClassroomChallenge";
 import CreateTournamentModal from "../components/Tournament/CreateTournamentModal";
-import OpenTournaments from "../components/Tournament/OpenTournaments";
 import TournamentService from "../services/TournamentService";
 import AppModal from "../components/UI/AppModal";
 import { getApiError } from "../utils/errors";
@@ -1073,7 +1072,7 @@ export default function ClassroomDetailsPage() {
       )}
 
       {activeTab === "tournaments" && (
-        <section className="classroom-details-card classroom-tournaments-card">
+        <section className="classroom-details-card-tournaments">
           <div className="classroom-members-header">
             <div>
               <h2>Torneios da turma</h2>
@@ -1081,35 +1080,15 @@ export default function ClassroomDetailsPage() {
             </div>
 
             {canManage && !isArchived && (
-              <button
-                type="button"
-                className="classroom-details-hero__dashboard"
-                onClick={() => setCreatingTournament(true)}
-              >
-                + Novo torneio
-              </button>
+                <button
+                  type="button"
+                  className="classroom-details-hero__dashboard"
+                  onClick={() => setCreatingTournament(true)}
+                >
+                  + Novo torneio
+                </button>
             )}
           </div>
-
-          {isArchived ? (
-            <p className="classroom-empty-text">
-              Esta turma foi arquivada. Os torneios vinculados não estão mais
-              disponíveis.
-            </p>
-          ) : (
-            <>
-              <OpenTournaments
-                classroomId={Number(classroomId)}
-                refreshKey={tournamentRefreshKey}
-                title=""
-                emptyMessage="Nenhum torneio foi criado para esta turma."
-              />
-              <ParticipatingTournaments
-                classroomId={Number(classroomId)}
-                refreshKey={tournamentRefreshKey}
-              />
-            </>
-          )}
 
           {canManage && !isArchived && (
             <CreateTournamentModal
@@ -1118,6 +1097,20 @@ export default function ClassroomDetailsPage() {
               onCreate={handleCreateTournament}
               gameName={classroom.gameName}
             />
+          )}
+
+          {!isArchived && (
+            <ParticipatingTournaments
+              classroomId={Number(classroomId)}
+              refreshKey={tournamentRefreshKey}
+            />
+          )}
+
+          {isArchived && (
+            <p className="classroom-empty-text">
+              Esta turma foi arquivada. Os torneios vinculados não estão mais
+              disponíveis.
+            </p>
           )}
         </section>
       )}

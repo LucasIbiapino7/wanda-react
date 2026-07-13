@@ -57,6 +57,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--texto-muted);
+  margin: 10px 0; 
 }
 
 /* Aviso/callout */
@@ -107,13 +108,13 @@
 }
 
 .tela0__passo-titulo {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 800;
   color: var(--texto);
 }
 
 .tela0__passo-desc {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--texto-muted);
   line-height: 1.4;
 }

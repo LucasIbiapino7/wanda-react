@@ -61,6 +61,11 @@ export default function Tela2Funcao({ onPronto }) {
       {/* Etapa 1+: sorteio das mãos */}
       {etapa >= 1 && (
         <div className="tela2__secao tela2__fade">
+          <div className="tela__aviso">
+            Este é apenas um exemplo. Em cada partida, as cartas podem aparecer
+            em outra ordem e podem vir repetidas, como duas pedras ou dois papéis.
+            Por isso, crie uma estratégia lógica em vez de decorar posições fixas.
+         </div>
           <p className="tela__subtitulo" style={{ marginBottom: 10 }}>
             {etapa === 1 ? "🎲 Sorteando as mãos..." : "Mãos sorteadas!"}
           </p>
@@ -126,7 +131,7 @@ export default function Tela2Funcao({ onPronto }) {
 
       {etapa >= 3 && jogador.length === 3 && (
         <div className="tela2__secao tela2__fade">
-          <p className="tela__subtitulo" style={{ marginBottom: 10 }}>
+          <p className="tela__subtitulo">
             É isso que sua função recebe
           </p>
           <div className="tela2__codigo">
