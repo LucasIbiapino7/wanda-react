@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { createPortal } from 'react-dom';
 import PropTypes from "prop-types";
 import "./SubscribeResultModal.css";
 
@@ -7,8 +9,19 @@ export default function SubscribeResultModal({
   success,
   message,
 }) {
+  useEffect(() => {
+    if (!isOpen){
+      return undefined
+    }
+
+    document.body.style.overflow = "hidden"
+
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [isOpen])
   if (!isOpen) return null;
-  return (
+  return createPortal (
     <div className="modal-subscribe-overlay" onClick={onClose}>
       <div
         className="modal-subscribe-container"
@@ -19,7 +32,7 @@ export default function SubscribeResultModal({
           onClick={onClose}
           aria-label="Fechar"
         >
-          ×
+          x
         </button>
         <h3 className="modal-subscribe-title">
           {success ? "Inscrição bem‑sucedida!" : "Falha na inscrição"}
@@ -32,7 +45,8 @@ export default function SubscribeResultModal({
           OK
         </button>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

@@ -1,15 +1,23 @@
 .modal-subscribe-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
+  padding: 24px;
+  inset: 0;
+  background: rgba(4, 4, 10, 0.76);
+  backdrop-filter: blur(12px);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1100;
+  z-index: 20000;
+}
+
+.modal-subscribe-content {
+  position: relative;
+  width: min(500px, 100%);
+  border-radius: 10px;
+  padding: 32px;
+  background: #ffffff;
+  color: #252525;
+  text-align: center;
 }
 
 .modal-subscribe-container {
