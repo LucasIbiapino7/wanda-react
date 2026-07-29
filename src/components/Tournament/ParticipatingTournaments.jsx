@@ -1,11 +1,14 @@
 import { useState, useEffect, useContext, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import axios from "axios";
 import AuthContext from "../../context/AuthContext";
 import Pagination from "../Challenges/Pagination";
 import "./ParticipatingTournaments.css";
+import TournamentService from "../../services/TournamentService"
 import TournamentManagerModal from "./TournamentManagerModal";
 import TournamentDetailsModal from "./TournamentDetailsModal";
+import SubscribeResultModal from "./SubscribeResultModal";
 import AppModal from "../UI/AppModal";
 
 const GAME_LOGOS = {
@@ -29,8 +32,9 @@ const STATUS_COLOR = {
   ERROR: "#ff4444",
 };
 
-export default function ParticipatingTournaments({ classroomId = null, refreshKey = 0 }) {
+export default function ParticipatingTournaments({ classroomId = null, refreshKey = 0, canManageTournaments = false }) {
   const { token, user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [tournaments, setTournaments] = useState([]);
   const [page, setPage] = useState(0);
@@ -42,6 +46,36 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
   const [detailsModal, setDetailsModal] = useState({ open: false, tournament: null });
   const [errorModal, setErrorModal] = useState({ open: false, message: "" });
 
+  const statusOrder = {
+    OPEN: 0,
+    RUNNING: 1,
+    FINISHED: 2,
+    CANCELLED: 3,
+    ERROR: 4
+  }
+
+  const visibleTournaments = [...(canManageTournaments
+    ? tournaments
+    : tournaments.filter((t) => t.status !== "ERROR"))]
+      .sort((a, b) => {
+        const statusDifference = (statusOrder[a.status] ?? 99) - (statusOrder[b.status] ?? 99)
+
+        if (statusDifference !== 0) {
+          return statusDifference
+        }
+
+        return new Date(b.startTime) - new Date(a.startTime)
+      })
+
+  // Estados para permitir entrar em torneio a partir da turma
+  const [subscribeModal, setSubscribeModal] = useState({
+    open:false,
+    success: true,
+    message: ""
+  })
+  const [subscribingId, setSubscribingId] = useState(null)
+  const [joinedTournamentIds, setJoinedTournamentIds] = useState(new Set())
+
   const fetchParticipating = useCallback(
     async (pageNum = 0) => {
       if (!token) return;
@@ -50,16 +84,20 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
       try {
         // No contexto de uma turma, lista TODOS os torneios da turma
         // (mesmo DTO do /participating). Fora dela, mantém o comportamento global.
+        const isClassroomList = Boolean(classroomId)
         const url = classroomId
           ? `${import.meta.env.VITE_API_URL}/tournament/classroom/${classroomId}`
           : `${import.meta.env.VITE_API_URL}/tournament/participating`;
         const { data } = await axios.get(url, {
           headers: { Authorization: `Bearer ${token}` },
-          params: { size: 5, page: pageNum },
+          params: {
+            size: isClassroomList ? 100 : 5,
+            page: isClassroomList ? 0 : pageNum
+          },
         });
         setTournaments(data?.content ?? []);
-        setTotalPages(data?.totalPages ?? 0);
-        setPage(pageNum);
+        setTotalPages(isClassroomList ? 0 : data?.totalPages ?? 0);
+        setPage(isClassroomList ? 0 : pageNum);
       } catch (err) {
         console.error(err);
         setError("Não foi possível carregar os torneios.");
@@ -83,6 +121,7 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
         { headers: { Authorization: `Bearer ${token}` } }
       );
       fetchParticipating(page);
+      navigate(`/tournament/${id}`)
     } catch (err) {
       const data = err?.response?.data;
       const msg = data?.message || data?.error || "Não foi possível iniciar o torneio. Tente novamente.";
@@ -109,6 +148,41 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
     setDetailsModal({ open: false, tournament: null });
   };
 
+  const handleSubscribe = async (tournamentId) => {
+    setSubscribingId(tournamentId)
+
+    try {
+      await TournamentService.subscribe(tournamentId)
+      // Lida com o botão de entrar em turma
+      setJoinedTournamentIds((current) => {
+        const next = new Set(current)
+        next.add(tournamentId)
+        return next
+      })
+
+      setSubscribeModal({
+        open: true,
+        success: true,
+        message: "Você entrou no torneio com sucesso."
+      })
+
+      fetchParticipating(page)
+    } catch (error) {
+        const data = error?.response?.data
+
+        setSubscribeModal({
+          open: true,
+          success: false,
+          message:
+            data?.message ||
+            data?.error ||
+            "Tente novamente em alguns instantes.",
+        })
+    } finally {
+      setSubscribingId(null)
+    }
+  }
+
   const renderCountdown = (startTime, status) => {
     const now = new Date();
     const start = new Date(startTime);
@@ -125,22 +199,49 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
   const creatorDisplay = (creator) =>
     creator?.nickname?.trim() ? creator.nickname : creator?.name || "—";
 
-  const ativos = tournaments.filter(
+  const ativos = visibleTournaments.filter(
     (t) => t.status === "OPEN" || t.status === "RUNNING"
-  );
-  const finalizados = tournaments.filter((t) => t.status === "FINISHED");
-  const cancelados = tournaments.filter((t) => t.status === "CANCELLED");
-  const comErro = tournaments.filter((t) => t.status === "ERROR");
+  )
 
+  const finalizados = visibleTournaments.filter((t) => t.status === "FINISHED")
+  const cancelados = visibleTournaments.filter((t) => t.status === "CANCELLED")
+  const comErro = canManageTournaments
+    ? visibleTournaments.filter((t) => t.status === "ERROR")
+    : []
+  // Atualizar quantidade de participantes no torneio automaticamente
+  useEffect(() => {
+    if (!classroomId || !token) {
+      return undefined
+    }
+
+    const intervalId = setInterval(() => {
+      fetchParticipating(page)
+    }, 15000)
+
+    return () => clearInterval(intervalId)
+  }, [classroomId, token, page, fetchParticipating])
+  
   const renderCardCompleto = (t) => {
     const full = t.currentParticipants >= t.maxParticipants;
     const isCreator = user?.id === t.creator?.id;
+    const isOpen = t.status === "OPEN";
+    const isRunning = t.status === "RUNNING";
     const isFinished = t.status === "FINISHED";
 
     let borderColor = "#ffb84d";
     if (t.canReady) borderColor = "#4da6ff";
     else if (t.status === "RUNNING") borderColor = "#4da6ff";
     else if (isFinished) borderColor = "#f0b429";
+
+    const isParticipant = t.participant === true || 
+      t.isParticipant === true ||
+      t.subscribed === true ||
+      joinedTournamentIds.has(t.id)
+    const canSubscribe =
+      classroomId &&
+      t.status === "OPEN" &&
+      !full &&
+      !isParticipant
 
     const gameKey = String(t.game?.name || "").toLowerCase().trim();
     const gameLogo = GAME_LOGOS[gameKey] || null;
@@ -165,11 +266,11 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
           Criado por: <strong>{creatorDisplay(t.creator)}</strong>
         </p>
 
-        {isFinished && t.winnerId && (
+        {/* {isFinished && t.winnerId && (
           <p className="winner-line">
             🏆 Vencedor: <strong>{t.winnerId.name}</strong>
           </p>
-        )}
+        )} */}
 
         {t.game && (
           <div className="game-info">
@@ -215,6 +316,28 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
 
         <div className="tournament-actions">
           <div style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end", flexWrap: "wrap" }}>
+            {canSubscribe && (
+              <button
+                className="card-button"
+                disabled={subscribingId === t.id}
+                onClick={() => handleSubscribe(t.id)}
+              >
+                {subscribingId === t.id ? "Entrando..." : "Entrar"}
+              </button>
+            )}
+
+            {isOpen && isParticipant && classroomId && (
+              <span className="status-tag status-tag--joined">
+                Inscrito
+              </span>
+            )}
+
+            {isRunning && isParticipant && classroomId && (
+              <span className="status-tag status-tag--joined">
+                Participando
+              </span>
+            )}
+
             {t.canReady && (
               <button
                 className="card-button start-button"
@@ -348,7 +471,7 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
       {loading && <p className="loading">Carregando torneios...</p>}
       {error && <p className="error">{error}</p>}
 
-      {!loading && tournaments.length === 0 && (
+      {!loading && visibleTournaments.length === 0 && (
         <p className="empty-message">
           {classroomId
             ? "Nenhum torneio foi criado para esta turma."
@@ -424,6 +547,19 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
       >
         <p>{errorModal.message}</p>
       </AppModal>
+
+      <SubscribeResultModal
+        isOpen={subscribeModal.open}
+        success={subscribeModal.success}
+        message={subscribeModal.message}
+        onClose={() =>
+          setSubscribeModal({
+            open: false,
+            success: true,
+            message: ""
+          })
+        }
+      />
     </section>
   );
 }
@@ -431,4 +567,5 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
 ParticipatingTournaments.propTypes = {
   classroomId: PropTypes.number,
   refreshKey: PropTypes.number,
+  canManageTournaments: PropTypes.bool
 };

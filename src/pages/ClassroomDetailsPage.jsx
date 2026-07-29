@@ -1103,6 +1103,7 @@ export default function ClassroomDetailsPage() {
             <ParticipatingTournaments
               classroomId={Number(classroomId)}
               refreshKey={tournamentRefreshKey}
+              canManageTournaments={canManage}
             />
           )}
 
