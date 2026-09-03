@@ -41,7 +41,8 @@ export const materials = [
       fileName: "Projeto Wanda",
       category: "Geral",
       formats: [
-         { type: "PDF", url: projetoWanda, audience: "ambos" }
+         { type: "PDF", url: projetoWanda, audience: "ambos" },
+         { type: "VIDEO", url: "https://www.youtube.com/watch?v=KnhOEnk6dj4", audience: "ambos" } // confirmar
       ]
    },
    {
@@ -50,7 +51,8 @@ export const materials = [
       category: "Módulo 1",
       formats: [
          { type: "PDF", url: variaveisPDF, audience: "ambos" },
-         { type: "PPTX", url: variaveisPPTX, audience: "professor" }
+         { type: "PPTX", url: variaveisPPTX, audience: "professor" },
+         { type: "VIDEO", url: "https://www.youtube.com/watch?v=G3USH7mIB8U", audience: "ambos" }
       ]
    },
    {
@@ -59,7 +61,8 @@ export const materials = [
       category: "Módulo 1",
       formats: [
          { type: "PDF", url: operadoresPDF, audience: "ambos" },
-         { type: "PPTX", url: operadoresPPTX, audience: "professor" }
+         { type: "PPTX", url: operadoresPPTX, audience: "professor" },
+         { type: "VIDEO", url: "https://www.youtube.com/watch?v=w7uiEKTwj8M", audience: "ambos" }
       ]
    },
    {
@@ -68,7 +71,8 @@ export const materials = [
       category: "Módulo 1",
       formats: [
          { type: "PDF", url: condicionaisPDF, audience: "ambos" },
-         { type: "PPTX", url: comandosCondicionaisPPTX, audience: "professor" }
+         { type: "PPTX", url: comandosCondicionaisPPTX, audience: "professor" },
+         { type: "VIDEO", url: "https://www.youtube.com/watch?v=Ns_pUNEUl1c", audience: "ambos" }
       ]
    },
    {
@@ -77,7 +81,8 @@ export const materials = [
       category: "Módulo 1",
       formats: [
          { type: "PDF", url: funcoesInternasEDebugPDF, audience: "ambos" },
-         { type: "PPTX", url: funcoesDebugPPTX, audience: "professor" }
+         { type: "PPTX", url: funcoesDebugPPTX, audience: "professor" },
+         { type: "VIDEO", url: "https://www.youtube.com/watch?v=CjG_RstVIro", audience: "ambos" }
       ]
    },
    {
@@ -95,7 +100,8 @@ export const materials = [
       category: "Módulo 2",
       formats: [
          { type: "PDF", url: funcoesPDF, audience: "ambos" },
-         { type: "PPTX", url: funcoesPPTX, audience: "professor" }
+         { type: "PPTX", url: funcoesPPTX, audience: "professor" },
+         { type: "VIDEO", url: "https://www.youtube.com/watch?v=HpfK3LQ_Hwc", audience: "ambos" }
       ]
    },
    {
