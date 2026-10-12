@@ -1,8 +1,9 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthContext.jsx";
-import wandaLogo from "../../assets/logo.png";
-import labLogo from "../../assets/telemidia-logo.png";
+import wandaLogo from "../../assets/logos/wanda-logo.png";
+import labLogo from "../../assets/logos/lab-logo.svg";
+import capesLogo from "../../assets/logos/capes-logo.png"
 import profileImg from "../../assets/profile.svg";
 import NotificationBell from "../Notifications/NotificationBell.jsx";
 import "./Header.css";
@@ -49,7 +50,10 @@ export default function Header() {
         <Link to="/">
           <img src={wandaLogo} alt="Wanda" className="logo-main" />
         </Link>
-        <img src={labLogo} alt="Lab" className="logo-lab" />
+        <Link to="https://www.telemidia-ma.com.br/" target="_blank">
+          <img src={labLogo} alt="Telemídia" className="logos" />
+        </Link>
+        <img src={capesLogo} alt="Capes" className="logos" />
       </div>
 
       <div className="hamburger" onClick={toggleMobileNav} aria-label="Abrir menu">
@@ -61,6 +65,9 @@ export default function Header() {
       <nav className={`nav ${showMobileNav ? "open" : ""}`}>
         <Link className="nav-link" to="/games" onClick={toggleMobileNav}>
           Jogos
+        </Link>
+        <Link className="nav-link" to="/materials" onClick={toggleMobileNav}>
+          Materiais
         </Link>
         <Link className="nav-link" to="/challenges" onClick={toggleMobileNav}>
           Desafios

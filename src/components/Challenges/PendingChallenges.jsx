@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import PendingChallengeCard from "./PendingChallengeCard";
 import AuthContext from "../../context/AuthContext";
 import ChallengeService from "../../services/ChallengeService";
@@ -42,7 +41,6 @@ const PendingChallenges = () => {
   });
 
   const { token } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   const fetchPendingChallenges = useCallback(async (p = 0) => {
     setLoading(true);
@@ -112,7 +110,7 @@ const PendingChallenges = () => {
       setErrorMessage(message);
       setMatchModal((m) => ({ ...m, open: false }));
 
-      console.error("handleAcceptOrReject error:", { status, message, err });
+      console.error("handleAcceptOrReject error:", { status, title, message, err });
     } finally {
       setBusyIds((prev) => {
         const next = new Set(prev);

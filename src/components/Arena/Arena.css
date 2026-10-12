@@ -39,7 +39,7 @@
 
 .cards {
   position: absolute;
-  top: 50%;
+  top: 55%;
   transform: translateY(-35%);
   display: flex;
   flex-direction: column;
@@ -65,7 +65,7 @@
 
 .player-info {
   position: absolute;
-  top: 15px;
+  top: 7px;
   z-index: 3;
   padding: 8px 15px;
   background: rgba(0, 0, 0, 0.7);
@@ -79,6 +79,14 @@
 
 .player-info.right {
   right: 20px;
+}
+
+.bits-player-name {
+  max-width: min(34vw, 420px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: clamp(1rem, 2.2vw, 1.8rem);
 }
 
 .player-name {
@@ -143,14 +151,6 @@
   animation: blink 1.5s ease-in-out infinite;
 }
 
-.counter {
-  display: block;
-  font-size: 1.2em;
-  color: #cccccc;
-  margin-top: 5px;
-  text-shadow: 2px 2px 0 #404040, -2px -2px 0 #404040;
-}
-
 @keyframes blink {
   0%,
   100% {
@@ -163,8 +163,8 @@
 
 .match-announcement {
   position: absolute;
-  top: 22%;
-  left: 58%;
+  top: 30%;
+  left: 50%;
   transform: translateX(-50%);
   font-family: "Press Start 2P", cursive;
   color: #ffd700;
@@ -213,12 +213,44 @@
 
 .tie-indicator {
   position: absolute;
-  top: 20px;
+  top: 90px;
   left: 50%;
   transform: translateX(-50%);
-  font-family: "Press Start 2P", cursive;
-  color: #808080;
-  text-shadow: 2px 2px 0 #333;
+  width: auto;
+  z-index: 6;
+  pointer-events: none;
+  text-align: center;
+}
+
+.counter {
+  font-size: 1.2em;
+  margin-top: 5px;
+  text-shadow: 2px 2px 0 #404040, -2px -2px 0 #404040;
+}
+
+.tie-indicator .counter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 6px 12px;
+  border: 3px solid #ffd700;
+  border-image: linear-gradient(45deg, #ffd700, #ff8c00) 1;
+  background: rgba(0, 0, 0, 0.7);
+  font-family: "Silkscreen", "Press Start 2P", cursive;
+  font-size: 1.30em;
+  font-weight: 400;
+  letter-spacing: 3px;
+  line-height: 1;
+  color: #ffd700;
+  text-shadow: 3px 3px 0 #8b0000, -3px -3px 0 #8b0000, 3px -3px 0 #8b0000,
+    -3px 3px 0 #8b0000;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+  -webkit-font-smoothing: none;
+  image-rendering: pixelated;
+  animation: neon-glitch 1.2s ease-in-out infinite;
 }
 
 .decision-panel {
@@ -238,8 +270,6 @@
   transition: opacity 0.3s ease-out;
 }
 
-
-
 /* Layout geral da página do replay */
 .bits-arena-page {
   padding-top: 100px;
@@ -252,6 +282,11 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.bits-arena-page .match-announcement,
+.bits-arena-page .tie-indicator {
+  display: none;
 }
 
 /* hint de scroll */

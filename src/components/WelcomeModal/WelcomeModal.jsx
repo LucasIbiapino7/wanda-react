@@ -2,9 +2,9 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import "./WelcomeModal.css";
 import WandaIllustration from "../../assets/welcome-modal.png";
-import cosmoImg from "../../assets/cosmo-avatar.png";
-import timmyImg from "../../assets/timmy.png";
-import wandaImg from "../../assets/wanda.png";
+import bit from "../../assets/mascotes/bit.png";
+import pixel from "../../assets/mascotes/pixel.png";
+import ada from "../../assets/mascotes/ada.png";
 
 export default function WelcomeModal({ onStart, onSkip }) {
   const [page, setPage] = useState(0);
@@ -56,22 +56,22 @@ export default function WelcomeModal({ onStart, onSkip }) {
             <h2 className="wm-title">Conheça nossos Assistentes</h2>
             <ul className="wm-agent-list">
               <li className="wm-agent-item">
-                <img src={cosmoImg} alt="Cosmo" className="wm-agent-img" />
+                <img src={bit} alt="Bit" className="wm-agent-img" />
                 <div>
-                  <strong>Cosmo:</strong> Mais detalhista nas suas respostas,
+                  <strong>Bit:</strong> Mais detalhista nas suas respostas,
                   gosta de falar bastante.
                 </div>
               </li>
               <li className="wm-agent-item">
-                <img src={timmyImg} alt="Timmy" className="wm-agent-img" />
+                <img src={pixel} alt="Pixel" className="wm-agent-img" />
                 <div>
-                  <strong>Timmy:</strong> respostas curtas e objetivas.
+                  <strong>Pixel:</strong> respostas curtas e objetivas.
                 </div>
               </li>
               <li className="wm-agent-item">
-                <img src={wandaImg} alt="Wanda" className="wm-agent-img" />
+                <img src={ada} alt="Ada" className="wm-agent-img" />
                 <div>
-                  <strong>Wanda:</strong> equilíbrio entre detalhe e concisão.
+                  <strong>Ada:</strong> equilíbrio entre detalhe e concisão.
                 </div>
               </li>
             </ul>

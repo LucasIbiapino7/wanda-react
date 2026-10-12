@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import './telas.css'
 
 const RESUMO = [
@@ -44,4 +45,9 @@ export default function Tela4Fim({ onRever, onFinish }) {
 
     </div>
   )
+}
+
+Tela4Fim.propTypes = {
+  onRever: PropTypes.func.isRequired,
+  onFinish: PropTypes.func.isRequired,
 }

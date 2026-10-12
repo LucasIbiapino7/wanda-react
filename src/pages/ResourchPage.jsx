@@ -14,9 +14,9 @@ import "./ResearchPage.css";
 import PropTypes from "prop-types";
 
 const AGENTE_LABEL = {
-  VERBOSE: "Cosmo",
-  SUCCINCT: "Timmy",
-  INTERMEDIATE: "Wanda",
+  VERBOSE: "Bit",
+  SUCCINCT: "Pixel",
+  INTERMEDIATE: "Ada",
 };
 
 const AGENTE_COR = {

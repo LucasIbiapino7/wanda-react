@@ -42,20 +42,13 @@ export default function BracketViewer({ tournamentId }) {
         setBracket(response.data);
 
         const initial = {};
-        // for (const round of response.data.rounds) {
-        //   for (const match of round.matches) {
-        //     // W.O. já nasce revelado (não há suspense pra um sorteio)
-        //     initial[match.matchId] = match.walkover ? "revealed" : "pending";
-        //   }
-        // }
-
         response.data.rounds.forEach((round, roundIndex) => {
           round.matches.forEach((match, matchIndex) => {
             const key = getMatchKey(roundIndex, matchIndex)
-            
+
             // Resultados automáticos não passam pelo suspense do replay.
             initial[key] = match.walkover || match.automaticAdvance
-            ? "reveled"
+            ? "revealed"
             : "pending"
           })
         })
@@ -91,12 +84,13 @@ export default function BracketViewer({ tournamentId }) {
       </div>
     );
   }
-  
+
   const isFinal = currentRound === rounds.length - 1;
 
   const allRevealed = round.matches.every(
     (_, m) => matchStates[getMatchKey(currentRound, m)] === "revealed",
   );
+  const allRoundResultsAvailable = round.matches.every((m) => m.winnerId);
 
   function handleWatch(match, key) {
     if (match.matchId == null){
@@ -130,6 +124,27 @@ export default function BracketViewer({ tournamentId }) {
   }
 
   // Final decidida por W.O.: sem flip/suspense, o professor aciona o campeão direto
+  function revealCurrentRound() {
+    setMatchStates((prev) => {
+      const next = { ...prev };
+
+      // Usa a posição na chave também para confrontos sem matchId.
+      round.matches.forEach((_, matchIndex) => {
+        next[getMatchKey(currentRound, matchIndex)] = "revealed";
+      });
+
+      return next;
+    });
+  }
+
+  function handleNextRound() {
+    if (!allRevealed) {
+      revealCurrentRound();
+    }
+
+    setCurrentRound((i) => i + 1);
+  }
+
   function handleShowChampion(match) {
     fireChampionConfetti();
     const winnerName =
@@ -193,10 +208,10 @@ export default function BracketViewer({ tournamentId }) {
           ← Fase anterior
         </button>
 
-        {allRevealed && !isFinal && (
+        {allRoundResultsAvailable && !isFinal && (
           <button
             className="bv-nav-button bv-nav-button--next"
-            onClick={() => setCurrentRound((i) => i + 1)}
+            onClick={handleNextRound}
           >
             Próxima fase →
           </button>
@@ -265,12 +280,24 @@ function MatchCard({
               {match.player2Name}
             </span>
           </div>
-          <div className="bv-match-actions">
-            {state === "pending" && (
+
+          {state === "pending" && (
+            <div className="bv-match-actions">
               <button className="bv-replay-button" onClick={onWatch}>
-                ▶ Assistir partida
+                Assistir partida
               </button>
-            )}
+
+              <button
+                type="button"
+                className="bv-replay-button bv-replay-button--result"
+                onClick={onReveal}
+              >
+                Ver resultado
+              </button>
+            </div>
+          )}
+
+          <div className="bv-match-actions">
             {state === "watching" && (
               <button className="bv-reveal-button" onClick={onReveal}>
                 🔥 Revelar vencedor
@@ -303,6 +330,9 @@ function MatchCard({
               isFinal={isFinal}
             />
           </div>
+
+          <MatchResultSummary match={match}/>
+
           <div className="bv-match-actions">
             <button
               className="bv-replay-button bv-replay-button--secondary"
@@ -310,11 +340,56 @@ function MatchCard({
             >
               ↩ Rever partida
             </button>
+
+            {isFinal && (
+              <button className="bv-replay-button" onClick={onShowChampion}>
+                🏆 Ver campeão
+              </button>
+            )}
           </div>
         </div>
       </div>
     </div>
   );
+}
+
+function MatchResultSummary({ match }) {
+   const summary = getMatchSummary(match)
+
+   return (
+      <div className="bv-match-summary">
+         <strong>{summary.winnerName} venceu</strong>
+
+         {summary.score && (
+            <span>Placar: {summary.score}</span>
+         )}
+
+         {summary.ties !== undefined && (
+            <span>Empates: {summary.ties}</span>
+         )}
+      </div>
+   )
+}
+
+function getMatchSummary(match) {
+   const winnerName =
+      match.winnerName ||
+      (match.winnerId === match.player1Id
+         ? match.player1Name
+         : match.player2Name)
+
+   const p1Score = match.player1Score ?? match.scorePlayer1
+   const p2Score = match.player2Score ?? match.scorePlayer2
+   const ties = match.ties ?? match.tieCount
+
+   return {
+      winnerName,
+      score:
+         p1Score !== undefined && p2Score !== undefined
+            ? `${p1Score} x ${p2Score}`
+            : null,
+      ties
+   }
 }
 
 // Componente de avanço automático de partida
@@ -525,6 +600,23 @@ AutomaticAdvanceCard.propTypes = {
   winnerIsP1: PropTypes.bool.isRequired,
   isFinal: PropTypes.bool.isRequired,
   onShowChampion: PropTypes.func.isRequired,
+};
+
+MatchResultSummary.propTypes = {
+  match: PropTypes.shape({
+    winnerName: PropTypes.string,
+    winnerId: PropTypes.number,
+    player1Id: PropTypes.number,
+    player2Id: PropTypes.number,
+    player1Name: PropTypes.string,
+    player2Name: PropTypes.string,
+    player1Score: PropTypes.number,
+    scorePlayer1: PropTypes.number,
+    player2Score: PropTypes.number,
+    scorePlayer2: PropTypes.number,
+    ties: PropTypes.number,
+    tieCount: PropTypes.number,
+  }).isRequired,
 };
 
 WalkoverMatchCard.propTypes = {

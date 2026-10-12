@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import PropTypes from "prop-types";
 import TournamentService from "../../services/TournamentService";
 import "./TournamentDetailsModal.css";
@@ -56,7 +57,7 @@ export default function TournamentDetailsModal({ tournament, onClose, onSubscrib
   const gameKey = String(tournament.game?.name || "").toLowerCase().trim();
   const gameLogo = GAME_LOGOS[gameKey] || null;
 
-  return (
+  return createPortal(
     <div className="td-overlay" onClick={onClose}>
       <div className="td-container" onClick={(e) => e.stopPropagation()}>
 
@@ -151,17 +152,20 @@ export default function TournamentDetailsModal({ tournament, onClose, onSubscrib
           <button className="td-btn td-btn--secondary" onClick={onClose}>
             Fechar
           </button>
-          <button
-            className="td-btn td-btn--primary"
-            disabled={full || subscribing || tournament.status !== "OPEN"}
-            onClick={handleSubscribe}
-          >
-            {subscribing ? "Entrando..." : full ? "Lotado" : "Entrar no torneio"}
-          </button>
+          {onSubscribe && (
+            <button
+              className="td-btn td-btn--primary"
+              disabled={full || subscribing || tournament.status !== "OPEN"}
+              onClick={handleSubscribe}
+            >
+              {subscribing ? "Entrando..." : full ? "Lotado" : "Entrar no torneio"}
+            </button>
+          )}
         </div>
 
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
@@ -178,5 +182,5 @@ TournamentDetailsModal.propTypes = {
     game: PropTypes.shape({ name: PropTypes.string }),
   }).isRequired,
   onClose: PropTypes.func.isRequired,
-  onSubscribe: PropTypes.func.isRequired,
+  onSubscribe: PropTypes.func,
 };

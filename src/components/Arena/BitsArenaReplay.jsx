@@ -5,7 +5,7 @@ gsap.registerPlugin(TextPlugin);
 
 import "./Arena.css";
 import PropTypes from "prop-types";
-import arenaBitsBg from "../../assets/arena-bits-background.png";
+import arenaBitsBg from "../../assets/bits/arena-bits-background.png";
 
 const CHARACTER_BASE_PATH = "/assets/personagens/";
 const CARD_IMAGES = {

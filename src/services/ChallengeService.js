@@ -42,6 +42,16 @@ const ChallengeService = {
     return response.data
   },
 
+  // Lista desafios do usuário logado em qualquer turma/contexto,
+  // incluindo pendentes, recusados e finalizados com matchId para replay.
+  async listMine({ page = 0, size = 10 } = {}) {
+    const response = await api.get("/challenge/me", {
+      params: { page, size }
+    })
+
+    return response.data
+  },
+
   /**
    * Body: { challengeId: Long, accepted: Boolean }
    * Retorno:

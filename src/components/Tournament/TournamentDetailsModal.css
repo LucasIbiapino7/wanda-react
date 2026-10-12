@@ -1,11 +1,13 @@
 .td-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  padding: 24px;
+  background: rgba(4, 4, 10, 0.76);
+  backdrop-filter: blur(12px);
+  z-index: 10000;
   animation: tdFadeIn 0.2s ease;
 }
 
@@ -15,17 +17,16 @@
 }
 
 .td-container {
-  background: #1f1f2e;
-  border-radius: 14px;
-  padding: 28px;
-  width: 100%;
-  max-width: 520px;
-  max-height: 88vh;
-  overflow-y: auto;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #fff;
   position: relative;
+  width: min(620px, calc(100vw - 40px));
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+  padding: 34px;
+  background: #1b0b33;
+  color: #fff;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.62);
   animation: tdSlideUp 0.22s ease;
 }
 
@@ -67,9 +68,9 @@
 
 .td-title {
   font-size: 1.4rem;
-  font-weight: 700;
+  font-weight: 900;
   margin: 0 0 4px;
-  color: #fff;
+  color: #ffcc00;
 }
 
 .td-creator {

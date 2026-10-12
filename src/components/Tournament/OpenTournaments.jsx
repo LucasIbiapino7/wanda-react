@@ -38,6 +38,8 @@ export default function OpenTournaments({
     message: "",
     variant: "default",
   });
+  const [subscribingId, setSubscribingId] = useState(null);
+  const [joinedTournamentIds, setJoinedTournamentIds] = useState(new Set());
 
   const fetchTournaments = useCallback(
     async (pageNum = 0) => {
@@ -81,8 +83,15 @@ export default function OpenTournaments({
   };
 
   const handleSubscribe = async (tournamentId) => {
+    setSubscribingId(tournamentId);
+
     try {
       await TournamentService.subscribe(tournamentId);
+      setJoinedTournamentIds((current) => {
+        const next = new Set(current);
+        next.add(tournamentId);
+        return next;
+      });
       setModal({
         open: true,
         title: "Inscrição confirmada",
@@ -98,6 +107,8 @@ export default function OpenTournaments({
         message: msg,
         variant: "error",
       });
+    } finally {
+      setSubscribingId(null);
     }
   };
 
@@ -125,6 +136,12 @@ export default function OpenTournaments({
       <div className="tournaments-grid">
         {openTournaments.map((t) => {
           const full = t.currentParticipants >= t.maxParticipants;
+          const isParticipant =
+            t.isParticipant === true ||
+            t.participant === true ||
+            t.subscribed === true ||
+            joinedTournamentIds.has(t.id);
+          const canSubscribe = !full && !isParticipant;
           const gameKey = String(t.game?.name || "")
             .toLowerCase()
             .trim();
@@ -199,13 +216,22 @@ export default function OpenTournaments({
                 >
                   Ver detalhes
                 </button>
-                <button
-                  className="card-button"
-                  disabled={full || t.status !== "OPEN"}
-                  onClick={() => handleSubscribe(t.id)}
-                >
-                  {full ? "Lotado" : "Entrar"}
-                </button>
+                {canSubscribe && (
+                  <button
+                    type="button"
+                    className="card-button tournament-card__button"
+                    disabled={subscribingId === t.id}
+                    onClick={() => handleSubscribe(t.id)}
+                  >
+                    {subscribingId === t.id ? "Entrando..." : "Entrar"}
+                  </button>
+                )}
+
+                {isParticipant && (
+                  <span className="tournament-card__joined">
+                    Inscrito
+                  </span>
+                )}
               </div>
             </div>
           );

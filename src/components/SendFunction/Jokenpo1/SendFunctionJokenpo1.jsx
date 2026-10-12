@@ -8,9 +8,9 @@ import "../SendFunction.css";
 import { Info } from 'lucide-react'
 
 import AuthContext from "../../../context/AuthContext";
-import cosmo from "../../../assets/cosmo-avatar.png";
-import timmy from "../../../assets/timmy.png";
-import wanda from "../../../assets/wanda.png";
+import bit from "../../../assets/mascotes/bit.png";
+import pixel from "../../../assets/mascotes/pixel.png";
+import ada from "../../../assets/mascotes/ada.png";
 import like from "../../../assets/like.svg";
 import dislike from "../../../assets/dislike.svg";
 
@@ -103,11 +103,6 @@ export default function SendFunctionJokenpo1() {
   }, []);
 
   const handleStartTour = (dontShowAgain) => {
-    setShowWelcome(false);
-    if (dontShowAgain) localStorage.setItem("wandaTourSeen", "true");
-  };
-
-  const handleSkipTour = (dontShowAgain) => {
     setShowWelcome(false);
     if (dontShowAgain) localStorage.setItem("wandaTourSeen", "true");
   };
@@ -325,11 +320,11 @@ export default function SendFunctionJokenpo1() {
 
   const agentName =
     assistantStyle === "VERBOSE"
-      ? "Cosmo"
+      ? "Bit"
       : assistantStyle === "SUCCINCT"
-      ? "Timmy"
+      ? "Pixel"
       : assistantStyle === "INTERMEDIATE"
-      ? "Wanda"
+      ? "Ada"
       : null;
 
   // HintBox (hover/focus)
@@ -420,11 +415,11 @@ export default function SendFunctionJokenpo1() {
                 title={
                   isProcessing
                     ? "Aguarde o processamento terminar"
-                    : "Selecionar Cosmo"
+                    : "Selecionar Bit"
                 }
               >
-                <img src={cosmo} alt="Cosmo" className="agent-img" />
-                <span>Cosmo</span>
+                <img src={bit} alt="Bit" className="agent-img" />
+                <span>Bit</span>
               </div>
 
               <div
@@ -435,11 +430,11 @@ export default function SendFunctionJokenpo1() {
                 title={
                   isProcessing
                     ? "Aguarde o processamento terminar"
-                    : "Selecionar Timmy"
+                    : "Selecionar Pixel"
                 }
               >
-                <img src={timmy} alt="Timmy" className="agent-img" />
-                <span>Timmy</span>
+                <img src={pixel} alt="Pixel" className="agent-img" />
+                <span>Pixel</span>
               </div>
 
               <div
@@ -450,11 +445,11 @@ export default function SendFunctionJokenpo1() {
                 title={
                   isProcessing
                     ? "Aguarde o processamento terminar"
-                    : "Selecionar Wanda"
+                    : "Selecionar Ada"
                 }
               >
-                <img src={wanda} alt="Wanda" className="agent-img" />
-                <span>Wanda</span>
+                <img src={ada} alt="Ada" className="agent-img" />
+                <span>Ada</span>
               </div>
             </div>
 

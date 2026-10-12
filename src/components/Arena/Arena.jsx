@@ -2,7 +2,7 @@ import { useRef, useLayoutEffect, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { TextPlugin } from "gsap/TextPlugin";
 gsap.registerPlugin(TextPlugin);
-import ArenaBackground from "../../assets/arena-background-pixel-art.png";
+import ArenaBackground from "../../assets/jokenpo/arena-background-pixel-art.png";
 import "./Arena.css";
 import PropTypes from "prop-types";
 

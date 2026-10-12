@@ -25,6 +25,7 @@ import ResearchPage from "./pages/ResourchPage.jsx";
 import ClassroomPage from "./pages/ClassroomPage.jsx";
 import ClassroomDetailsPage from "./pages/ClassroomDetailsPage.jsx";
 import DashboardPage from "./pages/DashboardPage.jsx";
+import MaterialsPage from "./pages/MaterialsPage.jsx";
 
 function App() {
   return (
@@ -97,6 +98,11 @@ function App() {
           />
 
           <Route path="/games" element={<PrivateRoute element={GamesPage} />} />
+
+          <Route 
+            path="/materials"
+            element={<PrivateRoute element={MaterialsPage}/>}
+          />
 
           <Route
             path="/admin/users"

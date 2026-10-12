@@ -237,7 +237,8 @@
 .agent-tab {
   display: flex;
   align-items: center;
-  padding: 4px 8px;
+  min-height: 58px;
+  padding: 6px 14px 6px 8px;
   border: 1px solid #9c27b0;
   color: #333;
   border-radius: 8px;
@@ -250,11 +251,11 @@
 .agent-tab.disabled { opacity: 0.6; pointer-events: none; }
 
 .agent-img {
-  width: 40px;
-  height: 40px;
-  margin-right: 8px;
-  border-radius: 50%;
-  object-fit: cover;
+  width: 52px;
+  height: 52px;
+  margin-right: 10px;
+  object-fit: contain;
+  object-position: center bottom;
 }
 
 .agent-banner {
@@ -416,7 +417,14 @@
   }
 
   .agent-tab {
-    padding: 2px 4px;
+    min-height: 52px;
+    padding: 5px 10px 5px 6px;
+  }
+
+  .agent-img {
+    width: 46px;
+    height: 46px;
+    margin-right: 8px;
   }
 
   .editor-feedback-container {

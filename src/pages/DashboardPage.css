@@ -60,6 +60,25 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+.dashboard-loading,
+.dashboard-empty,
+.dashboard-error {
+   border: 1px solid rgba(255, 255, 255, 0.12);
+   border-radius: 14px;
+   padding: 18px 20px;
+   background: rgba(18, 22, 40, 0.78);
+   color: rgba(255, 255, 255, 0.76);
+   font-family: var(--font-main, "Nunito", sans-serif);
+   font-size: 0.95rem;
+   font-weight: 800;
+}
+
+.dashboard-error {
+   border-color: rgba(239, 83, 80, 0.38);
+   color: #ffd1d1;
+   background: rgba(40, 10, 20, 0.5);
+}
+
 /* LAYOUT — PAGE + BREADCRUMB + PAGE HEADER */
 .page-dashboard-classroom {
   width: 90%;
@@ -142,9 +161,9 @@ body {
 
 .page-eyebrow {
   font-size: 1.3rem;
-  font-family: var(--font-Bebas);
+  font-family: var(--font-display, "Montserrat", sans-serif);
   text-transform: uppercase;
-  letter-spacing: 0.8rem;
+  letter-spacing: 0.5rem;
   color: rgba(255, 255, 255, 0.8);
   font-weight: 900;
   margin-bottom: 0.5rem;

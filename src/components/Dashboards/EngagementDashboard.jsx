@@ -58,13 +58,33 @@ export default function EngagementDashboard({classroomID, from, to}) {
     const [error, setError] = useState(null); 
     const [page, setPage] = useState(0);
     const [todosAlunos, setTodosAlunos] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     //Paginada para a tabela
     useEffect(() => {
-        if (!from || !to) { return; }
+        if (!from || !to) { 
+            return; 
+        }
 
-        DashBoardService.getEngagement(classroomID, from, to, page).then(data => setEngagement(data)).catch(err => setError(getApiError(err)))
+        const fetchEngagement = async () => {
+            setLoading(true);
+            setError(null);
+
+            try {
+                const data = await DashBoardService.getEngagement(classroomID, from, to, page);
+                setEngagement(data);
+            } catch (error) {
+                setError(getApiError(error));
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchEngagement();
     }, [classroomID, from, to, page]);
+
+    useEffect(() => {
+        setPage(0);
+    }, [from, to]);
 
     //Chamada para o alerta de inativos
     useEffect(() => {
@@ -77,7 +97,25 @@ export default function EngagementDashboard({classroomID, from, to}) {
     if (error) {
         return <p>{error}</p>; //alterar posteriormente
     }
-    if (!engagement) {return null;}
+    if (loading) {
+        return <p className="dashboard-loading">Carregando engajamento...</p>;
+    }
+    if (!engagement || !engagement.content || engagement.content.length === 0) {
+        return (
+            <div className="section-card">
+                <div className="section-header">
+                    <div>
+                    <p className="section-title">Engajamento por aluno</p>
+                    <p className="section-subtitle">Interações com o agente no período selecionado</p>
+                    </div>
+                </div>
+
+                <p className="dashboard-empty">
+                    Nenhum dado de engajamento encontrado para o período selecionado.
+                </p>
+            </div>
+        );
+    }
 
     return (
         <>
