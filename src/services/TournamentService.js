@@ -17,6 +17,12 @@ const TournamentService = {
     return response.data;
   },
 
+  async start(tournamentId, incomplete = false){
+    await api.put(`/tournament/${tournamentId}`, {}, {
+      params: {incomplete}
+    })
+  },
+
   async getOpen({ page = 0, size = 5, searchTerm = "" } = {}) {
     const response = await api.get("/tournament", {
       params: { page, size, searchTerm },

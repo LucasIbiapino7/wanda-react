@@ -14,6 +14,11 @@ import confetti from "canvas-confetti";
 // Partidas de W.O. (match.walkover === true) NÃO entram nesse fluxo de suspense:
 // nascem já "revealed" e usam um card próprio (sem flip, com selo de sorteio).
 
+// Identifica o confronto pela posição na chave, mesmo sem partida salva.
+function getMatchKey(roundIndex, matchIndex) {
+  return `${roundIndex}-${matchIndex}`;
+}
+
 export default function BracketViewer({ tournamentId }) {
   const { token } = useContext(AuthContext);
   const [bracket, setBracket] = useState(null);
@@ -37,12 +42,24 @@ export default function BracketViewer({ tournamentId }) {
         setBracket(response.data);
 
         const initial = {};
-        for (const round of response.data.rounds) {
-          for (const match of round.matches) {
-            // W.O. já nasce revelado (não há suspense pra um sorteio)
-            initial[match.matchId] = match.walkover ? "revealed" : "pending";
-          }
-        }
+        // for (const round of response.data.rounds) {
+        //   for (const match of round.matches) {
+        //     // W.O. já nasce revelado (não há suspense pra um sorteio)
+        //     initial[match.matchId] = match.walkover ? "revealed" : "pending";
+        //   }
+        // }
+
+        response.data.rounds.forEach((round, roundIndex) => {
+          round.matches.forEach((match, matchIndex) => {
+            const key = getMatchKey(roundIndex, matchIndex)
+            
+            // Resultados automáticos não passam pelo suspense do replay.
+            initial[key] = match.walkover || match.automaticAdvance
+            ? "reveled"
+            : "pending"
+          })
+        })
+
         setMatchStates(initial);
       } catch (err) {
         const msg =
@@ -64,26 +81,39 @@ export default function BracketViewer({ tournamentId }) {
     );
   }
 
-  const { rounds } = bracket;
+  const rounds = bracket.rounds ?? [];
   const round = rounds[currentRound];
+
+  if (!round) {
+    return (
+      <div className="bv-loading">
+        A chave deste torneio ainda não está disponível.
+      </div>
+    );
+  }
+  
   const isFinal = currentRound === rounds.length - 1;
 
   const allRevealed = round.matches.every(
-    (m) => matchStates[m.matchId] === "revealed",
+    (_, m) => matchStates[getMatchKey(currentRound, m)] === "revealed",
   );
 
-  function handleWatch(match) {
-    setMatchStates((prev) => ({ ...prev, [match.matchId]: "watching" }));
+  function handleWatch(match, key) {
+    if (match.matchId == null){
+      return
+    }
+
+    setMatchStates((prev) => ({ ...prev, [key]: "watching" }));
     window.open(`/matches/${match.matchId}`, "_blank");
   }
 
-  function handleReveal(match) {
-    setMatchStates((prev) => ({ ...prev, [match.matchId]: "revealing" }));
+  function handleReveal(match, key) {
+    setMatchStates((prev) => ({ ...prev, [key]: "revealing" }));
 
     const delay = isFinal ? 1800 : 1200;
 
     setTimeout(() => {
-      setMatchStates((prev) => ({ ...prev, [match.matchId]: "revealed" }));
+      setMatchStates((prev) => ({ ...prev, [key]: "revealed" }));
 
       if (isFinal) {
         fireChampionConfetti();
@@ -133,18 +163,20 @@ export default function BracketViewer({ tournamentId }) {
 
       <div className="bv-rounds-wrapper">
         <div className={`bv-round ${isFinal ? "bv-round--final" : ""}`}>
-          {round.matches.map((match) => {
-            const state = matchStates[match.matchId] || "pending";
+          {round.matches.map((match, matchIndex) => {
+            const key = getMatchKey(currentRound, matchIndex);
+            const state = matchStates[key] || "pending";
             const winnerIsP1 = match.winnerId === match.player1Id;
+
             return (
               <MatchCard
-                key={match.matchId}
+                key={key}
                 match={match}
                 state={state}
                 winnerIsP1={winnerIsP1}
                 isFinal={isFinal}
-                onWatch={() => handleWatch(match)}
-                onReveal={() => handleReveal(match)}
+                onWatch={() => handleWatch(match, key)}
+                onReveal={() => handleReveal(match, key)}
                 onShowChampion={() => handleShowChampion(match)}
               />
             );
@@ -183,6 +215,17 @@ function MatchCard({
   onReveal,
   onShowChampion,
 }) {
+  if (match.automaticAdvance) {
+    return(
+      <AutomaticAdvanceCard
+        match={match}
+        winnerIsP1={winnerIsP1}
+        isFinal={isFinal}
+        onShowChampion={onShowChampion}
+      />
+    )
+  }
+
   // Caminho do W.O.: card próprio, já revelado, sem flip nem suspense.
   if (match.walkover) {
     return (
@@ -274,6 +317,51 @@ function MatchCard({
   );
 }
 
+// Componente de avanço automático de partida
+// Caso em que há pelo menos um jogador fake
+function AutomaticAdvanceCard({
+  match,
+  winnerIsP1,
+  isFinal,
+  onShowChampion,
+}) {
+  return (
+    <div
+      className={`bv-flip-wrapper ${isFinal ? "bv-flip-wrapper--final" : ""}`}
+    >
+      <div
+        className={`bv-match-card bv-match-card--walkover ${isFinal ? "bv-match-card--final" : ""}`}
+      >
+        <span className="bv-walkover-tag">Avanço automático</span>
+
+        <div className="bv-match-players">
+          <PlayerSlot
+            name={`${match.player1Name}${match.player1Fictitious ? " (fictício)" : ""}`}
+            isWinner={winnerIsP1}
+            isFinal={isFinal}
+          />
+          <span className="bv-vs">vs</span>
+          <PlayerSlot
+            name={`${match.player2Name}${match.player2Fictitious ? " (fictício)" : ""}`}
+            isWinner={!winnerIsP1}
+            isFinal={isFinal}
+          />
+        </div>
+
+        <p className="bv-walkover-note">{match.reason}</p>
+
+        {/* Este confronto não possui partida nem replay. */}
+        {isFinal && (
+          <div className="bv-match-actions">
+            <button className="bv-replay-button" onClick={onShowChampion}>
+              🏆 Ver campeão
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 function WalkoverMatchCard({ match, winnerIsP1, isFinal, onShowChampion }) {
   return (
     <div
@@ -407,19 +495,35 @@ BracketViewer.propTypes = {
 
 MatchCard.propTypes = {
   match: PropTypes.shape({
-    matchId: PropTypes.number.isRequired,
+    matchId: PropTypes.number,
     player1Name: PropTypes.string.isRequired,
     player2Name: PropTypes.string.isRequired,
     player1Id: PropTypes.number.isRequired,
     winnerId: PropTypes.number.isRequired,
     walkover: PropTypes.bool,
     reason: PropTypes.string,
+    automaticAdvance: PropTypes.bool,
+    player1Fictitious: PropTypes.bool,
+    player2Fictitious: PropTypes.bool,
   }).isRequired,
   state: PropTypes.string.isRequired,
   winnerIsP1: PropTypes.bool.isRequired,
   isFinal: PropTypes.bool.isRequired,
   onWatch: PropTypes.func.isRequired,
   onReveal: PropTypes.func.isRequired,
+  onShowChampion: PropTypes.func.isRequired,
+};
+
+AutomaticAdvanceCard.propTypes = {
+  match: PropTypes.shape({
+    player1Name: PropTypes.string.isRequired,
+    player2Name: PropTypes.string.isRequired,
+    player1Fictitious: PropTypes.bool,
+    player2Fictitious: PropTypes.bool,
+    reason: PropTypes.string,
+  }).isRequired,
+  winnerIsP1: PropTypes.bool.isRequired,
+  isFinal: PropTypes.bool.isRequired,
   onShowChampion: PropTypes.func.isRequired,
 };
 

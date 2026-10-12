@@ -5,6 +5,7 @@ import Pagination from "../Challenges/Pagination";
 import "./ParticipatingTournaments.css";
 import TournamentManagerModal from "./TournamentManagerModal";
 import AppModal from "../UI/AppModal";
+import TournamentService from "../../services/TournamentService";
 
 const GAME_LOGOS = {
   jokenpo: "/assets/games/jokenpo-logo.png",
@@ -38,6 +39,7 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
   const [startLoadingId, setStartLoadingId] = useState(null);
   const [managerModal, setManagerModal] = useState({ open: false, tournament: null });
   const [errorModal, setErrorModal] = useState({ open: false, message: "" });
+  const [startConfirmation, setStartConfirmation] = useState(null);
 
   const fetchParticipating = useCallback(
     async (pageNum = 0) => {
@@ -71,15 +73,18 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
     if (token) fetchParticipating(page);
   }, [token, page, refreshKey, fetchParticipating]);
 
-  const handleStartTournament = async (id) => {
+  const handleStartTournament = async (id, incomplete = false) => {
+    if (startLoadingId !== null){
+      return;
+    }
+
     setStartLoadingId(id);
+    setStartConfirmation(null);
+
     try {
-      await axios.put(
-        `${import.meta.env.VITE_API_URL}/tournament/${id}`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await TournamentService.start(id, incomplete);
       fetchParticipating(page);
+      navigate(`/tournament/${id}`);
     } catch (err) {
       const data = err?.response?.data;
       const msg = data?.message || data?.error || "Não foi possível iniciar o torneio. Tente novamente.";
@@ -88,6 +93,19 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
       setStartLoadingId(null);
     }
   };
+
+  const requestTournamentStart = (tournament) => {
+    if (startLoadingId !== null){
+      return;
+    }
+
+    if (tournament.currentParticipants < tournament.maxParticipants){
+      setStartConfirmation(tournament);
+      return;
+    }
+
+    handleStartTournament(tournament.id);
+  }
 
   const handleOpenManager = (tournament) => {
     setManagerModal({ open: true, tournament });
@@ -207,8 +225,8 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
             {t.canReady && (
               <button
                 className="card-button start-button"
-                disabled={startLoadingId === t.id}
-                onClick={() => handleStartTournament(t.id)}
+                disabled={startLoadingId !== null}
+                onClick={() => requestTournamentStart(t)}
               >
                 {startLoadingId === t.id ? "Preparando torneio..." : "Iniciar Torneio"}
               </button>
@@ -382,6 +400,53 @@ export default function ParticipatingTournaments({ classroomId = null, refreshKe
           onClose={handleCloseManager}
         />
       )}
+
+      {/* Modal de confirmação de início de torneio */}
+      <AppModal
+        open={startConfirmation !== null}
+        onClose={() => setStartConfirmation(null)}
+        title="Iniciar torneio incompleto?"
+        primaryAction={{
+          id: "confirm-start-tournament",
+          label: "Confirmar e iniciar",
+          onClick: () => {
+            if (startConfirmation) {
+              handleStartTournament(startConfirmation.id, true);
+            }
+          },
+          disabled: startLoadingId !== null,
+        }}
+        secondaryAction={{
+          id: "cancel-start-tournament",
+          label: "Cancelar",
+          onClick: () => setStartConfirmation(null),
+        }}
+        initialFocus="cancel-start-tournament"
+      >
+        {startConfirmation && (
+          <>
+            <p>
+              Este torneio tem {startConfirmation.currentParticipants} de{" "}
+              {startConfirmation.maxParticipants} participantes.
+            </p>
+
+            <p>
+              As {startConfirmation.maxParticipants -
+                startConfirmation.currentParticipants} vagas restantes serão
+              preenchidas por jogadores fictícios, que perderão automaticamente
+              contra jogadores reais.
+            </p>
+
+            {startConfirmation.currentParticipants === 1 && (
+              <p>
+                Como há apenas um jogador real, ele será campeão sem disputar partidas.
+              </p>
+            )}
+
+            <p>Deseja iniciar o torneio?</p>
+          </>
+        )}
+      </AppModal>
 
       <AppModal
         open={errorModal.open}
